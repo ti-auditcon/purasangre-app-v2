@@ -1,0 +1,119 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>dashboard</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content 
+            pullingIcon="null"
+            pullingText="Arrastra para actualizar"
+            refreshingSpinner="crescent"
+        >
+        </ion-refresher-content>
+    </ion-refresher>
+    <div>
+        <h1>dashboard content</h1>
+    </div>
+
+    <!-- <div class="alerts-wrapper" *ngIf="alerts.has_confirmation || alerts.has_backend_notification">
+            (click)="goToEditConfirm(alerts.confirmation.clase_id)"
+        <div class="card card-alert card-alert-reserva" *ngIf="alerts.has_confirmation" >
+            <div class="ps-row">
+                <div class="col-2 icon">
+                    <ion-icon src="/assets/icon/calendar.svg"></ion-icon>
+                </div>
+                <div class="col-10 text">
+                    <p>
+                        Tienes una clase reservada a las {{ alerts.confirmation.start }} ¡Confírma tu asistencia!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="alerts?.has_backend_notification">
+            <div class="card card-alert card-alert-info"  *ngFor="let bn of alerts.backend_notification" >
+    
+                <div class="ps-row">
+                    <div class="col-2 icon">
+                        <ion-icon src="/assets/icon/info.svg"></ion-icon>
+                    </div>
+                    <div class="col-10 text">
+                        <p [innerHTML]="bn.message"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+        <!-- <div class="plan-resumen">
+            <h1 class="plan-title">{{ user.rels?.active_plan.plan }}</h1>
+            <p class="plan-vencimiento">Termina el {{ user.rels?.active_plan.expiration }}</p>
+            <div class="card card-info">
+                <div class="ps-row">
+                    <div class="info-item col-4" text-center>
+                        <div>
+                            <p class="digit">{{ user.rels?.stats.clases_consumed}}</p>
+                            
+                            <p><b>Clases<br>Asistidas</b></p>
+                        </div>
+                    </div>
+                
+                <div class="info-item col-4" text-center>
+                    <div>
+                        <p class="digit">{{ user.rels?.stats.clases_quantity}}</p>
+                        
+                        <p><b>Clases<br>Restantes</b></p>
+                    </div>
+                </div>
+                
+                <div class="info-item col-4" text-center>
+                    <div>
+                        <p class="digit">{{ user.rels?.stats.clases_lost}}</p>
+                        
+                        <p><b>Clases<br>Perdidas</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+        
+    <div class="section wod-resumen">
+    <ion-slides>
+        <!-- <ion-slide *ngFor="let wod of wods; let i = index" class="wod-slide">
+            <div class="card-header">
+                <h1 class="title-section">{{ wod.claseType }}</h1>
+                
+                <div class="step-icon">
+                <img *ngIf="wodsCount > 1" src="assets/icon/arrow-black.svg">
+                <div class="step" *ngFor="let wod of wods; let num = index" [ngClass]="{'active':num == i}"></div>
+                </div>
+            </div>
+        <div class="card card-resumen">
+            <div class="text-box-resumen">
+            <p *ngIf="wod.rels.stages.has">{{ wod.rels.stages.featured }}</p>
+            <p *ngIf="!wod.rels.stages.has">No hay WOD registrado para el dia de hoy.</p>
+            </div>
+        </div>
+        <button class="button-wod-today" (click)="verWOD(wod.identificador)">Ver Clase del día</button>
+        </ion-slide> -->
+    </ion-slides>
+    </div>
+
+    <div class="section">
+        <h1 class="title-section">
+            Progreso de peso
+        </h1>
+        
+        <div class="card card-asistencia">
+            <!-- <canvas #barCanvas></canvas> -->
+            <canvas baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                chartType="line"
+                [options]="lineChartOptions"
+            >
+            </canvas>
+        </div>
+    </div>
+</ion-content>
