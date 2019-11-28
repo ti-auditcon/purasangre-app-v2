@@ -8,8 +8,8 @@ import { Storage } from '@ionic/storage';
 
 import { BehaviorSubject } from 'rxjs';
 
-let TOKEN_KEY = 'auth-token';
-let REFRESH_TOKEN = 'refresh-token';
+const TOKEN_KEY = 'auth-token';
+const REFRESH_TOKEN = 'refresh-token';
 
 // interface obj {
 //     token: string;
@@ -40,8 +40,8 @@ export class AuthService {
     checkToken() {
         this.storage.get(TOKEN_KEY).then(res => {
             if (res) {
-            // console.log('res:'+res);
-            this.authenticationState.next(true);
+                // console.log('res:'+res);
+                this.authenticationState.next(true);
             } else {
                 // console.log('res:'+res);
                 this.authenticationState.next(false);
@@ -61,7 +61,6 @@ export class AuthService {
         const httpOptions = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json', // updated
-
             })};
 
         this.http.post(SERVER_URL + '/oauth/token' , data, httpOptions);
@@ -105,5 +104,15 @@ export class AuthService {
             }).catch((error) => {
                 console.log(error);
             });
+    }
+
+    logout() {
+        this.storage.remove(REFRESH_TOKEN);
+
+        // this.storage.remove('tutorialComplete');
+
+        return this.storage.remove(TOKEN_KEY).then(() => {
+            this.authenticationState.next(false);
+        });
     }
 }
