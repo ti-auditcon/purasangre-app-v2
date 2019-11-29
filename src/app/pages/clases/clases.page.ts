@@ -83,11 +83,11 @@ export class ClasesPage {
 
             const httpOptions = {
                 headers: new HttpHeaders({
-                    Authorization: 'Bearer ' + Bearer // updated
+                    Authorization: `Bearer ${Bearer}` // updated
                 })
             };
 
-            this.http.get(SERVER_URL + '/clases-coming?sort_by_asc=date', httpOptions)
+            this.http.get(`${SERVER_URL}/clases-coming?sort_by_asc=date`, httpOptions)
                 .subscribe((result: any) => {
                     console.log('entre a las clases coming');
 
@@ -113,14 +113,14 @@ export class ClasesPage {
 
             // console.log(this.today_clase);
 
-            this.http.get(SERVER_URL + '/users-alerts', httpOptions)
+            this.http.get(`${SERVER_URL}/users-alerts`, httpOptions)
             .subscribe((result: any) => {
                 this.alerts = result.data;
 
                 console.log(this.alerts);
             });
 
-            this.http.get(SERVER_URL + '/todaywods', httpOptions)
+            this.http.get(`${SERVER_URL}/todaywods`, httpOptions)
                 .subscribe((result: any) => {
                     this.todayWods = result.data;
 

@@ -14,6 +14,8 @@ import { AuthService } from '../auth/auth.service';
 
 const { Camera } = Plugins;
 
+const TOKEN_KEY = 'auth-token';
+
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.page.html',
@@ -89,11 +91,11 @@ export class ProfilePage {
 
         this.httpOptions = {
             headers: new HttpHeaders({
-                Authorization: 'Bearer ' + Bearer // updated
+                Authorization: `Bearer ${Bearer}` // updated
             })
         };
 
-        this.http.post(SERVER_URL + 'api/profile/avatar', input, this.httpOptions)
+        this.http.post(`${SERVER_URL}/api/profile/avatar`, input, this.httpOptions)
             .subscribe((result: any) => {
                 console.log('avataaaar!');
 
@@ -165,30 +167,31 @@ export class ProfilePage {
     // }
 
     ionViewDidEnter() {
-        this.storage.get(purasangreAPIKey).then((value) => {
-            // console.log(value);
+        this.storage.get(TOKEN_KEY).then((value) => {
+            console.log(value);
             const Bearer = value;
 
             const httpOptions = {
                 headers: new HttpHeaders({
-                Authorization: 'Bearer ' + Bearer // updated
-            })};
+                    Authorization: `Bearer ${Bearer}` // updated
+                })
+            };
 
-            this.http.get(SERVER_URL + '/profile', httpOptions)
+            this.http.get(`${SERVER_URL}/profile`, httpOptions)
                 .subscribe((result: any) => {
                     this.user = result.data;
 
                     const random = (new Date()).toString();
-                    this.image = this.user.avatar + '?cb=' + random;
+                    this.image = `${this.user.avatar}?cb=${random}`;
                     this.imageClean = this.user.avatar;
                     this.avatar = this.user.avatar;
                     this.storage.set('avatar', this.image);
 
                     this.http.get(this.user.rels.active_plan.href, httpOptions)
-                        .subscribe((result: any) => {
+                        .subscribe((response: any) => {
                             console.log('entre plan activo');
 
-                            this.userPlan = result.data;
+                            this.userPlan = response.data;
 
                             console.log(this.userPlan);
                     });

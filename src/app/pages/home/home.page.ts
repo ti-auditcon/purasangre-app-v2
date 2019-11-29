@@ -10,7 +10,7 @@ export class HomePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('i´m here at the home page');
+    // console.log('i´m here at the home page');
   }
 
 }

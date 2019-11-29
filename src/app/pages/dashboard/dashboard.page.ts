@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Storage } from '@ionic/storage';
-
 // import { Firebase } from '@ionic-native/firebase/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
@@ -85,10 +84,10 @@ ionViewWillEnter() {
 
         const httpOptions = {
             headers: new HttpHeaders({
-                Authorization: 'Bearer ' + Bearer // updated
+                Authorization: `Bearer ${Bearer}` // updated
             })};
 
-        this.http.get(SERVER_URL + '/profile', httpOptions)
+        this.http.get(`${SERVER_URL}/profile`, httpOptions)
             .subscribe((result: any) => {
                 this.user = result.data;
 
@@ -114,7 +113,7 @@ ionViewWillEnter() {
                 this.splashScreen.hide();
             });
 
-        this.http.get(SERVER_URL + '/todaywods', httpOptions)
+        this.http.get(`${SERVER_URL}/todaywods`, httpOptions)
             .subscribe((result: any) => {
                 this.wods = result.data;
 
@@ -132,7 +131,7 @@ ionViewWillEnter() {
                 console.log('error wod');
             });
 
-        this.http.get(SERVER_URL + '/users-alerts', httpOptions)
+        this.http.get(`${SERVER_URL}/users-alerts`, httpOptions)
             .subscribe((result: any) => {
                 this.alerts = result.data;
 
@@ -142,7 +141,7 @@ ionViewWillEnter() {
                 console.log('error user-alerts');
             });
 
-        // this.http.get(SERVER_URL + '/assistance', httpOptions)
+        // this.http.get(`${SERVER_URL}/assistance`, httpOptions)
         //     .subscribe((result: any) => {
         //         this.assistance = result;
         //         console.log(this.assistance);

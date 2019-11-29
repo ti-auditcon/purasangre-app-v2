@@ -63,7 +63,7 @@ export class AuthService {
               'Content-Type': 'application/json', // updated
             })};
 
-        this.http.post(SERVER_URL + '/oauth/token' , data, httpOptions);
+        this.http.post(`${SERVER_URL}/oauth/token`, data, httpOptions);
     }
 
     refreshToken() {
@@ -84,7 +84,7 @@ export class AuthService {
                     })};
 
                 // return new Promise((resolve, reject) => {
-                this.http.post(SERVER_URL + '/oauth/token', data, httpOptions)
+                this.http.post(`${SERVER_URL}/oauth/token`, data, httpOptions)
                     .subscribe((result: any) => {
                         console.log('success refresh 200');
 
