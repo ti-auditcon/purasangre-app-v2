@@ -1,10 +1,10 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>dashboard</ion-title>
+        <ion-title>Bienvenido ql</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content 
             pullingIcon="null"
@@ -13,15 +13,14 @@
         >
         </ion-refresher-content>
     </ion-refresher>
-    <div>
-        <h1>dashboard content</h1>
-    </div>
 
     <div class="alerts-wrapper"
-         *ngIf="alerts.has_confirmation || alerts.has_backend_notification" 
-         (click)="goToEditConfirm(alerts.confirmation.clase_id)"
+         *ngIf="alerts.has_confirmation || alerts.has_backend_notification"
     >
-        <div class="card card-alert card-alert-reserva" *ngIf="alerts.has_confirmation" >
+        <div class="card card-alert card-alert-reserva"
+             *ngIf="alerts.has_confirmation"
+             (click)="goToEditConfirm(alerts.confirmation.clase_id)"
+        >
             <div class="ps-row">
                 <div class="col-2 icon">
                     <ion-icon src="/assets/icon/calendar.svg"></ion-icon>
@@ -48,30 +47,35 @@
             </div>
         </div>
     </div>
-        <div class="plan-resumen">
-            <h1 class="plan-title">{{ user.rels?.active_plan.plan }}</h1>
-            <p class="plan-vencimiento">Termina el {{ user.rels?.active_plan.expiration }}</p>
-            <div class="card card-info">
-                <div class="ps-row">
-                    <div class="info-item col-4" class="ion-text-center">
-                        <div>
-                            <p class="digit">{{ user.rels?.stats.clases_consumed}}</p>
-                            
-                            <p><b>Clases<br>Asistidas</b></p>
-                        </div>
-                    </div>
-                
-                <div class="info-item col-4" class="ion-text-center">
+    <div class="plan-resumen">
+       
+        
+        <div class="card card-info">
+            
+            <h1 class="plan-title ml-2">{{ user.rels?.active_plan.plan }}</h1>
+            
+            <p class="plan-vencimiento ml-2">Termina el {{ user.rels?.active_plan.expiration }}</p>
+            
+            <div class="ps-row">
+                <div class="info-item col-4 ion-text-center">
                     <div>
-                        <p class="digit">{{ user.rels?.stats.clases_quantity}}</p>
+                        <p class="digit">{{ user.rels?.stats.clases_consumed }}</p>
                         
-                        <p><b>Clases<br>Restantes</b></p>
+                        <p><b>Clases<br>Asistidas</b></p>
                     </div>
                 </div>
                 
-                <div class="info-item col-4" class="ion-text-center">
+                <div class="info-item col-4 ion-text-center">
                     <div>
-                        <p class="digit">{{ user.rels?.stats.clases_lost}}</p>
+                        <p class="digit">{{ user.rels?.stats.clases_quantity }}</p>
+                        
+                        <p><b>Clases<br>Disponibles</b></p>
+                    </div>
+                </div>
+                
+                <div class="info-item col-4 ion-text-center">
+                    <div>
+                        <p class="digit">{{ user.rels?.stats.clases_lost }}</p>
                         
                         <p><b>Clases<br>Perdidas</b></p>
                     </div>

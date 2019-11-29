@@ -5,27 +5,29 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <ion-item>
-                    <ion-label>Email</ion-label>
-                
-                    <ion-input type="email"></ion-input>
-                </ion-item>
-        
-                <ion-item>
-                    <ion-label>Password</ion-label>
+    <form #f="ngForm" (ngSubmit)="onSubmitLogin(f)">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-item>
+                        <ion-label>Email</ion-label>
                     
-                    <ion-input type="password"></ion-input>
-                </ion-item>  
-            </ion-col>
+                        <ion-input type="email" name="email" ngModel></ion-input>
+                    </ion-item>
+            
+                    <ion-item>
+                        <ion-label>Password</ion-label>
+                        
+                        <ion-input type="password" name="password" ngModel></ion-input>
+                    </ion-item>  
+                </ion-col>
 
-            <ion-col>
-                <ion-button color="primary" expand="clear" fill="clear">Swith to Login</ion-button>
+                <ion-col>
+                    <ion-button color="primary" expand="clear" fill="clear">Swith to Login</ion-button>
 
-                <ion-button color="primary" expand="clear" fill="clear">Login</ion-button>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+                    <ion-button type="submit" color="primary" expand="clear" fill="clear">Login</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>

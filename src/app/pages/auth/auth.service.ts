@@ -7,6 +7,8 @@ import { SERVER_URL, purasangreAPIKey } from '../../../environments/environment'
 import { Storage } from '@ionic/storage';
 
 import { BehaviorSubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { User } from '../../models/users/user.model';
 
 const TOKEN_KEY = 'auth-token';
 const REFRESH_TOKEN = 'refresh-token';
@@ -21,14 +23,41 @@ const REFRESH_TOKEN = 'refresh-token';
 
 export class AuthService {
     // tslint:disable-next-line: variable-name
-    private _userIsAuthenticated = false;
+    private _userId = null;
     // tslint:disable-next-line: variable-name
-    private _userId = false;
+    private _user = new BehaviorSubject<User>(null);
 
     authenticationState = new BehaviorSubject(false);
 
+    /**
+     * check with the user model if user is authenticated,
+     * checkin the token
+     *
+     * @return  boolean
+     */
     get userIsAuthenticated() {
-        return this._userIsAuthenticated;
+        return this._user.asObservable().pipe(map(user => {
+            if (user) {
+                return !!user.token;
+            }
+
+            return false;
+        }));
+    }
+
+    /**
+     * Get the user id from the User Model
+     *
+     * @return string (yes, it's an string)
+     */
+    get userId() {
+        return this._user.asObservable().pipe(map(user => {
+            if (user) {
+                return user.id;
+            }
+
+            return null;
+        }));
     }
 
     constructor(
@@ -63,7 +92,14 @@ export class AuthService {
               'Content-Type': 'application/json', // updated
             })};
 
-        this.http.post(`${SERVER_URL}/oauth/token`, data, httpOptions);
+        return this.http.post<AuthService>(`${SERVER_URL}/oauth/token`, data, httpOptions
+            ).pipe(tap(userData => {
+                console.log(userData);
+                // this._user.next(new User(
+                //         userData.token_type,
+                //         userData.expires_in,
+                //         userData.access_token));
+            }));
     }
 
     refreshToken() {

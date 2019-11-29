@@ -451,6 +451,14 @@ ion-content {
   background-size: 150% 150%;
 }
 
+.ml-1 {
+  margin-left: 10px !important;
+}
+
+.ml-2 {
+  margin-left: 20px !important;
+}
+
 .plan-resumen {
   margin: 0;
   // margin-top: 21px;
@@ -468,12 +476,12 @@ ion-content {
   p.plan-vencimiento {
     margin: 0;
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 24px;
     font-size: 14px;
   }
   .card-info {
     background: #F9F9F9;
-    padding-top: 17px;
+    padding-top: 10px;
     padding-bottom: 21px;
     // border: 0.5px solid #C4C4C4;
     border: 0.5px solid #E4E4E4;

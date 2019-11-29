@@ -4,7 +4,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content 
             pullingIcon="null"
@@ -33,7 +33,10 @@
         <h1 class="title-section">Sin Confirmar</h1>
         
         <div class="clases-cards">
-            <div class="clase-card" *ngFor="let clase of pendient" (click)="goToEditConfirm(clase.clase_id)"  >
+            <div class="clase-card"
+                 *ngFor="let clase of pendient"
+                 (click)="goToEditConfirm(clase.clase_id)"
+            >
                 <div class="ps-row" align-items-center>
                     <div class="col-3 class-type">
                         <img class="class-icon" [src]="clase.rels.claseType.icon">
