@@ -1,18 +1,21 @@
 // ENV
-import { purasangreAPIKey, SERVER_URL } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { ToastController, ActionSheetController } from '@ionic/angular';
 
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
 
+import { ProfileService } from './profile.service';
 import { AuthService } from '../auth/auth.service';
+import { Profile } from '../../models/users/profile.model';
+import { BehaviorSubject } from 'rxjs';
+import { take, tap, map } from 'rxjs/operators';
 
-const { Camera } = Plugins;
+// const { Camera } = Plugins;
 
 const TOKEN_KEY = 'auth-token';
 
@@ -22,14 +25,7 @@ const TOKEN_KEY = 'auth-token';
     styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage {
-    public user: any = '';
-    public userPlan: any = '';
-    public errors: any = 'sin errores';
-    public link: any = 'sin link';
-    public alerts: any = [];
-    public image: any = '';
-    public imageClean: any = '';
-    public avatar: any = '';
+    loadedProfile: Profile;
 
     imageURI;
     imageFileName;
@@ -38,81 +34,99 @@ export class ProfilePage {
 
     constructor(
         private router: Router,
-        private storage: Storage,
-        private http: HttpClient,
+        private profileService: ProfileService,
+        public toastController: ToastController,
         private authService: AuthService,
-        public toastController: ToastController
+        private actionSheetCtrl: ActionSheetController,
     ) {}
 
     base64Image;
     preImage;
 
+    ionViewWillEnter() {
+        this.profileService.profileId.pipe(
+            map(isAuthenticated => {
+                if (isAuthenticated) {
+                    // console.log('esta autenticado men, no necesita pedir el profile a la api');
+                    this.loadedProfile = null;
+                    this.profileService.profile.subscribe(profile => {
+                        this.loadedProfile = profile;
+                    });
+                } else {
+                    this.profileService.fetchProfile().subscribe();
+                }
+            })
+        ).subscribe();
+    }
+
+
     // public fileTransfer: FileTransferObject = this.transfer.create();
 
     // Refresh
-    doRefresh(event) {
-        console.log('Begin async operation');
+    // doRefresh(event) {
+    //     console.log('Begin async operation');
 
-        this.ionViewDidEnter();
-        setTimeout(() => {
-            console.log('Async operation has ended');
+    //     this.ionViewDidEnter();
+    //     setTimeout(() => {
+    //         console.log('Async operation has ended');
 
-            event.target.complete();
-        }, 2000);
-    }
+    //         event.target.complete();
+    //     }, 2000);
+    // }
 
-    async presentToast(text = 'Error', duration = 2500) {
-        const toast = await this.toastController.create({
-            message: text,
-            duration,
-            position: 'top'
-        });
+    // async presentToast(text = 'Error', duration = 2500) {
+    //     const toast = await this.toastController.create({
+    //         message: text,
+    //         duration,
+    //         position: 'top'
+    //     });
 
-        toast.present();
-    }
+    //     toast.present();
+    // }
 
-    async takePicture() {
-        const image = await Camera.getPhoto({
-            quality: 60,
-            width: 720,
-            allowEditing: false,
-            resultType: CameraResultType.Base64,
-            source: CameraSource.Prompt
-        });
+    // async takePicture() {
 
-        // input.append('avatar',image.base64String,'avatar');
-        const input = new FormData();
+    //     const image = await Camera.getPhoto({
+    //         quality: 60,
+    //         width: 720,
+    //         allowEditing: false,
+    //         resultType: CameraResultType.Base64,
+    //         source: CameraSource.Prompt
+    //     });
 
-        input.append('avatar', image.base64String);
+    //     // input.append('avatar',image.base64String,'avatar');
+    //     const input = new FormData();
 
-        this.storage.get('auth-token').then((value) => {
+    //     input.append('avatar', image.base64String);
 
-        const Bearer = value;
+    //     this.storage.get('auth-token').then((value) => {
 
-        this.httpOptions = {
-            headers: new HttpHeaders({
-                Authorization: `Bearer ${Bearer}` // updated
-            })
-        };
+    //     const Bearer = value;
 
-        this.http.post(`${SERVER_URL}/api/profile/avatar`, input, this.httpOptions)
-            .subscribe((result: any) => {
-                console.log('avataaaar!');
+    //     this.httpOptions = {
+    //         headers: new HttpHeaders({
+    //             Authorization: `Bearer ${Bearer}` // updated
+    //         })
+    //     };
 
-                console.log(result);
+    //     this.http.post(`${environment.SERVER_URL}/api/profile/avatar`, input, this.httpOptions)
+    //         .subscribe((result: any) => {
+    //             console.log('avataaaar!');
 
-                this.presentToast('datos actualizados con éxito');
+    //             console.log(result);
 
-                this.ionViewDidEnter();
-            });
-        });
+    //             this.presentToast('datos actualizados con éxito');
 
-        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
-        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl("data:Image/*;base64,"+image.dataUrl);
-        // console.log("Aqui va la var photo: "+this.photo);
-    }
+    //             this.ionViewDidEnter();
+    //         });
+    //     });
+
+    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
+    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl("data:Image/*;base64,"+image.dataUrl);
+    //     // console.log("Aqui va la var photo: "+this.photo);
+    // }
 
     // selectImageFromCamera() {
     //     // this.presentToast('images!!!');
@@ -166,40 +180,33 @@ export class ProfilePage {
     //     });
     // }
 
-    ionViewDidEnter() {
-        this.storage.get(TOKEN_KEY).then((value) => {
-            console.log(value);
-            const Bearer = value;
-
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    Authorization: `Bearer ${Bearer}` // updated
-                })
-            };
-
-            this.http.get(`${SERVER_URL}/profile`, httpOptions)
-                .subscribe((result: any) => {
-                    this.user = result.data;
-
-                    const random = (new Date()).toString();
-                    this.image = `${this.user.avatar}?cb=${random}`;
-                    this.imageClean = this.user.avatar;
-                    this.avatar = this.user.avatar;
-                    this.storage.set('avatar', this.image);
-
-                    this.http.get(this.user.rels.active_plan.href, httpOptions)
-                        .subscribe((response: any) => {
-                            console.log('entre plan activo');
-
-                            this.userPlan = response.data;
-
-                            console.log(this.userPlan);
-                    });
-                });
-        });
+    takePicture() {
+        // this.actionSheetCtrl.create({
+        //     header: 'Cambiar Foto de Perfil',
+        //     buttons: [
+        //         {
+        //             text: 'Tomar una Foto',
+        //             handler: () => {
+        //                 this.openBookingModal('select');
+        //             }
+        //         },
+        //         {
+        //             text: 'Importar de mi Galería',
+        //             handler: () => {
+        //                 this.openBookingModal('random');
+        //             }
+        //         },
+        //         {
+        //             text: 'Cancelar',
+        //             role: 'cancel'
+        //         }
+        //     ]
+        // }).then(actionSheetEl => {
+        //     actionSheetEl.present();
+        // });
     }
 
-    logout() {
+    onLogout() {
         this.authService.logout();
     }
 

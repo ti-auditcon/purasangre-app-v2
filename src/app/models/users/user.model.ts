@@ -1,15 +1,15 @@
 export class User {
-    /**
-     * public variables to be accessed from th outside
-     */
+    /** public variables to be accessed from the outside */
     constructor(
-        public id: string,
-        public firstName: string,
-        public lastName: string,
+        public email: string,
         // tslint:disable-next-line: variable-name
-        public _token: string,
+        public _tokenType: string,
         // tslint:disable-next-line: variable-name
-        public _tokenExpirationDate: Date,
+        private _token: string,
+        // tslint:disable-next-line: variable-name
+        private _refreshToken: string,
+        // tslint:disable-next-line: variable-name
+        private _tokenExpirationDate: Date,
 
     ) {}
 
@@ -24,5 +24,18 @@ export class User {
         }
 
         return this._token;
+    }
+
+    /**
+     * Obtain the type token for requests
+     *
+     * @return  string|null
+     */
+    get tokenType() {
+        if ( !this._tokenType ) {
+            return null;
+        }
+
+        return this._tokenType;
     }
 }

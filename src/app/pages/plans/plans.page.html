@@ -7,7 +7,7 @@
 <ion-content class="ion-padding">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content 
-            pullingIcon="null"
+            pullingIcon=""
             pullingText="Arrastra para actualizar"
             refreshingSpinner="crescent"
         >
@@ -31,7 +31,7 @@
                     
                     <h5>{{ userActualPlan?.rels?.plan.period }}</h5>
                 </div>
-                <div class="col-4" text-end>
+                <div class="col-4" class="ion-text-end">
                     <div class="status" [ngClass]="{
                         'active': userActualPlan?.status?.id == 1,
                         'finished':userActualPlan?.status?.id == 4
@@ -51,7 +51,7 @@
                     </p>
                 </div>
                 
-                <div class="col-5 amount" text-end *ngIf="userActualPlan?.rels?.bill.has">
+                <div class="col-5 amount ion-text-end" *ngIf="userActualPlan?.rels?.bill.has">
                     <h4>{{ userActualPlan?.rels?.bill.amount }}</h4>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                         <h2>{{ plan?.name }}</h2>
                     </div>
 
-                    <div class="col-4 amount" text-end>
+                    <div class="col-4 amount ion-text-end">
                         <h4>${{ plan?.amount }}</h4>
                     </div>
                 </div>

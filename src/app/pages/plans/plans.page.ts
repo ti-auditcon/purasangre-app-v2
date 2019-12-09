@@ -1,5 +1,5 @@
 // env
-import { environment, SERVER_URL } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
@@ -59,14 +59,14 @@ export class PlansPage {
                     Authorization: `Bearer ${Bearer}` // updated
                 })};
 
-            this.http.get(`${SERVER_URL}/profile/actualplan`, httpOptions)
+            this.http.get(`${environment.SERVER_URL}/profile/actualplan`, httpOptions)
                 .subscribe((result: any) => {
                     this.userActualPlan = result.data;
 
                     console.log(this.userActualPlan);
             });
 
-            this.http.get(`${SERVER_URL}/plans?all=true`, httpOptions)
+            this.http.get(`${environment.SERVER_URL}/plans?all=true`, httpOptions)
                 .subscribe((result: any) => {
                     this.plans = result.data;
 

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 import { AuthService } from './auth.service';
 import { NgModel } from '@angular/forms';
@@ -11,16 +11,15 @@ import { NgModel } from '@angular/forms';
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
 })
-export class AuthPage implements OnInit {
+export class AuthPage {
     private isLoading = false;
 
     constructor(
         private authService: AuthService,
         private router: Router,
-        private loadingCtrl: LoadingController
+        private loadingCtrl: LoadingController,
+        private alertCtrl: AlertController
     ) { }
-
-    ngOnInit() {}
 
     /**
      * Make the process of authentication of the user,
@@ -31,22 +30,38 @@ export class AuthPage implements OnInit {
      *
      * @return Redirect
      */
-    authenticate(email: string, password: string) {
+    authenticate(email: string, password: string, form) {
         this.isLoading = true;
 
         this.loadingCtrl.create({ keyboardClose: true, message: 'Ingresando...'})
             .then(loadingEl => {
-                const res = this.authService.login(email, password);
-                console.log(res);
-                res.subscribe(resData => console.log(resData));
+                // Load modal
                 loadingEl.present();
-                setTimeout(() => {
-                    this.isLoading = false;
-                    loadingEl.dismiss();
-                    console.log('hola hola dismiss');
-                    this.router.navigateByUrl('/home/tabs/dashboard');
-                }, 1500);
-            });
+                // Make the login
+                const res = this.authService.login(email, password);
+
+                res.subscribe(
+                    // success login
+                    resData => {
+                        setTimeout(() => {
+                        this.isLoading = false;
+                        loadingEl.dismiss();
+                        form.reset();
+                        // console.log('hola hola dismiss');
+                        this.router.navigateByUrl('/home/tabs/dashboard');
+                    }, 1500);
+                },
+                    // Failed Login
+                    errRes => {
+                        loadingEl.dismiss();
+
+                        new Date().getTime();
+
+                        this.showAlert(errRes.error[0].error, errRes.error[0].message);
+                    }
+                );
+            }
+        );
     }
 
     /**
@@ -54,9 +69,13 @@ export class AuthPage implements OnInit {
      *  If everything is correct go to login method
      */
     onSubmitLogin(form: NgModel) {
-        if (form.value.email && form.value.password) {
-            this.authenticate(form.value.email, form.value.password);
-        }
-        console.log('faltan datos washo');
+        this.authenticate(form.value.email, form.value.password, form);
+    }
+
+    /** Modal structure for Login errors */
+    private showAlert(header: string, message: string) {
+        this.alertCtrl
+            .create({ header, message, buttons: ['Entendido'] })
+            .then(alertEl => alertEl.present());
     }
 }

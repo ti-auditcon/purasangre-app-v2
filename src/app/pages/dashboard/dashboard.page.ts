@@ -1,5 +1,5 @@
 // env
-import { SERVER_URL } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
@@ -8,6 +8,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 // import { Firebase } from '@ionic-native/firebase/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+
+import { Plugins } from '@capacitor/core';
 
 import { Label } from 'ng2-charts';
 import { ChartDataSets, ChartOptions } from 'chart.js';
@@ -78,112 +80,114 @@ export class DashboardPage {
     };
 
 ionViewWillEnter() {
-    this.storage.get(TOKEN_KEY).then((value) => {
-        console.log(value);
-        const Bearer = value;
+    Plugins.Storage.get({ key: 'authData' });
+    // this.storage.get(TOKEN_KEY).then((value) => {
+    //     console.log(value);
+    //     const Bearer = value;
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                Authorization: `Bearer ${Bearer}` // updated
-            })};
+    //     const httpOptions = {
+    //         headers: new HttpHeaders({
+    //             Authorization: `Bearer ${Bearer}` // updated
+    //         })
+    //     };
 
-        this.http.get(`${SERVER_URL}/profile`, httpOptions)
-            .subscribe((result: any) => {
-                this.user = result.data;
+    //     this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
+    //         .subscribe((result: any) => {
+    //             this.user = result.data;
 
-                this.storage.set('avatar', this.user.avatar);
+    //             this.storage.set('avatar', this.user.avatar);
 
-                const random = (new Date()).toString();
+    //             const random = (new Date()).toString();
 
-                this.avatar = this.user.avatar + '?cb=' + random;
+    //             this.avatar = this.user.avatar + '?cb=' + random;
 
-                console.log(this.user);
+    //             console.log(this.user);
 
-                this.splashScreen.hide();
+    //             this.splashScreen.hide();
 
-                if (!this.user.tutorial) {
-                    this.router.navigateByUrl('/tutorial');
-                }
-            },
-            err => {
-                console.log('error perfil');
+    //             if (!this.user.tutorial) {
+    //                 this.router.navigateByUrl('/tutorial');
+    //             }
+    //         },
+    //         err => {
+    //             console.log('error perfil');
 
-                this.authService.refreshToken();
+    //             this.authService.refreshToken();
 
-                this.splashScreen.hide();
-            });
+    //             this.splashScreen.hide();
+    //         });
 
-        this.http.get(`${SERVER_URL}/todaywods`, httpOptions)
-            .subscribe((result: any) => {
-                this.wods = result.data;
+    //     this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
+    //         .subscribe((result: any) => {
+    //             this.wods = result.data;
 
-                console.log('ENTRE wods');
+    //             console.log('ENTRE wods');
 
-                console.log(this.wods);
+    //             console.log(this.wods);
 
-                this.wodsMeta = result.meta;
+    //             this.wodsMeta = result.meta;
 
-                this.wodsCount = this.wodsMeta.pagination.total;
+    //             this.wodsCount = this.wodsMeta.pagination.total;
 
-                console.log(this.wodsMeta.pagination.total);
-            },
-            err => {
-                console.log('error wod');
-            });
+    //             console.log(this.wodsMeta.pagination.total);
+    //         },
+    //         err => {
+    //             console.log('error wod');
+    //         });
 
-        this.http.get(`${SERVER_URL}/users-alerts`, httpOptions)
-            .subscribe((result: any) => {
-                this.alerts = result.data;
+    //     this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
+    //         .subscribe((result: any) => {
+    //             this.alerts = result.data;
 
-                console.log(this.alerts);
-            }, err => {
-                // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
-                console.log('error user-alerts');
-            });
+    //             console.log(this.alerts);
+    //         }, err => {
+    //             // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
+    //             console.log('error user-alerts');
+    //         });
 
-        // this.http.get(`${SERVER_URL}/assistance`, httpOptions)
-        //     .subscribe((result: any) => {
-        //         this.assistance = result;
-        //         console.log(this.assistance);
-        //         this.barChart = new chart(this.barCanvas.nativeElement, {
-        //             type: 'bar',
-        //             data: {
-        //                 labels: this.assistance.label,
+    //     // this.http.get(`${environment.SERVER_URL}/assistance`, httpOptions)
+    //     //     .subscribe((result: any) => {
+    //     //         this.assistance = result;
+    //     //         console.log(this.assistance);
+    //     //         this.barChart = new chart(this.barCanvas.nativeElement, {
+    //     //             type: 'bar',
+    //     //             data: {
+    //     //                 labels: this.assistance.label,
 
-        //                 datasets: [{
-        //                     data: this.assistance.data,
-        //                     label: '',
-        //                     backgroundColor:  'rgba(255, 99, 132, 0.2)',
-        //                     borderWidth: 1
-        //                 }]
-        //             },
-        //             options: {
-        //                 legend: {
-        //                 display: false,
-        //                 },
-        //                 scales: {
-        //                     yAxes: [{
-        //                         type: 'linear', display: true, position: 'left', id: 'y-axis-1',
-        //                         gridLines: { display: false },
-        //                         labels: { show: true },
-        //                         ticks: {
-        //                             suggestedMax: 24,
-        //                             beginAtZero: true,
-        //                             // userCallback(label, index, labels) {
-        //                             //     if (Math.floor(label) === label) {
-        //                             //         return label;
-        //                             //     }
-        //                             // },
-        //                         }
-        //                     }]
-        //                 },
-        //             },
-        //         });
-        //     },
-        //     err => {
-        //         console.log('error assistance');
-        //     });
-    });
+    //     //                 datasets: [{
+    //     //                     data: this.assistance.data,
+    //     //                     label: '',
+    //     //                     backgroundColor:  'rgba(255, 99, 132, 0.2)',
+    //     //                     borderWidth: 1
+    //     //                 }]
+    //     //             },
+    //     //             options: {
+    //     //                 legend: {
+    //     //                 display: false,
+    //     //                 },
+    //     //                 scales: {
+    //     //                     yAxes: [{
+    //     //                         type: 'linear', display: true, position: 'left', id: 'y-axis-1',
+    //     //                         gridLines: { display: false },
+    //     //                         labels: { show: true },
+    //     //                         ticks: {
+    //     //                             suggestedMax: 24,
+    //     //                             beginAtZero: true,
+    //     //                             // userCallback(label, index, labels) {
+    //     //                             //     if (Math.floor(label) === label) {
+    //     //                             //         return label;
+    //     //                             //     }
+    //     //                             // },
+    //     //                         }
+    //     //                     }]
+    //     //                 },
+    //     //             },
+    //     //         });
+    //     //     },
+    //     //     err => {
+    //     //         console.log('error assistance');
+    //     //     });
+    // });
 }
 
     doRefresh(event) {

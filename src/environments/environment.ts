@@ -3,12 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+    production: false,
+    SERVER_URL: 'http://purasangre-api.test',
+    IMAGE_URL: 'https://admin.purasangrecrossfit.cl/',
+    purasangreAPIKey: '6xpyMQ7zXLZwmlkdIzCyh6eupMj4pDEA0cx3cHzf'
 };
-
-export const SERVER_URL = 'http://purasangre-api.test';
-export const IMAGE_URL = 'https://admin.purasangrecrossfit.cl/';
-export const purasangreAPIKey = '6xpyMQ7zXLZwmlkdIzCyh6eupMj4pDEA0cx3cHzf';
 
 /*
  * For easier debugging in development mode, you can import the following file

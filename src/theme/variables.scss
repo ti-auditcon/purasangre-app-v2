@@ -1366,13 +1366,58 @@ ion-content {
 }
 
 .persona-card {
+  margin-bottom: 20px;
   .persona-item-img {
-    //
+    .avatar-container {
+      position: relative;
+      img {
+        border-radius: 50px;
+        position: relative;
+      }
+      &::before {
+        content: '';
+        display: block;
+        // background: url('/../../assets/img/add_photo.png');
+        background-size: cover;
+        width: 26px;
+        height: 26px;
+        position: absolute;
+        bottom: -4px;
+        left: -4px;
+        z-index: 99;
+      }
+    }
+    h5.persona-cambiar-foto-perfil {
+      margin: 0;
+      font-size: 13px;
+      text-align: center;
+      background: rgb(31, 135, 239);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
   .persona-item-data {
-    padding-left: 18px !important;
-    margin-bottom: 16px;
+    padding-left: 12px;
+    h1.persona-nombre {
+      margin: 0;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    h5.persona-plan {
+      margin: 0;
+      font-weight: 700;
+      margin-bottom: 2px;
+      background: linear-gradient(153.33deg, #FC0F85 6.69%, #9300AB 88.08%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.persona-vencimiento {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
   }
+
 }
 
 // @-webkit-keyframes animationbutton {

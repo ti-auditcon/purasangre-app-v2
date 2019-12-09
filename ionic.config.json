@@ -1,5 +1,7 @@
 {
   "name": "purasangre-app-v2",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

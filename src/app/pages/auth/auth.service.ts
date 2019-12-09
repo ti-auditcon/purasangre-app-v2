@@ -1,21 +1,29 @@
+import { environment } from '../../../environments/environment';
+
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
 
-import { SERVER_URL, purasangreAPIKey } from '../../../environments/environment';
+// import { Storage } from '@ionic/storage';
 
-import { Storage } from '@ionic/storage';
+import { Plugins } from '@capacitor/core';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+
 import { User } from '../../models/users/user.model';
+import { ProfileService } from '../profile/profile.service';
 
 const TOKEN_KEY = 'auth-token';
 const REFRESH_TOKEN = 'refresh-token';
 
-// interface obj {
-//     token: string;
-// }
+export interface AuthResponseData {
+    email: string;
+    token_type: string;
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +31,7 @@ const REFRESH_TOKEN = 'refresh-token';
 
 export class AuthService {
     // tslint:disable-next-line: variable-name
-    private _userId = null;
+    // private _userId = null;
     // tslint:disable-next-line: variable-name
     private _user = new BehaviorSubject<User>(null);
 
@@ -38,6 +46,7 @@ export class AuthService {
     get userIsAuthenticated() {
         return this._user.asObservable().pipe(map(user => {
             if (user) {
+                // the !! forces to response like a boolean
                 return !!user.token;
             }
 
@@ -45,38 +54,65 @@ export class AuthService {
         }));
     }
 
-    /**
-     * Get the user id from the User Model
-     *
-     * @return string (yes, it's an string)
-     */
-    get userId() {
-        return this._user.asObservable().pipe(map(user => {
-            if (user) {
-                return user.id;
-            }
-
-            return null;
-        }));
-    }
-
     constructor(
         private http: HttpClient,
-        private storage: Storage,
+        private profileService: ProfileService,
         private router: Router
     ) { }
 
-    checkToken() {
-        this.storage.get(TOKEN_KEY).then(res => {
-            if (res) {
-                // console.log('res:'+res);
-                this.authenticationState.next(true);
-            } else {
-                // console.log('res:'+res);
-                this.authenticationState.next(false);
-            }
-        });
+    autoLogin() {
+        return from(Plugins.Storage.get({ key: 'authData' })).pipe(
+            map(storeData => {
+                // console.log(storeData);
+                if (!storeData || !storeData.value) {
+                    console.log('!storeData');
+                    return null;
+                }
+
+                const parsedData = JSON.parse(storeData.value) as {
+                    email: string,
+                    tokenType: string,
+                    token: string,
+                    refreshToken: string,
+                    tokenExpirationDate: string
+                };
+
+                const expirationTime = new Date(parsedData.tokenExpirationDate);
+
+                if (expirationTime <= new Date()) {
+                    return null;
+                }
+                const user = new User(
+                    parsedData.email,
+                    parsedData.tokenType,
+                    parsedData.token,
+                    parsedData.refreshToken,
+                    expirationTime,
+                );
+                return user;
+            }),
+            tap(user => {
+                if (user) {
+                    this._user.next(user);
+                }
+            }),
+            map(user => {
+                return !!user;
+            })
+        );
     }
+
+    // checkToken() {
+    //     this.storage.get(TOKEN_KEY).then(res => {
+    //         if (res) {
+    //             // console.log('res:'+res);
+    //             this.authenticationState.next(true);
+    //         } else {
+    //             // console.log('res:'+res);
+    //             this.authenticationState.next(false);
+    //         }
+    //     });
+    // }
 
     login(email, password) {
         const data = JSON.stringify({
@@ -84,71 +120,109 @@ export class AuthService {
             password,
             grant_type: 'password',
             client_id: 2,
-            client_secret: purasangreAPIKey,
+            client_secret: environment.purasangreAPIKey,
         });
 
         const httpOptions = {
-            headers: new HttpHeaders({
-              'Content-Type': 'application/json', // updated
-            })};
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
 
-        return this.http.post<AuthService>(`${SERVER_URL}/oauth/token`, data, httpOptions
-            ).pipe(tap(userData => {
-                console.log(userData);
-                // this._user.next(new User(
-                //         userData.token_type,
-                //         userData.expires_in,
-                //         userData.access_token));
-            }));
-    }
-
-    refreshToken() {
-        this.storage.get(REFRESH_TOKEN)
-            .then(res => {
-                const refresToken = res;
-
-                const data = JSON.stringify({
-                    grant_type: 'refresh_token',
-                    client_id: 2,
-                    client_secret: purasangreAPIKey,
-                    refresToken,
-                });
-
-                const httpOptions = {
-                    headers: new HttpHeaders({
-                        'Content-Type': 'application/json', // updated
-                    })};
-
-                // return new Promise((resolve, reject) => {
-                this.http.post(`${SERVER_URL}/oauth/token`, data, httpOptions)
-                    .subscribe((result: any) => {
-                        console.log('success refresh 200');
-
-                        this.storage.set(REFRESH_TOKEN, result.refresh_token);
-
-                        this.storage.set(purasangreAPIKey, result.access_token).then(() => {
-                            this.authenticationState.next(true);
-
-                            this.router.navigate(['home']);
-                        });
-                    },
-                    (err) => {
-                       console.log('error refrersh 401:' + JSON.stringify(err));
-                       this.router.navigate(['home']);
-                    });
-          // });
-            }).catch((error) => {
-                console.log(error);
-            });
+        return this.http.post<AuthResponseData>(
+                `${environment.SERVER_URL}/oauth/token`, data, httpOptions
+            ).pipe(tap(this.setUserData.bind(this, email)));
     }
 
     logout() {
-        this.storage.remove(REFRESH_TOKEN);
+        Plugins.Storage.clear();
+        this.profileService.nullProfile();
+        this._user.next(null);
 
-        // this.storage.remove('tutorialComplete');
+        this.router.navigateByUrl('/auth');
+    }
+    // refreshToken() {
+    //     this.storage.get(REFRESH_TOKEN)
+    //         .then(res => {
+    //             const refresToken = res;
 
-        return this.storage.remove(TOKEN_KEY).then(() => {
-            this.authenticationState.next(false);
-        });
+    //             const data = JSON.stringify({
+    //                 grant_type: 'refresh_token',
+    //                 client_id: 2,
+    //                 client_secret: environment.purasangreAPIKey,
+    //                 refresToken,
+    //             });
+
+    //             const httpOptions = {
+    //                 headers: new HttpHeaders({
+    //                     'Content-Type': 'application/json', // updated
+    //                 })};
+
+    //             // return new Promise((resolve, reject) => {
+    //             this.http.post(`${environment.SERVER_URL}/oauth/token`, data, httpOptions)
+    //                 .subscribe((result: any) => {
+    //                     console.log('success refresh 200');
+
+    //                     this.storage.set(REFRESH_TOKEN, result.refresh_token);
+
+    //                     this.storage.set(environment.purasangreAPIKey, result.access_token).then(() => {
+    //                         this.authenticationState.next(true);
+
+    //                         this.router.navigate(['home']);
+    //                     });
+    //                 },
+    //                 (err) => {
+    //                    console.log('error refrersh 401:' + JSON.stringify(err));
+    //                    this.router.navigate(['home']);
+    //                 });
+    //       // });
+    //         }).catch((error) => {
+    //             console.log(error);
+    //         });
+    // }
+
+    // logout() {
+    //     this.storage.remove(REFRESH_TOKEN);
+
+    //     // this.storage.remove('tutorialComplete');
+
+    //     return this.storage.remove(TOKEN_KEY).then(() => {
+    //         this.authenticationState.next(false);
+    //     });
+    // }
+
+    private setUserData(email, userData: AuthResponseData) {
+        const expirationTime = new Date(
+            new Date().getTime() + +userData.expires_in * 1000
+        );
+
+        this._user.next(
+            new User(
+                email,
+                userData.token_type,
+                userData.access_token,
+                userData.refresh_token,
+                expirationTime
+            )
+        );
+
+        this.storeAuthData(
+            email,
+            userData.token_type,
+            userData.access_token,
+            userData.refresh_token,
+            expirationTime.toString()
+        );
+    }
+
+    /** This allow to storage the user on app storage */
+    private storeAuthData(
+        email: string,
+        tokenType: string,
+        token: string,
+        refreshToken: string,
+        tokenExpirationDate: string
+    ) {
+        const data = JSON.stringify({ email, tokenType, token, refreshToken, tokenExpirationDate });
+
+        Plugins.Storage.set({ key: 'authData', value: data });
     }
 }
