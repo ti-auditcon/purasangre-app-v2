@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { LoadingController, AlertController } from '@ionic/angular';
 
 import { AuthService } from './auth.service';
-import { NgModel } from '@angular/forms';
+import { NgModel, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -55,6 +55,8 @@ export class AuthPage {
                     errRes => {
                         loadingEl.dismiss();
 
+                        console.log(errRes);
+
                         new Date().getTime();
 
                         this.showAlert(errRes.error[0].error, errRes.error[0].message);
@@ -68,7 +70,7 @@ export class AuthPage {
      *  This is for check the form by itself,
      *  If everything is correct go to login method
      */
-    onSubmitLogin(form: NgModel) {
+    onSubmitLogin(form: NgForm) {
         this.authenticate(form.value.email, form.value.password, form);
     }
 

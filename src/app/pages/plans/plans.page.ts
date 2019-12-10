@@ -50,37 +50,37 @@ export class PlansPage {
     }
 
     ionViewDidEnter() {
-        this.storage.get(TOKEN_KEY).then((value) => {
-            // console.log(value);
-            const Bearer = value;
+        // this.storage.get(TOKEN_KEY).then((value) => {
+        //     // console.log(value);
+        //     const Bearer = value;
 
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    Authorization: `Bearer ${Bearer}` // updated
-                })};
+        //     const httpOptions = {
+        //         headers: new HttpHeaders({
+        //             Authorization: `Bearer ${Bearer}` // updated
+        //         })};
 
-            this.http.get(`${environment.SERVER_URL}/profile/actualplan`, httpOptions)
-                .subscribe((result: any) => {
-                    this.userActualPlan = result.data;
+        //     this.http.get(`${environment.SERVER_URL}/profile/actualplan`, httpOptions)
+        //         .subscribe((result: any) => {
+        //             this.userActualPlan = result.data;
 
-                    console.log(this.userActualPlan);
-            });
+        //             console.log(this.userActualPlan);
+        //     });
 
-            this.http.get(`${environment.SERVER_URL}/plans?all=true`, httpOptions)
-                .subscribe((result: any) => {
-                    this.plans = result.data;
+        //     this.http.get(`${environment.SERVER_URL}/plans?all=true`, httpOptions)
+        //         .subscribe((result: any) => {
+        //             this.plans = result.data;
 
-                    console.log('entre todos los planes');
+        //             console.log('entre todos los planes');
 
-                    console.log(this.plans);
+        //             console.log(this.plans);
 
-                    this.filteredPlans = this.plans.filter(
-                        plan => (plan.periodId === 1) && (plan.contractable) && (!plan.convenio)
-                    );
+        //             this.filteredPlans = this.plans.filter(
+        //                 plan => (plan.periodId === 1) && (plan.contractable) && (!plan.convenio)
+        //             );
 
-                    console.log('filtrados:' + this.filteredPlans);
-            });
-        });
+        //             console.log('filtrados:' + this.filteredPlans);
+        //     });
+        // });
     }
 
     planFilter(id) {

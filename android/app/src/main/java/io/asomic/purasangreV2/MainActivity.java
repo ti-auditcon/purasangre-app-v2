@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package io.asomic.purasangreV2;
 
 import android.os.Bundle;
 
