@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 // import { Firebase } from '@ionic-native/firebase/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+// import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 import { Plugins } from '@capacitor/core';
 
@@ -45,11 +45,11 @@ export class DashboardPage {
 
     constructor(
         private router: Router,
-        private storage: Storage,
+        // private storage: Storage,
         private http: HttpClient,
         // private firebase: Firebase,
         private authService: AuthService,
-        private splashScreen: SplashScreen,
+        // private splashScreen: SplashScreen,
     ) {}
 
     public lineChartData: ChartDataSets[] = [
@@ -80,7 +80,30 @@ export class DashboardPage {
     };
 
 ionViewWillEnter() {
-    Plugins.Storage.get({ key: 'authData' });
+    Plugins.Storage.get({ key: 'authData' }).then((value) => {
+        this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
+            .subscribe((result: any) => {
+                this.user = result.data;
+
+
+
+
+                console.log(this.user);
+
+                // this.splashScreen.hide();
+
+                if (!this.user.tutorial) {
+                    this.router.navigateByUrl('/tutorial');
+                }
+            },
+            err => {
+                console.log('error perfil');
+
+                this.authService.refreshToken();
+
+                // this.splashScreen.hide();
+            });
+    });
     // this.storage.get(TOKEN_KEY).then((value) => {
     //     console.log(value);
     //     const Bearer = value;

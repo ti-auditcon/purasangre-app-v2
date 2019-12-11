@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -25,7 +25,7 @@ export class PlansPage {
     public selectedFilter6 = false;
 
     constructor(
-        private storage: Storage,
+        // private storage: Storage,
         private router: Router,
         private http: HttpClient
     ) {}

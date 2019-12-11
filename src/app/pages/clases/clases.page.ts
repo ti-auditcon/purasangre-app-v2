@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+import { Plugins } from '@capacitor/core';
 import { Platform, ToastController } from '@ionic/angular';
 
 import { AuthService } from '../auth/auth.service';
@@ -31,7 +31,7 @@ export class ClasesPage {
 
     constructor(
         public plt: Platform,
-        private storage: Storage,
+        // private storage: Storage,
         private router: Router,
         private http: HttpClient,
         public toastController: ToastController,
@@ -77,7 +77,7 @@ export class ClasesPage {
 
     ionViewDidEnter() {
         // console.log('estoy cargandome........');
-        this.storage.get(TOKEN_KEY).then((value) => {
+        Plugins.Storage.get({key: TOKEN_KEY}).then((value) => {
 
             const Bearer = value;
 
