@@ -22,6 +22,9 @@
                     <h5 class="persona-cambiar-foto-perfil">Cambiar Foto de Perfil</h5>
                 </div>
             </div>
+            <div>
+                <app-image-picker (imagePick)="onPickImage($event)"></app-image-picker>
+            </div>
             <div class="col-9 persona-item-data">
                 <h1 class="persona-nombre">{{ loadedProfile?.firstName | titlecase }} {{ loadedProfile?.lastName | titlecase }}</h1>
                 

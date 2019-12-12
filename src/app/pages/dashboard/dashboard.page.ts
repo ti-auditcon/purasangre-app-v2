@@ -80,30 +80,30 @@ export class DashboardPage {
     };
 
 ionViewWillEnter() {
-    Plugins.Storage.get({ key: 'authData' }).then((value) => {
-        this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
-            .subscribe((result: any) => {
-                this.user = result.data;
+    // Plugins.Storage.get({ key: 'authData' }).then((value) => {
+    //     this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
+    //         .subscribe((result: any) => {
+    //             this.user = result.data;
 
 
 
 
-                console.log(this.user);
+    //             console.log(this.user);
 
-                // this.splashScreen.hide();
+    //             // this.splashScreen.hide();
 
-                if (!this.user.tutorial) {
-                    this.router.navigateByUrl('/tutorial');
-                }
-            },
-            err => {
-                console.log('error perfil');
+    //             if (!this.user.tutorial) {
+    //                 this.router.navigateByUrl('/tutorial');
+    //             }
+    //         },
+    //         err => {
+    //             console.log('error perfil');
 
-                this.authService.refreshToken();
+    //             // this.authService.refreshToken();
 
-                // this.splashScreen.hide();
-            });
-    });
+    //             // this.splashScreen.hide();
+    //         });
+    // });
     // this.storage.get(TOKEN_KEY).then((value) => {
     //     console.log(value);
     //     const Bearer = value;

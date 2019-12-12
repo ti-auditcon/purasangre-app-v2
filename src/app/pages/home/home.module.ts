@@ -7,12 +7,21 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: HomePage
+  }
+];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    // RouterModule.forChild(routes)
     HomePageRoutingModule
   ],
   declarations: [HomePage]

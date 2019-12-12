@@ -180,6 +180,10 @@ export class ProfilePage {
     //     });
     // }
 
+    onPickImage(imageData) {
+
+    }
+
     takePicture() {
         // this.actionSheetCtrl.create({
         //     header: 'Cambiar Foto de Perfil',
