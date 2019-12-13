@@ -1,13 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ClasesPageModule } from './clases.module';
 
-import { ClasesPage } from './clases.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ClasesPage
-  }
+    {
+        path: 'index',
+        loadChildren: './clases.module#ClasesPageModule'
+    },
+    // {
+    //     path: ':wodId/show',
+    //     loadChildren: './clases-today/clases-today.module#ClasesTodayPageModule'
+    // },
+    {
+        path: '',
+        redirectTo: '/home/tabs/clases/index',
+        pathMatch: 'full'
+    },
 ];
 
 @NgModule({

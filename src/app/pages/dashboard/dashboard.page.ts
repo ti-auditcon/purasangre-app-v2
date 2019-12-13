@@ -45,11 +45,9 @@ export class DashboardPage {
 
     constructor(
         private router: Router,
-        // private storage: Storage,
         private http: HttpClient,
         // private firebase: Firebase,
         private authService: AuthService,
-        // private splashScreen: SplashScreen,
     ) {}
 
     public lineChartData: ChartDataSets[] = [
@@ -80,8 +78,71 @@ export class DashboardPage {
     };
 
 ionViewWillEnter() {
-    // Plugins.Storage.get({ key: 'authData' }).then((value) => {
-    //     this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
+    Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+        const parsedData = JSON.parse(authData.value) as {
+            token: string
+        };
+        // console.log('el tokens');
+        // console.log(parsedData.token);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                Authorization: `Bearer ${parsedData.token}` // updated
+            })
+        };
+        this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
+            .subscribe((result: any) => {
+                this.wods = result.data;
+
+                this.wodsMeta = result.meta;
+
+                this.wodsCount = this.wodsMeta.pagination.total;
+
+                    // console.log(this.wodsMeta.pagination.total);
+            },
+            err => {
+                console.log('error wod');
+            });
+
+        this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
+            .subscribe((result: any) => {
+                this.alerts = result.data;
+                // console.log(this.alerts);
+        }, err => {
+            // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
+            console.log('error user-alerts');
+        });
+    });
+}
+
+    doRefresh(event) {
+        console.log('Begin async operation');
+
+        setTimeout(() => {
+            console.log('Async operation has ended');
+
+            event.target.complete();
+        }, 2000);
+    }
+
+    goToEditConfirm(id: string = '0') {
+        // this.firebase.logEvent(
+        //     'go_to_profile',
+        //     {
+        //         content_type: 'action',
+        //         item_id: 'dashboard_profile_button'
+        //     }
+        // );
+
+        this.router.navigate(['/home/edit-confirm/' + id]);
+    }
+
+    verWOD(id) {
+        // this.firebase.logEvent("go_to_wod", {content_type: "action", item_id: "dashboard_button"});
+        this.router.navigate( ['/home/wods/' + id] );
+    }
+}
+
+  //     this.http.get(`${environment.SERVER_URL}/profile`, httpOptions)
     //         .subscribe((result: any) => {
     //             this.user = result.data;
 
@@ -211,32 +272,3 @@ ionViewWillEnter() {
     //     //         console.log('error assistance');
     //     //     });
     // });
-}
-
-    doRefresh(event) {
-        console.log('Begin async operation');
-
-        setTimeout(() => {
-            console.log('Async operation has ended');
-
-            event.target.complete();
-        }, 2000);
-    }
-
-    goToEditConfirm(id: string = '0') {
-        // this.firebase.logEvent(
-        //     'go_to_profile',
-        //     {
-        //         content_type: 'action',
-        //         item_id: 'dashboard_profile_button'
-        //     }
-        // );
-
-        this.router.navigate(['/home/edit-confirm/' + id]);
-    }
-
-    verWOD(id) {
-        // this.firebase.logEvent("go_to_wod", {content_type: "action", item_id: "dashboard_button"});
-        this.router.navigate( ['/home/wods/' + id] );
-    }
-}

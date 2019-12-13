@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ToastController, ActionSheetController } from '@ionic/angular';
+import { ToastController, ActionSheetController, AlertController } from '@ionic/angular';
 
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
 
@@ -35,9 +35,10 @@ export class ProfilePage {
     constructor(
         private router: Router,
         private profileService: ProfileService,
-        public toastController: ToastController,
+        // public toastController: ToastController,
         private authService: AuthService,
         private actionSheetCtrl: ActionSheetController,
+        private alertCtrl: AlertController
     ) {}
 
     base64Image;
@@ -210,9 +211,40 @@ export class ProfilePage {
         // });
     }
 
-    onLogout() {
-        this.authService.logout();
+    async onLogout() {
+        const alert = await this.alertCtrl.create({
+            header: 'Cerrar Sesión',
+            message: 'Desea salir de Purasangre?',
+            buttons: [
+            {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                    console.log('Confirm Cancel: blah' + blah);
+                }
+            }, {
+                text: 'Salir',
+                handler: () => {
+                    this.authService.logout();
+                }
+            }
+            ]
+        });
+
+        await alert.present();
     }
+    //     this.alertCtrl
+    //         .create({
+    //             message: 'Salir de PuraSangre?',
+    //             buttons:
+    //                 ['Cancelar',
+    //                 'Salir'
+    //             ]
+    //         }).then(alertEl => alertEl.present());
+
+    //     // this.authService.logout();
+    // }
 
     tutorial() {
         // this.firebase.logEvent('view_tutorial', {content_type: 'page_view', item_id: 'view_tutorial'});

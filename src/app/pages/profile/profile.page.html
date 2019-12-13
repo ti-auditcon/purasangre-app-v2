@@ -8,24 +8,13 @@
     <div class="persona-card">
         <div class="ps-row">
             <!-- <p>Notificación<br>{{ this.mensajeToast }}</p> -->
-            <div class="col-3 persona-item-img" (click)="takePicture()">
-                <div class="avatar-container">
-                    <!-- <img class="persona-avatar" *ngIf="imageClean != null; else igualANull" [src]="image"> -->
-                    <img class="persona-avatar" [src]="[loadedProfile?.avatar]">
-        
-                    <!-- <ng-template #igualANull>
-                        <img class="persona-avatar" [src]="'assets/img/default_user.png'">
-                    </ng-template>  -->
-                </div>
+            <div class="ml-1 col-3 persona-item-img" >
+                <app-image-picker (imagePick)="onPickImage($event)"
+                                  [AvatarImage]="[loadedProfile?.avatar]">
+                </app-image-picker>
+            </div>
 
-                <div>
-                    <h5 class="persona-cambiar-foto-perfil">Cambiar Foto de Perfil</h5>
-                </div>
-            </div>
-            <div>
-                <app-image-picker (imagePick)="onPickImage($event)"></app-image-picker>
-            </div>
-            <div class="col-9 persona-item-data">
+            <div class="col-8 ml-1 persona-item-data">
                 <h1 class="persona-nombre">{{ loadedProfile?.firstName | titlecase }} {{ loadedProfile?.lastName | titlecase }}</h1>
                 
                 <h5 class="persona-plan">{{ loadedProfile?.actualPlan }}</h5>

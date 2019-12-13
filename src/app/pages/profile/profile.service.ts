@@ -77,7 +77,6 @@ export class ProfileService {
     constructor(private http: HttpClient) {}
 
     nullProfile() {
-        // console.log('hacer null al perfil');
         this._profile.next(null);
     }
 

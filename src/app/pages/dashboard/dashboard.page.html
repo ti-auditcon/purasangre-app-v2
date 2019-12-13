@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Bienvenido ql</ion-title>
+        <ion-title>Bienvenido uwu</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -52,39 +52,58 @@
   
     <div class="section wod-resumen">
         <ion-slides>
-          <ion-slide *ngFor="let wod of wods; let i = index" class="wod-slide">
-            <div class="card-header">
-              <h1 class="title-section">{{wod.claseType}}</h1>
-              <div class="step-icon">
-                <!-- <img *ngIf="wodsCount > 1" src="assets/icon/arrow-black.svg"> -->
-                <div class="step" *ngFor="let wod of wods; let num = index" [ngClass]="{'active':num == i}"></div>
-              </div>
-            </div>
-            <div class="card card-resumen">
-              <div class="text-box-resumen">
-                <p *ngIf="wod.rels.stages.has">{{wod.rels.stages.featured}}</p>
-                <p *ngIf="!wod.rels.stages.has">No hay WOD registrado para el dia de hoy.</p>
-              </div>
-            </div>
-            <button class="button-wod-today" (click)="verWOD(wod.identificador)">Ver Clase del día</button>
-          </ion-slide>
-          <!-- <ion-slide class="wod-slide">
-            <div class="card-header">
-              <h1 class="title-section">Frenetik</h1>
-              <div class="step-icon">
-                <img src="assets/icon/arrow-black.svg">
-              </div>
-            </div>
-            <div class="card card-resumen">
-              <div class="text-box-resumen">
-                <p *ngIf="today?.wod?.has">{{today?.wod?.stages.wod}}</p>
-                <p *ngIf="!today?.wod?.has">No hay WOD registrado para el dia de hoy.</p>
-              </div>
-              <button class="button-bottom" (click)="verWOD()">Ver Clase del día</button>
-            </div>
-          </ion-slide> -->
+            <ion-slide *ngFor="let wod of wods; let i = index" class="wod-slide">
+                <div class="card-header">
+                    <h1 class="title-section">{{ wod.claseType }}</h1>
+                    
+                    <div class="step-icon">
+                        <!-- <img *ngIf="wodsCount > 1" src="assets/icon/arrow-black.svg"> -->
+                        <div class="step"
+                             *ngFor="let wod of wods; let num = index"
+                             [ngClass]="{'active':num == i}"
+                        >
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-resumen">
+                    <div class="text-box-resumen">
+                        <p *ngIf="wod.rels.stages.has">
+                            {{ wod.rels.stages.featured }}
+                        </p>
+                    
+                        <p *ngIf="!wod.rels.stages.has">
+                            No hay WOD registrado para el dia de hoy.
+                        </p>
+                    </div>
+                </div>
+
+                <button class="button-wod-today" (click)="verWOD(wod.identificador)">
+                    Ver Clase del día
+                </button>
+            </ion-slide>
+            <ion-slide class="wod-slide">
+                <div class="card-header">
+                    <h1 class="title-section">Frenetik</h1>
+                
+                    <div class="step-icon">
+                        <img src="assets/icon/arrow-black.svg">
+                    </div>
+                </div>
+
+                <div class="card card-resumen">
+                    <div class="text-box-resumen">
+                        <p *ngIf="today?.wod?.has; else NoWODToday">{{ today?.wod?.stages.wod }}</p>
+                        
+                        <ng-template #NoWODToday>No hay WOD registrado para el dia de hoy.</ng-template>
+                    </div>
+
+                    <button class="button-bottom" (click)="verWOD()">
+                        Ver Clase del día
+                    </button>
+                </div>
+            </ion-slide>
         </ion-slides>
-      </div>
+    </div>
 
     <div class="section">
         <h1 class="title-section">

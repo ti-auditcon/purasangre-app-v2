@@ -77,29 +77,31 @@ export class ClasesPage {
 
     ionViewDidEnter() {
         // console.log('estoy cargandome........');
-        Plugins.Storage.get({key: TOKEN_KEY}).then((value) => {
+        Plugins.Storage.get({key: 'authData'}).then((authData) => {
 
-            const Bearer = value;
+            const parsedData = JSON.parse(authData.value) as {
+                token: string
+            };
 
             const httpOptions = {
                 headers: new HttpHeaders({
-                    Authorization: `Bearer ${Bearer}` // updated
+                    Authorization: `Bearer ${parsedData.token}` // updated
                 })
             };
 
             this.http.get(`${environment.SERVER_URL}/clases-coming?sort_by_asc=date`, httpOptions)
                 .subscribe((result: any) => {
-                    console.log('entre a las clases coming');
+                    // console.log('entre a las clases coming');
 
                     this.clases = result.data;
 
-                    console.log(this.clases);
+                    // console.log(this.clases);
 
                     this.pendient =  this.clases.filter(
                         clase => clase.rels.auth_reservation.status === 'Pendiente'
                     );
 
-                    console.log('pendiente: ' + this.pendient);
+                    // console.log('pendiente: ' + this.pendient);
 
                     this.confirmed =  this.clases.filter(
                         clase => clase.rels.auth_reservation.status === 'Confirmada'
@@ -117,16 +119,16 @@ export class ClasesPage {
             .subscribe((result: any) => {
                 this.alerts = result.data;
 
-                console.log(this.alerts);
+                // console.log(this.alerts);
             });
 
             this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
                 .subscribe((result: any) => {
                     this.todayWods = result.data;
 
-                    console.log('today');
+                    // console.log('today');
 
-                    console.log(result);
+                    // console.log(result);
             });
         });
     }
@@ -165,8 +167,13 @@ export class ClasesPage {
         }
     }
 
-    goClase(id: string = '0') {
+    goClase(id: string) {
         this.router.navigate(['/home/clase/' + id]);
+    }
+
+    goToWOD(wodId: number) {
+        console.log(wodId);
+        this.router.navigateByUrl(`home/clases/${wodId}/show`);
     }
 
     enter() {

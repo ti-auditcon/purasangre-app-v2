@@ -12,7 +12,7 @@ import { NgModel, NgForm } from '@angular/forms';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage {
-    private isLoading = false;
+    // private isLoading = false;
 
     constructor(
         private authService: AuthService,
@@ -31,7 +31,7 @@ export class AuthPage {
      * @return Redirect
      */
     authenticate(email: string, password: string, form) {
-        this.isLoading = true;
+        // this.isLoading = true;
 
         this.loadingCtrl.create({ keyboardClose: true, message: 'Ingresando...'})
             .then(loadingEl => {
@@ -44,7 +44,7 @@ export class AuthPage {
                     // success login
                     resData => {
                         setTimeout(() => {
-                        this.isLoading = false;
+                        // this.isLoading = false;
                         loadingEl.dismiss();
                         form.reset();
                         // console.log('hola hola dismiss');

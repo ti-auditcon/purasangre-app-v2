@@ -13,6 +13,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { User } from '../../models/users/user.model';
 import { ProfileService } from '../profile/profile.service';
+import { LoadingController } from '@ionic/angular';
 
 const TOKEN_KEY = 'auth-token';
 const REFRESH_TOKEN = 'refresh-token';
@@ -57,7 +58,8 @@ export class AuthService {
     constructor(
         private http: HttpClient,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private loadingCtrl: LoadingController
     ) { }
 
     autoLogin() {
@@ -133,12 +135,37 @@ export class AuthService {
     }
 
     logout() {
-        Plugins.Storage.clear();
-        this.profileService.nullProfile();
-        this._user.next(null);
+        this.loadingCtrl.create({ keyboardClose: true, message: 'Cerrando Sesión...'})
+            .then(loadingEl => {
+                // Load modal
+                loadingEl.present();
+                // Make the login
+                const res = this.getOut();
 
-        this.router.navigateByUrl('/auth');
+                console.log('el res es ' + res);
+
+                if (res == null) {
+                    this.router.navigateByUrl('/auth');
+
+                    loadingEl.dismiss();
+                }
+            }
+        );
     }
+
+    /**
+     * Clean all the data storage in the App
+     *
+     * @return  null
+     */
+    getOut() {
+        Plugins.Storage.clear();
+
+        this.profileService.nullProfile();
+
+        return this._user.next(null);
+    }
+
     // refreshToken() {
     //     this.storage.get(REFRESH_TOKEN)
     //         .then(res => {
@@ -163,7 +190,10 @@ export class AuthService {
 
     //                     this.storage.set(REFRESH_TOKEN, result.refresh_token);
 
-    //                     this.storage.set(environment.purasangreAPIKey, result.access_token).then(() => {
+    //                     this.storage.set(
+    //                             environment.purasangreAPIKey,
+    //                             result.access_token
+    //                     ).then(() => {
     //                         this.authenticationState.next(true);
 
     //                         this.router.navigate(['home']);
@@ -221,7 +251,10 @@ export class AuthService {
         refreshToken: string,
         tokenExpirationDate: string
     ) {
-        const data = JSON.stringify({ email, tokenType, token, refreshToken, tokenExpirationDate });
+        const data = JSON.stringify({
+            email, tokenType, token,
+            refreshToken, tokenExpirationDate
+        });
 
         Plugins.Storage.set({ key: 'authData', value: data });
     }

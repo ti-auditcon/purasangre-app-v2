@@ -1,23 +1,13 @@
-<div class="picker">
-    <ion-img 
-        role="button"
-        class="image"
-        (click)="onPickImage()"
-        [src]="selectedImage"
-        *ngIf="selectedImage"
-    ></ion-img>
-    <ion-button 
-        color="primary"
-        (click)="onPickImage()"
-        *ngIf="selectedImage"
-    >
-        <ion-icon name="camera" slot="start"></ion-icon>
-        <ion-label>Tomar foto</ion-label>
-    </ion-button>
-</div>
+<div (click)="onPickImage()">
+    <div class="avatar-container">
+        <!-- <img class="persona-avatar" *ngIf="imageClean != null; else igualANull" [src]="image"> -->
+        <img class="persona-avatar" [src]="[AvatarImage]">
+        <ng-template #igualANull>
+            <img class="persona-avatar" [src]="'assets/img/default_user.png'">
+        </ng-template>
+    </div>
 
-<input
-  type="file"
-  accept="image/jpeg"
-  #filePicker
-/>
+    <div>
+        <h5 class="persona-cambiar-foto-perfil">Cambiar Foto</h5>
+    </div>
+</div>
