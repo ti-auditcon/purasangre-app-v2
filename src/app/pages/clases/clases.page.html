@@ -15,7 +15,7 @@
     </ion-refresher>
 
     <!-- alerta de clase pendiente -->
-    <div style="margin-bottom: 24px;"
+    <!-- <div style="margin-bottom: 24px;"
          class="card card-alert card-alert-reserva"
          *ngIf="alerts.has_confirmation"
          (click)="goToEditConfirm(alerts.confirmation.clase_id)"
@@ -32,7 +32,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="section" *ngIf="pendient.length > 0">
         <h1 class="title-section">Sin Confirmar</h1>
@@ -40,7 +40,8 @@
         <div class="clases-cards">
             <div class="clase-card"
                  *ngFor="let clase of pendient"
-                 (click)="goToEditConfirm(clase.clase_id)"
+                 [routerLink]="['/', 'home', 'tabs', 'clases',
+                 clase.clase_id, 'edit-confirm']"
             >
                 <div class="ps-row ion-align-items-center">
                     <div class="col-3 class-type">
@@ -71,7 +72,8 @@
         <div class="clases-cards">
             <div class="clase-card"
                  *ngFor="let clase of confirmed"
-                 (click)="goToEditConfirm(clase.clase_id)"
+                 [routerLink]="['/', 'home', 'tabs', 'clases',
+                                clase.clase_id, 'edit-confirm']"
             >
                 <div class="ps-row align-items-center">
                     <div class="col-3 class-type">
@@ -95,7 +97,10 @@
     </div>
 
     <div *ngFor="let wod of todayWods">
-        <div class="clases-cards" (click)="goToWOD(wod.identificador)" *ngIf="!wod.rels.auth.reservationHas">
+        <div class="clases-cards"
+             [routerLink]="['/', 'home', 'tabs', 'clases', wod.identificador, 'show']"
+             *ngIf="!wod.rels.auth.reservationHas"
+        >
         <!-- <div class="clases-cards" *ngIf="!wod.rels.auth.reservationHas"> -->
             <div class="clase-card today">
                 <div class="ps-row ion-align-items-center">
@@ -132,10 +137,44 @@
 
     </div>
 
+    <hr class="separator">
 
-  <!-- <div [ngClass]="buttonFixIOS">
-    <button class="reservar" (click)="goToAddDay()">Nueva Reserva</button>
-  </div> -->
+
+    <div class="section">
+        <h1 class="title-section">Clases Anteriores</h1>
+        
+        <div class="clases-cards">
+            <div class="clase-card" 
+                 *ngFor="let clase of clases"
+                 (click)="goClase(clase.clase_id)"
+            >
+                <div class="ps-row ion-align-items-center">
+                    <div class="col-3 class-type">
+                        <img class="class-icon" [src]="clase.rels.claseType.icon">
+                    </div>
+
+                    <div class="col-10 class-data">
+                        <h2>{{ clase.dateHuman }}</h2>
+
+                        <p class="type-class">CrossFit</p>
+
+                        <p>{{ clase.start }} - {{ clase.end }} hrs</p>
+                    </div>
+
+                    <div class="col-2">
+                        <ion-icon src="assets/icon/arrow-right-black.svg"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreClases($event)">
+            <ion-infinite-scroll-content
+                loadingSpinner="crescent"
+                loadingText="Cargando clases...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
 
     <ion-fab [ngClass]="buttonFixIOS" vertical="bottom" slot="fixed">
         <div class="reservar" (click)="goToAddDay()">Nueva Reserva</div>

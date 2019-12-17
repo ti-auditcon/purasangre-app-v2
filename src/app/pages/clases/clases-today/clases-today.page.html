@@ -1,9 +1,36 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>clases-today</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar titulo="Clase" [urltoBack]="'home/tabs/clases'"></app-navbar>
 
-<ion-content>
+<ion-content class="ion-padding">
+    <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+            pullingIcon=""
+            pullingText="Arrastra para actualizar"
+            refreshingSpinner="circles">
+        </ion-refresher-content>
+    </ion-refresher> -->
 
+    <div class="clase-page">
+        <div class="section">
+            <h1 class="title-section">Entrenamiento</h1>
+            <h1 class="titleDay-section">{{ today?.dateHuman }}</h1>
+        </div>
+
+        <div class="section">
+            <div class="card card-info">
+                <div class="info-content" *ngIf="!today.wod?.has; else hasWod">
+                    No se ha subido W.O.D. el día de hoy
+                </div>
+
+                <ng-template #hasWod>
+                    <div class="info-content">
+                        <div *ngFor="let stage of today.wod.stages">
+                            <h3>{{ stage.name }}</h3>
+
+                            <p>{{ stage.description }}</p>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 </ion-content>

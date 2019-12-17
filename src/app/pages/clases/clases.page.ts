@@ -10,8 +10,6 @@ import { Platform, ToastController } from '@ionic/angular';
 
 import { AuthService } from '../auth/auth.service';
 
-const TOKEN_KEY = 'auth-token';
-
 @Component({
     selector: 'app-clases',
     templateUrl: './clases.page.html',
@@ -20,10 +18,11 @@ const TOKEN_KEY = 'auth-token';
 export class ClasesPage {
     public todayWods: any = [];
     public clases: any = [];
-    // public today_clase: any = [];
     public alerts: any = [];
     public pendient: any = [];
     public confirmed: any = [];
+    public page = 1;
+    private httpOptions;
 
     buttonFixIOS = '';
     buttonFixAndroid = '';
@@ -76,32 +75,26 @@ export class ClasesPage {
     }
 
     ionViewDidEnter() {
-        // console.log('estoy cargandome........');
+        console.log('estoy cargandome........');
         Plugins.Storage.get({key: 'authData'}).then((authData) => {
 
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };
 
-            const httpOptions = {
+            this.httpOptions = {
                 headers: new HttpHeaders({
                     Authorization: `Bearer ${parsedData.token}` // updated
                 })
             };
 
-            this.http.get(`${environment.SERVER_URL}/clases-coming?sort_by_asc=date`, httpOptions)
+            this.http.get(`${environment.SERVER_URL}/clases-coming?sort_by_asc=date`, this.httpOptions)
                 .subscribe((result: any) => {
-                    // console.log('entre a las clases coming');
-
                     this.clases = result.data;
-
-                    // console.log(this.clases);
 
                     this.pendient =  this.clases.filter(
                         clase => clase.rels.auth_reservation.status === 'Pendiente'
                     );
-
-                    // console.log('pendiente: ' + this.pendient);
 
                     this.confirmed =  this.clases.filter(
                         clase => clase.rels.auth_reservation.status === 'Confirmada'
@@ -111,34 +104,34 @@ export class ClasesPage {
                     console.log('error clases');
 
                     // this.authService.refreshToken();
-                });
+                }
+            );
 
-            // console.log(this.today_clase);
+            this.http.get(`${environment.SERVER_URL}/clases-historic?sort_by_desc=date&page=${this.page}`, this.httpOptions)
+                .subscribe((result: any) => {
+                    this.clases = this.clases.concat(result.data.filter(
+                        clase => clase.rels.auth_reservation.status === 'Consumida'
+                    ));
+                },
+                err => {
+                    console.log('error clases');
+                }
+            );
 
-            this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
+            this.http.get(`${environment.SERVER_URL}/users-alerts`, this.httpOptions)
             .subscribe((result: any) => {
                 this.alerts = result.data;
-
-                // console.log(this.alerts);
             });
 
-            this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
+            this.http.get(`${environment.SERVER_URL}/todaywods`, this.httpOptions)
                 .subscribe((result: any) => {
                     this.todayWods = result.data;
-
-                    // console.log('today');
-
-                    // console.log(result);
             });
         });
     }
 
-    goToEditConfirm(id: string = '0') {
-        this.router.navigate( ['/home/edit-confirm/' + id + ')'] );
-    }
-
     goToAddDay() {
-        this.router.navigate( ['/home/clase-type'] );
+        this.router.navigate( ['/home/tabs/clases/clase-type'] );
     }
 
     goTo(wod) {
@@ -171,14 +164,28 @@ export class ClasesPage {
         this.router.navigate(['/home/clase/' + id]);
     }
 
-    goToWOD(wodId: number) {
-        console.log(wodId);
-        this.router.navigateByUrl(`home/clases/${wodId}/show`);
+    loadMoreClases(infiniteScrollEvent) {
+        this.http.get(`${environment.SERVER_URL}/clases-historic?sort_by_desc=date&page=${this.page}`, this.httpOptions)
+            .subscribe((result: any) => {
+                console.log('mas clases');
+
+                console.log('page:' + this.page);
+
+                this.clases = this.clases.concat(result.data.filter(
+                    clase => clase.rels.auth_reservation.status === 'Consumida'
+                ));
+
+                this.page++;
+
+                infiniteScrollEvent.target.complete();
+            },
+            err => {
+                console.log('error clases');
+            }
+        );
     }
 
     enter() {
         console.log('entreeeeeeeee!!!!!!!!!!!!!!!');
     }
-
 }
-

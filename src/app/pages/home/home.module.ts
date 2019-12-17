@@ -8,22 +8,24 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomePage
-  }
+    {
+        path: '',
+        component: HomePage
+    }
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    // RouterModule.forChild(routes)
-    HomePageRoutingModule
-  ],
-  declarations: [HomePage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        // RouterModule.forChild(routes),
+        HomePageRoutingModule,
+        // SharedModule
+    ],
+    declarations: [HomePage]
 })
 export class HomePageModule {}

@@ -13,14 +13,66 @@ const routes: Routes = [
                 loadChildren: '../dashboard/dashboard.module#DashboardPageModule'
             },
             {
+                /**
+                 * CLASES ROUTES
+                 */
                 path: 'clases',
-                loadChildren: '../clases/clases.module#ClasesPageModule'
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../clases/clases.module#ClasesPageModule'
+                    },
+                    {
+                        path: ':wodId/show',
+                        loadChildren:
+                            '../clases/clases-today/clases-today.module#ClasesTodayPageModule'
+                    }
+                ]
             },
             {
+                /**
+                 * RESERVATIONS ROUTES
+                 */
+                path: 'reservations',
+                children: [
+                    {
+                        path: ':wodId/edit-confirm',
+                        loadChildren:
+                            '../clases/edit-confirm/edit-confirm.module#EditConfirmPageModule'
+                    },
+                    {
+                        path: 'clase-type',
+                        loadChildren:
+                            '../clases/add-class/add-class.module#AddClassPageModule'
+                    },
+                    {
+                        path: 'clase-type/:claseTypeId/add-day',
+                        loadChildren:
+                            '../clases/add-day/add-day.module#AddDayPageModule'
+                    },
+                    {
+                        path: 'clase-type/:claseTypeId/add-day/:date',
+                        loadChildren:
+                            '../clases/add-hour/add-hour.module#AddHourPageModule'
+                    },
+                    {
+                        path: ':claseId/show',
+                        loadChildren:
+                            '../clases/add-confirm/add-confirm.module#AddConfirmPageModule'
+                    }
+                ]
+            },
+            {
+                /**
+                 * PLANS ROUTES
+                 */
                 path: 'plans',
                 loadChildren: '../plans/plans.module#PlansPageModule'
             },
             {
+                /**
+                 * PROFILE ROUTES
+                 */
                 path: 'profile',
                 loadChildren: '../profile/profile.module#ProfilePageModule'
             },
@@ -34,7 +86,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ],
+    imports: [ RouterModule.forChild(routes) ],
+    exports: [ RouterModule ],
 })
 export class HomePageRoutingModule {}

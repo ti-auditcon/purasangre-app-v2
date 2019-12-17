@@ -18,6 +18,11 @@ const routes: Routes = [
         loadChildren: './pages/home/home.module#HomePageModule',
         canLoad: [ AuthGuard ]
     },
+  // {
+  //   path: 'edit-confirm',
+  //   loadChildren: () => import('./pages/clases/edit-confirm/edit-confirm.module').then( m => m.EditConfirmPageModule)
+  // },
+
 
     // {
     //     path: 'tutorial',

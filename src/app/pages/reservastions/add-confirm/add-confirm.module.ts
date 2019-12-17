@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ClasesTodayPage } from './clases-today.page';
+import { AddConfirmPage } from './add-confirm.page';
 import { SharedModule } from '../../../shared/shared.module';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: ClasesTodayPage
-    }
+  {
+    path: '',
+    component: AddConfirmPage
+  }
 ];
 
 @NgModule({
@@ -23,6 +23,6 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         SharedModule
     ],
-    declarations: [ClasesTodayPage]
+    declarations: [AddConfirmPage]
 })
-export class ClasesTodayPageModule {}
+export class AddConfirmPageModule {}
