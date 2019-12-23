@@ -18,6 +18,10 @@ const routes: Routes = [
         loadChildren: './pages/home/home.module#HomePageModule',
         canLoad: [ AuthGuard ]
     },
+    {
+        path: 'confirm',
+        loadChildren: './pages/reservations/confirm/confirm.module#ConfirmPageModule'
+    },
   // {
   //   path: 'edit-confirm',
   //   loadChildren: () => import('./pages/clases/edit-confirm/edit-confirm.module').then( m => m.EditConfirmPageModule)
@@ -35,10 +39,6 @@ const routes: Routes = [
     // {
     //     path: 'login',
     //     loadChildren: './public/login/login.module#LoginPageModule'
-    // },
-    // {
-    //     path: 'confirm',
-    //     loadChildren: './auth/reservas/confirm/confirm.module#ConfirmPageModule'
     // },
     // {
     //     path: 'forgot',

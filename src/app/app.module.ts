@@ -11,10 +11,11 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
 
 @NgModule({
-    declarations: [AppComponent],
-    entryComponents: [],
+    declarations: [AppComponent, ConfirmPage],
+    entryComponents: [ ConfirmPage ],
     imports: [
         BrowserModule,
         AppRoutingModule,

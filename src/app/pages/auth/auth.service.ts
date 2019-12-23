@@ -117,6 +117,7 @@ export class AuthService {
     // }
 
     login(email, password) {
+        // console.log(email, password);
         const data = JSON.stringify({
             username: email,
             password,
@@ -258,4 +259,7 @@ export class AuthService {
 
         Plugins.Storage.set({ key: 'authData', value: data });
     }
+
+   
+
 }

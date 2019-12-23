@@ -71,6 +71,7 @@ export class AuthPage {
      *  If everything is correct go to login method
      */
     onSubmitLogin(form: NgForm) {
+        console.log(form.value.email, form.value.password, form);
         this.authenticate(form.value.email, form.value.password, form);
     }
 

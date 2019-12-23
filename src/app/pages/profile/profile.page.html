@@ -1,6 +1,15 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Mi perfil</ion-title>
+        <div class="header-toolbar">
+            <div class="toolbar-left">
+                <div class="title font-bold">
+                    <span class="title-header">Mi Perfil</span>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <img class="shieldLogoBN" src="assets/brand/ma_purasangre.png">
+            </div>
+        </div>
     </ion-toolbar>
 </ion-header>
 
@@ -27,9 +36,7 @@
     <div class="plan-resumen">
         <div class="card card-info">
             <div class="ps-row">
-                <div class="info-item col-4" class="ion-text-center"></div>
-
-                <div class="info-item col-4" class="ion-text-center">
+                <div class="info-item col-4 ion-text-center">
                     <div>
                         <p class="digit">{{ loadedProfile?.clasesConsumidas }}</p>
                         
@@ -37,7 +44,7 @@
                     </div>
                 </div>
 
-                <div class="info-item col-4" class="ion-text-center">
+                <div class="info-item col-4 ion-text-center">
                     <div>
                         <p class="digit">{{ loadedProfile?.clasesTotales }}</p>
                         
@@ -45,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="info-item col-4" class="ion-text-center">
+                <div class="info-item col-4 ion-text-center">
                     <div>
                         <p class="digit">{{ loadedProfile?.clasesPerdidas }}</p>
                         

@@ -2,7 +2,7 @@
 import { environment } from '../../../../environments/environment';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component  } from '@angular/core';
 
 import { Plugins } from '@capacitor/core';
 
@@ -12,15 +12,9 @@ import { Plugins } from '@capacitor/core';
     styleUrls: [ './clases-today.page.scss' ],
 })
 export class ClasesTodayPage {
-    @Output() urlOutput = new EventEmitter<string>();
-
     public today: any = '';
 
     constructor(private http: HttpClient) { }
-
-    addNewItem(value: string) {
-        this.urlOutput.emit(value);
-    }
 
     // Refresh
     doRefresh(event) {

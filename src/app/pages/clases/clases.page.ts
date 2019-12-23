@@ -130,7 +130,7 @@ export class ClasesPage {
         });
     }
 
-    goToAddDay() {
+    goToSelectClaseType() {
         this.router.navigate( ['/home/tabs/clases/clase-type'] );
     }
 
@@ -161,7 +161,7 @@ export class ClasesPage {
     }
 
     goClase(id: string) {
-        this.router.navigate(['/home/clase/' + id]);
+        this.router.navigate(['/home/tabs/clases/' + id + '/show']);
     }
 
     loadMoreClases(infiniteScrollEvent) {

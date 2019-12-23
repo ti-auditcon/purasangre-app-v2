@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { DashboardPage } from './dashboard.page';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
         FormsModule,
         IonicModule,
         DashboardPageRoutingModule,
-        ChartsModule
+        ChartsModule,
+        SharedModule
     ],
     declarations: [DashboardPage]
 })

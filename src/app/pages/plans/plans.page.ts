@@ -3,8 +3,10 @@ import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
+
+import { Plugins } from '@capacitor/core';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import { Storage } from '@ionic/storage';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -50,37 +52,42 @@ export class PlansPage {
     }
 
     ionViewDidEnter() {
-        // this.storage.get(TOKEN_KEY).then((value) => {
-        //     // console.log(value);
-        //     const Bearer = value;
+        Plugins.Storage.get({key: 'authData'}).then((authData) => {
 
-        //     const httpOptions = {
-        //         headers: new HttpHeaders({
-        //             Authorization: `Bearer ${Bearer}` // updated
-        //         })};
+            const parsedData = JSON.parse(authData.value) as {
+                token: string
+            };
 
-        //     this.http.get(`${environment.SERVER_URL}/profile/actualplan`, httpOptions)
-        //         .subscribe((result: any) => {
-        //             this.userActualPlan = result.data;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    Authorization: `Bearer ${parsedData.token}` // updated
+                })
+            };
 
-        //             console.log(this.userActualPlan);
-        //     });
+            this.http.get(`${environment.SERVER_URL}/profile/actualplan`, httpOptions)
+                .subscribe((result: any) => {
+                    this.userActualPlan = result.data;
 
-        //     this.http.get(`${environment.SERVER_URL}/plans?all=true`, httpOptions)
-        //         .subscribe((result: any) => {
-        //             this.plans = result.data;
+                    console.log(this.userActualPlan);
+            });
 
-        //             console.log('entre todos los planes');
+            this.http.get(`${environment.SERVER_URL}/plans?all=true`, httpOptions)
+                .subscribe((result: any) => {
+                    this.plans = result.data;
 
-        //             console.log(this.plans);
+                    console.log('entre todos los planes');
 
-        //             this.filteredPlans = this.plans.filter(
-        //                 plan => (plan.periodId === 1) && (plan.contractable) && (!plan.convenio)
-        //             );
+                    console.log(this.plans);
 
-        //             console.log('filtrados:' + this.filteredPlans);
-        //     });
-        // });
+                    this.filteredPlans = this.plans.filter(
+                        plan => (plan.periodId === 1) && (plan.contractable) && (!plan.convenio)
+                    );
+
+                    console.log('filtrados:');
+                    console.log(this.filteredPlans);
+                }
+            );
+        });
     }
 
     planFilter(id) {
@@ -138,11 +145,11 @@ export class PlansPage {
         // this.selectedFilter1 = true;
     }
 
-    goToDetail(id) {
-        this.router.navigate(['/home/plan-detail/' + id]);
-    }
+    // goToDetail(planId: number) {
+    //     this.router.navigate([`/home/tabs/plans/${planId}/details`]);
+    // }
 
-    goToHistorial() {
-        this.router.navigate(['/home/pay-historial']);
-    }
+    // goToHistorial() {
+    //     this.router.navigate(['/home/pay-historial']);
+    // }
 }

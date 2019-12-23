@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// import { Storage } from '@ionic/storage';
 // import { Firebase } from '@ionic-native/firebase/ngx';
 // import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
@@ -15,8 +14,6 @@ import { Label } from 'ng2-charts';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 
 import { AuthService } from '../auth/auth.service';
-
-const TOKEN_KEY = 'auth-token';
 
 @Component({
     selector: 'app-dashboard',
@@ -77,42 +74,43 @@ export class DashboardPage {
         },
     };
 
-ionViewWillEnter() {
-    Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-        const parsedData = JSON.parse(authData.value) as {
-            token: string
-        };
-        // console.log('el tokens');
-        // console.log(parsedData.token);
-        const httpOptions = {
-            headers: new HttpHeaders({
-                Authorization: `Bearer ${parsedData.token}` // updated
-            })
-        };
-        this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
-            .subscribe((result: any) => {
-                this.wods = result.data;
+    ionViewWillEnter() {
+        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            const parsedData = JSON.parse(authData.value) as {
+                token: string
+            };
 
-                this.wodsMeta = result.meta;
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    Authorization: `Bearer ${parsedData.token}`
+                })
+            };
+            this.http.get(`${environment.SERVER_URL}/todaywods`, httpOptions)
+                .subscribe((result: any) => {
+                    this.wods = result.data;
 
-                this.wodsCount = this.wodsMeta.pagination.total;
+                    console.log(this.wods[0].rels.stages[0]);
 
-                    // console.log(this.wodsMeta.pagination.total);
-            },
-            err => {
-                console.log('error wod');
+                    this.wodsMeta = result.meta;
+
+                    this.wodsCount = this.wodsMeta.pagination.total;
+
+                        // console.log(this.wodsMeta.pagination.total);
+                },
+                err => {
+                    console.log('error wod');
+                });
+
+            this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
+                .subscribe((result: any) => {
+                    this.alerts = result.data;
+                    // console.log(this.alerts);
+            }, err => {
+                // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
+                console.log('error user-alerts');
             });
-
-        this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
-            .subscribe((result: any) => {
-                this.alerts = result.data;
-                // console.log(this.alerts);
-        }, err => {
-            // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
-            console.log('error user-alerts');
         });
-    });
-}
+    }
 
     doRefresh(event) {
         console.log('Begin async operation');
@@ -124,7 +122,7 @@ ionViewWillEnter() {
         }, 2000);
     }
 
-    goToEditConfirm(id: string = '0') {
+    goToEditConfirm(claseId: string = '0') {
         // this.firebase.logEvent(
         //     'go_to_profile',
         //     {
@@ -133,7 +131,7 @@ ionViewWillEnter() {
         //     }
         // );
 
-        this.router.navigate(['/home/edit-confirm/' + id]);
+        this.router.navigate([`/home/tabs/clases/${claseId}/edit-confirm/`]);
     }
 
     verWOD(id) {

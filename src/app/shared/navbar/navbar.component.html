@@ -1,12 +1,14 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button defaultHref="[urltoBack]"></ion-back-button>
+        <ion-buttons slot="start" *ngIf="this.titulo !== 'Dashboard'">
+            <!-- <ion-back-button mode="md"></ion-back-button>  -->
+            <ion-icon src="assets/icon/arrow-back.svg" (click)="goBackUrl()"></ion-icon>
+            <!-- <button (click)="goBackUrl()" src="assets/icon/arrow-back.svg"></button> -->
         </ion-buttons>
 
         <div class="header-toolbar">
             <div class="toolbar-left">
-                <div align-self-center class="title font-bold" *ngIf="this.titulo == 'Dashboard'; else normalTitle">
+                <div class="title font-bold ion-align-self-center" *ngIf="this.titulo == 'Dashboard'; else normalTitle">
                     <img class="logo" src="assets/img/logo.png" alt="PuraSangre CrossFit">
                 </div>
 

@@ -23,43 +23,38 @@ const routes: Routes = [
                         loadChildren: '../clases/clases.module#ClasesPageModule'
                     },
                     {
-                        path: ':wodId/show',
+                        path: 'wods/:wodId/show',
                         loadChildren:
-                            '../clases/clases-today/clases-today.module#ClasesTodayPageModule'
-                    }
-                ]
-            },
-            {
-                /**
-                 * RESERVATIONS ROUTES
-                 */
-                path: 'reservations',
-                children: [
+                        '../clases/clases-today/clases-today.module#ClasesTodayPageModule'
+                    },
+                    /**
+                     * RESERVATIONS ROUTES
+                     */
+                    {
+                        path: ':claseId/show',
+                        loadChildren:
+                            '../reservations/add-confirm/add-confirm.module#AddConfirmPageModule'
+                    },
                     {
                         path: ':wodId/edit-confirm',
                         loadChildren:
-                            '../clases/edit-confirm/edit-confirm.module#EditConfirmPageModule'
+                            '../reservations/edit-confirm/edit-confirm.module#EditConfirmPageModule'
                     },
                     {
                         path: 'clase-type',
                         loadChildren:
-                            '../clases/add-class/add-class.module#AddClassPageModule'
+                            '../reservations/select-clase-type/select-clase-type.module#SelectClaseTypePageModule'
                     },
                     {
-                        path: 'clase-type/:claseTypeId/add-day',
+                        path: 'clase-type/:claseTypeId/select-day',
                         loadChildren:
-                            '../clases/add-day/add-day.module#AddDayPageModule'
+                            '../reservations/select-day/select-day.module#SelectDayPageModule'
                     },
                     {
-                        path: 'clase-type/:claseTypeId/add-day/:date',
+                        path: 'clase-type/:claseTypeId/select-day/:date',
                         loadChildren:
-                            '../clases/add-hour/add-hour.module#AddHourPageModule'
+                            '../reservations/select-hour/select-hour.module#SelectHourPageModule'
                     },
-                    {
-                        path: ':claseId/show',
-                        loadChildren:
-                            '../clases/add-confirm/add-confirm.module#AddConfirmPageModule'
-                    }
                 ]
             },
             {
@@ -67,7 +62,29 @@ const routes: Routes = [
                  * PLANS ROUTES
                  */
                 path: 'plans',
-                loadChildren: '../plans/plans.module#PlansPageModule'
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../plans/plans.module#PlansPageModule'
+                    },
+                    {
+                        path: 'historial',
+                        loadChildren: '../plans/historial/historial.module#HistorialPageModule'
+                    },
+                    {
+                        path: ':planId/details',
+                        loadChildren: '../plans/plan-detail/plan-detail.module#PlanDetailPageModule'
+                    },
+                    {
+                        path: ':planId/payments',
+                        loadChildren: '../plans/plan-payment/plan-payment.module#PlanPaymentPageModule'
+                    },
+                    {
+                        path: ':planId/flow',
+                        loadChildren:
+                            '../plans/flow/flow.module#FlowPageModule'
+                    },
+                ]
             },
             {
                 /**

@@ -1,6 +1,15 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Mis Clases</ion-title>
+        <div class="header-toolbar">
+            <div class="toolbar-left">
+                <div class="title font-bold">
+                    <span class="title-header">Mis Clases</span>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <img class="shieldLogoBN" src="assets/brand/ma_purasangre.png">
+            </div>
+        </div>
     </ion-toolbar>
 </ion-header>
 
@@ -8,7 +17,7 @@
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content 
             pullingIcon=""
-            pullingText="Arrastra para actualizar"
+            pullingText=""
             refreshingSpinner="crescent"
         >
         </ion-refresher-content>
@@ -98,7 +107,7 @@
 
     <div *ngFor="let wod of todayWods">
         <div class="clases-cards"
-             [routerLink]="['/', 'home', 'tabs', 'clases', wod.identificador, 'show']"
+             [routerLink]="['/', 'home', 'tabs', 'clases', 'wods', wod.identificador, 'show']"
              *ngIf="!wod.rels.auth.reservationHas"
         >
         <!-- <div class="clases-cards" *ngIf="!wod.rels.auth.reservationHas"> -->
@@ -146,8 +155,9 @@
         <div class="clases-cards">
             <div class="clase-card" 
                  *ngFor="let clase of clases"
-                 (click)="goClase(clase.clase_id)"
+                 [routerLink]="['/', 'home', 'tabs', 'clases', clase.clase_id, 'show']"
             >
+                 <!-- (click)="goClase(clase.clase_id)" -->
                 <div class="ps-row ion-align-items-center">
                     <div class="col-3 class-type">
                         <img class="class-icon" [src]="clase.rels.claseType.icon">
@@ -177,12 +187,12 @@
     </div>
 
     <ion-fab [ngClass]="buttonFixIOS" vertical="bottom" slot="fixed">
-        <div class="reservar" (click)="goToAddDay()">Nueva Reserva</div>
+        <div class="reservar" (click)="goToSelectClaseType()">Nueva Reserva</div>
     </ion-fab>
 </ion-content>
 
 <ion-footer>
     <div [ngClass]="buttonFixAndroid">
-        <button class="reservar" (click)="goToAddDay()">Nueva Reserva</button>
+        <button class="reservar" (click)="goToSelectClaseType()">Nueva Reserva</button>
     </div>
 </ion-footer>

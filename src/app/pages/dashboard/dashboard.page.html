@@ -1,16 +1,10 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>Bienvenido uwu</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<!-- <app-navbar titulo="Dashboard" avatar="{{ this.avatar }}"></app-navbar> -->
+<app-navbar titulo="Dashboard" avatar="{{ this.avatar }}"></app-navbar>
 
 <ion-content class="ion-padding">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content
             pullingIcon=""
-            pullingText="Arrastra para actualizar"
+            pullingText=""
             refreshingSpinner="crescent"
         >
         </ion-refresher-content>
@@ -29,7 +23,8 @@
                 </div>
                 <div class="col-10 text">
                     <p>
-                        Tienes una clase reservada a las {{ alerts.confirmation.start }} ¡Confírma tu asistencia!
+                        Tienes una clase reservada a las {{ alerts.confirmation.start }}
+                        ¡Confírma tu asistencia!
                     </p>
                 </div>
             </div>
@@ -51,55 +46,31 @@
     </div>
   
     <div class="section wod-resumen">
-        <ion-slides>
+        <!-- Tranisition effect. Could be "slide", "fade", "cube", "coverflow" or "flip" -->
+        <ion-slides pager="true">
             <ion-slide *ngFor="let wod of wods; let i = index" class="wod-slide">
                 <div class="card-header">
                     <h1 class="title-section">{{ wod.claseType }}</h1>
                     
-                    <div class="step-icon">
-                        <!-- <img *ngIf="wodsCount > 1" src="assets/icon/arrow-black.svg"> -->
+                    <!-- <div class="step-icon">
                         <div class="step"
                              *ngFor="let wod of wods; let num = index"
                              [ngClass]="{'active':num == i}"
                         >
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="card card-resumen">
-                    <div class="text-box-resumen">
-                        <p *ngIf="wod.rels.stages.has">
-                            {{ wod.rels.stages.featured }}
+                <div class="card card-resumen mb-3">
+                    <div class="text-box-resumen" *ngIf="wod.rels.hasStages">
+                        <p *ngFor="let stage of wod.rels.stages as key">
+                            <b class="mb-2">{{ stage.name }}</b><br/>
+                            {{ stage.description }}
                         </p>
                     
-                        <p *ngIf="!wod.rels.stages.has">
+                        <!-- <p *ngIf="!wod.rels.stages.has">
                             No hay WOD registrado para el dia de hoy.
-                        </p>
+                        </p> -->
                     </div>
-                </div>
-
-                <button class="button-wod-today" (click)="verWOD(wod.identificador)">
-                    Ver Clase del día
-                </button>
-            </ion-slide>
-            <ion-slide class="wod-slide">
-                <div class="card-header">
-                    <h1 class="title-section">Frenetik</h1>
-                
-                    <div class="step-icon">
-                        <img src="assets/icon/arrow-black.svg">
-                    </div>
-                </div>
-
-                <div class="card card-resumen">
-                    <div class="text-box-resumen">
-                        <p *ngIf="today?.wod?.has; else NoWODToday">{{ today?.wod?.stages.wod }}</p>
-                        
-                        <ng-template #NoWODToday>No hay WOD registrado para el dia de hoy.</ng-template>
-                    </div>
-
-                    <button class="button-bottom" (click)="verWOD()">
-                        Ver Clase del día
-                    </button>
                 </div>
             </ion-slide>
         </ion-slides>
