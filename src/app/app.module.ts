@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -14,10 +15,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
 
 @NgModule({
-    declarations: [AppComponent, ConfirmPage],
+    declarations: [AppComponent, ConfirmPage ],
     entryComponents: [ ConfirmPage ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
         IonicModule.forRoot(),

@@ -13,7 +13,6 @@ export class AppComponent {
         private platform: Platform,
     ) {
         this.initializeApp();
-        this.checkConnection();
     }
 
     initializeApp() {
@@ -24,24 +23,5 @@ export class AppComponent {
                 });
             }
         });
-    }
-
-    async checkConnection() {
-        const handler = Plugins.Network.addListener('networkStatusChange', (estado) => {
-            if (estado.connected === true) {
-                console.log('Conectado');
-            }
-            if (estado.connected === false) {
-                console.log('No coneccted, empezando reconexión');
-            }
-            // console.log('Network status changed', status);
-          });
-
-        console.log(handler);
-          // To stop listening:
-          // handler.remove();
-
-          // Get the current network status
-        const status = await Plugins.Network.getStatus();
     }
 }

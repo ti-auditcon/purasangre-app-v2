@@ -16,5 +16,13 @@
             <ion-icon src="assets/icon/icon-profile.svg"></ion-icon>
         </ion-tab-button>
     </ion-tab-bar>
+
+    <!-- <div *ngIf="!statusConnection" [@noConnection]>
+        <p>Sin Conexion</p>
+    </div> -->
+
+    <div [@animation]="animationState">
+        <p *ngIf="animationState == 'visible'">Sin conexión</p>
+        <p *ngIf="animationState != 'visible'">Vuelves a tener conexión</p>
+    </div>
 </ion-tabs>
-<!-- <div><h1>holaaaa</h1></div> -->

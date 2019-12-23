@@ -64,16 +64,16 @@ export class ProfilePage {
     // public fileTransfer: FileTransferObject = this.transfer.create();
 
     // Refresh
-    // doRefresh(event) {
-    //     console.log('Begin async operation');
+    doRefresh(event) {
+        console.log('Begin async operation');
 
-    //     this.ionViewDidEnter();
-    //     setTimeout(() => {
-    //         console.log('Async operation has ended');
+        this.ionViewWillEnter();
+        setTimeout(() => {
+            console.log('Async operation has ended');
 
-    //         event.target.complete();
-    //     }, 2000);
-    // }
+            event.target.complete();
+        }, 2000);
+    }
 
     // async presentToast(text = 'Error', duration = 2500) {
     //     const toast = await this.toastController.create({

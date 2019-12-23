@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
 import { ActionSheetController } from '@ionic/angular';
-import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-image-picker',

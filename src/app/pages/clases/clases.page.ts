@@ -9,6 +9,7 @@ import { Plugins } from '@capacitor/core';
 import { Platform, ToastController } from '@ionic/angular';
 
 import { AuthService } from '../auth/auth.service';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clases',
@@ -102,21 +103,24 @@ export class ClasesPage {
                 },
                 err => {
                     console.log('error clases');
-
                     // this.authService.refreshToken();
                 }
             );
 
             this.http.get(`${environment.SERVER_URL}/clases-historic?sort_by_desc=date&page=${this.page}`, this.httpOptions)
-                .subscribe((result: any) => {
-                    this.clases = this.clases.concat(result.data.filter(
-                        clase => clase.rels.auth_reservation.status === 'Consumida'
-                    ));
-                },
-                err => {
-                    console.log('error clases');
-                }
-            );
+            .subscribe((result: any) => {
+                this.clases = this.clases.concat(result.data.filter(
+                    clase => clase.rels.auth_reservation.status === 'Consumida'
+                ));
+            });
+            // .subscribe((result: any) => {
+            //         this.loadingClases = true;
+
+            //     },
+            //     err => {
+            //         console.log('error clases');
+            //     }
+            // );
 
             this.http.get(`${environment.SERVER_URL}/users-alerts`, this.httpOptions)
             .subscribe((result: any) => {

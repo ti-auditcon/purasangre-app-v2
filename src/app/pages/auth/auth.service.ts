@@ -32,8 +32,6 @@ export interface AuthResponseData {
 
 export class AuthService {
     // tslint:disable-next-line: variable-name
-    // private _userId = null;
-    // tslint:disable-next-line: variable-name
     private _user = new BehaviorSubject<User>(null);
 
     authenticationState = new BehaviorSubject(false);
@@ -104,18 +102,6 @@ export class AuthService {
         );
     }
 
-    // checkToken() {
-    //     this.storage.get(TOKEN_KEY).then(res => {
-    //         if (res) {
-    //             // console.log('res:'+res);
-    //             this.authenticationState.next(true);
-    //         } else {
-    //             // console.log('res:'+res);
-    //             this.authenticationState.next(false);
-    //         }
-    //     });
-    // }
-
     login(email, password) {
         // console.log(email, password);
         const data = JSON.stringify({
@@ -136,7 +122,7 @@ export class AuthService {
     }
 
     logout() {
-        this.loadingCtrl.create({ keyboardClose: true, message: 'Cerrando Sesión...'})
+        this.loadingCtrl.create({ keyboardClose: true, message: 'Cerrando Sesión...', spinner: 'crescent'})
             .then(loadingEl => {
                 // Load modal
                 loadingEl.present();
@@ -166,59 +152,6 @@ export class AuthService {
 
         return this._user.next(null);
     }
-
-    // refreshToken() {
-    //     this.storage.get(REFRESH_TOKEN)
-    //         .then(res => {
-    //             const refresToken = res;
-
-    //             const data = JSON.stringify({
-    //                 grant_type: 'refresh_token',
-    //                 client_id: 2,
-    //                 client_secret: environment.purasangreAPIKey,
-    //                 refresToken,
-    //             });
-
-    //             const httpOptions = {
-    //                 headers: new HttpHeaders({
-    //                     'Content-Type': 'application/json', // updated
-    //                 })};
-
-    //             // return new Promise((resolve, reject) => {
-    //             this.http.post(`${environment.SERVER_URL}/oauth/token`, data, httpOptions)
-    //                 .subscribe((result: any) => {
-    //                     console.log('success refresh 200');
-
-    //                     this.storage.set(REFRESH_TOKEN, result.refresh_token);
-
-    //                     this.storage.set(
-    //                             environment.purasangreAPIKey,
-    //                             result.access_token
-    //                     ).then(() => {
-    //                         this.authenticationState.next(true);
-
-    //                         this.router.navigate(['home']);
-    //                     });
-    //                 },
-    //                 (err) => {
-    //                    console.log('error refrersh 401:' + JSON.stringify(err));
-    //                    this.router.navigate(['home']);
-    //                 });
-    //       // });
-    //         }).catch((error) => {
-    //             console.log(error);
-    //         });
-    // }
-
-    // logout() {
-    //     this.storage.remove(REFRESH_TOKEN);
-
-    //     // this.storage.remove('tutorialComplete');
-
-    //     return this.storage.remove(TOKEN_KEY).then(() => {
-    //         this.authenticationState.next(false);
-    //     });
-    // }
 
     private setUserData(email, userData: AuthResponseData) {
         const expirationTime = new Date(
@@ -259,7 +192,4 @@ export class AuthService {
 
         Plugins.Storage.set({ key: 'authData', value: data });
     }
-
-   
-
 }

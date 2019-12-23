@@ -1,35 +1,3 @@
-<!-- <ion-content class="ion-padding">
-    <form #f="ngForm" (ngSubmit)="onSubmitLogin(f)">
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <ion-item>
-                        <ion-label>Email</ion-label>
-
-                        <ion-input type="email" name="email" ngModel></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label>Password</ion-label>
-
-                        <ion-input type="password" name="password" ngModel></ion-input>
-                    </ion-item>  
-                </ion-col>
-
-                <ion-col>
-                    <ion-button color="primary" expand="clear" fill="clear">
-                        Swith to Login
-                    </ion-button>
-
-                    <ion-button type="submit" color="primary" expand="clear" fill="clear">
-                        Login
-                    </ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </form>
-</ion-content> -->
-
 <section class="auth-content ion-padding">
     <div class="auth-inner">
         <div class="logo-auth-container">
@@ -40,7 +8,6 @@
             />
         </div>
         <form #f="ngForm" (ngSubmit)="onSubmitLogin(f)">
-            <!-- <form (ngSubmit)="login()" #registerForm="ngForm"> -->
             <div class="form-inner">
                 <div class="a-input">
                     <span class="icon-input-auth icon-auth-mail"></span>
@@ -69,41 +36,26 @@
                     />
                 </div>
             </div>
-            <ion-col class="signup-col">
-                <button
-                    class="submit-login-auth"
-                    full
-                    type="submit"
-                    expand="block"
-                >
-                    Ingresar
-                </button>
-                <br /><br />
-                <a class="link-forget" routerLink="/auth/forgot"
-                    >¿Olvidaste tu Contraseña?</a
-                >
-            </ion-col>
-            <div class="version">
-                <p style="color: rgba(255, 255, 255, 0.7);">
-                    Versión 2.0 - Asomic
-                </p>
-            </div>
-        </form>
-
-        <!-- <div class="card card-alert" *ngIf="error.error" >
-        <ion-grid>
-          <ion-row>
-  
-            <ion-col class="text">
-              <p>
-                {{error.error}}
-              </p>
-              <p>
-                {{error.message}}
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div> -->
+        <ion-col class="signup-col">
+            <button
+                class="submit-login-auth"
+                full
+                type="submit"
+                expand="block"
+            >
+                Ingresar
+            </button>
+            <br /><br />
+            <a class="link-forget" routerLink="/forgot">
+                ¿Olvidaste tu Contraseña?
+            </a
+            >
+        </ion-col>
+        <div class="version">
+            <p style="color: rgba(255, 255, 255, 0.7);">
+                Versión 2.0 - Asomic
+            </p>
+        </div>
+    </form>
     </div>
 </section>

@@ -22,6 +22,12 @@ const routes: Routes = [
         path: 'confirm',
         loadChildren: './pages/reservations/confirm/confirm.module#ConfirmPageModule'
     },
+    {
+        path: 'forgot',
+        loadChildren: './pages/auth/forgot/forgot.module#ForgotPageModule'
+    },
+
+
   // {
   //   path: 'edit-confirm',
   //   loadChildren: () => import('./pages/clases/edit-confirm/edit-confirm.module').then( m => m.EditConfirmPageModule)

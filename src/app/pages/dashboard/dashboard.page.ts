@@ -115,11 +115,13 @@ export class DashboardPage {
     doRefresh(event) {
         console.log('Begin async operation');
 
+        this.ionViewWillEnter();
+
         setTimeout(() => {
             console.log('Async operation has ended');
 
             event.target.complete();
-        }, 2000);
+        }, 1000);
     }
 
     goToEditConfirm(claseId: string = '0') {

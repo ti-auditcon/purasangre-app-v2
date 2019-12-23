@@ -9,22 +9,17 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const routes: Routes = [
-    {
-        path: '',
-        component: HomePage
-    }
-];
+
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        // RouterModule.forChild(routes),
         HomePageRoutingModule,
-        // SharedModule
+        SharedModule
     ],
     declarations: [HomePage]
 })

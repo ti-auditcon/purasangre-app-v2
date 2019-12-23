@@ -33,8 +33,11 @@ export class AuthPage {
     authenticate(email: string, password: string, form) {
         // this.isLoading = true;
 
-        this.loadingCtrl.create({ keyboardClose: true, message: 'Ingresando...'})
-            .then(loadingEl => {
+        this.loadingCtrl.create({
+            keyboardClose: true,
+            message: 'Ingresando...',
+            spinner: 'crescent'
+        }).then(loadingEl => {
                 // Load modal
                 loadingEl.present();
                 // Make the login
@@ -80,5 +83,10 @@ export class AuthPage {
         this.alertCtrl
             .create({ header, message, buttons: ['Entendido'] })
             .then(alertEl => alertEl.present());
+    }
+
+    goToForgot() {
+        console.log('hola');
+        this.router.navigateByUrl('/forgot');
     }
 }
