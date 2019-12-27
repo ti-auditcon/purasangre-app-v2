@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-image-modal',
@@ -7,29 +7,16 @@ import { NavParams, ModalController } from '@ionic/angular';
   styleUrls: ['./image-modal.page.scss'],
 })
 export class ImageModalPage implements OnInit {
-    // @ViewChild('slider', { read: ElementRef }) slider: ElementRef;
     img: any;
+    user: any;
 
     sliderOpts = { zoom: { maxRatio: 2 } };
 
-    constructor(private navParams: NavParams,
-                private modalController: ModalController
-               ) { }
+    constructor(private navParams: NavParams) { }
 
     ngOnInit() {
         this.img = this.navParams.get('img');
-    }
 
-    // zoom(zoomIn: boolean) {
-    //   let zoom = this.slider.nativeElement.swiper.zoom;
-    //   if (zoomIn) {
-    //     zoom.in();
-    //   } else {
-    //     zoom.out();
-    //   }
-    // }
-
-    close() {
-        this.modalController.dismiss();
+        this.user = `${this.navParams.get('firstName')} ${this.navParams.get('lastName')}`;
     }
 }

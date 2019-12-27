@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../../environments/environment';
+import { Plugins } from '@capacitor/core';
 
 @Component({
     selector: 'app-forgot',
@@ -25,21 +26,26 @@ export class ForgotPage {
                 private http: HttpClient
             ) { }
 
-    async openModalForgot(title, message, buttonIcon) {
-        // const modal = await this.modalController.create({
-        //     component: ConfirmPage,
-        //     componentProps: {
-        //         title: title,
-        //         message: message,
-        //         buttonIcon: buttonIcon
-        //     },
-        //     cssClass: 'modal-confirm'
-        // });
-        // this.title = modal.componentProps.title;
-        // this.message = modal.componentProps.message;
-        // this.buttonIcon = modal.componentProps.buttonIcon;
-        // return await modal.present();
-    }
+    // async openModalForgot(title, message) {
+    //     const confirmRet = await Plugins.Modals.confirm({ title, message });
+
+    //     console.log('Confirm ret', confirmRet);
+    // }
+    // async openModalForgot(title, message, buttonIcon) {
+    //     const modal = await this.modalController.create({
+    //         component: ConfirmPage,
+    //         componentProps: {
+    //             title: title,
+    //             message: message,
+    //             buttonIcon: buttonIcon
+    //         },
+    //         cssClass: 'modal-confirm'
+    //     });
+    //     this.title = modal.componentProps.title;
+    //     this.message = modal.componentProps.message;
+    //     this.buttonIcon = modal.componentProps.buttonIcon;
+    //     return await modal.present();
+    // }
 
     sendForgot() {
         this.disabled = true;
@@ -59,24 +65,26 @@ export class ForgotPage {
 
                 console.log(result);
 
-                this.openModalForgot(
-                    'Revisa tu Correo',
-                    'Te hemos enviado las instrucciones para reestablecer tu contraseña',
-                    '/assets/icon/check.svg'
-                );
+                // this.openModalForgot(
+                //     'Revisa tu Correo',
+                //     'Te hemos enviado las instrucciones para reestablecer tu contraseña',
+                //     '/assets/icon/check.svg'
+                // );
 
-                this.router.navigateByUrl('/auth/login');
+                this.router.navigateByUrl('/auth');
             },
             (err) => {
                 console.log('error reset');
 
                 console.log(err);
 
-                this.openModalForgot(
-                    'Error',
-                    'El correo no existe o no es valido',
-                    '/assets/icon/close.svg'
-                );
+                // this.showAlert(err.error[0].error, err.error[0].message);
+                Plugins.Modals.alert({
+                    title: err.error.error,
+                    message: err.error.messag,
+                    buttonTitle: 'Entendido'
+                });
+                // this.openModalForgot(err.error.error, err.error.message);
             }
         );
     }

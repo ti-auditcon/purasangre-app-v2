@@ -38,6 +38,9 @@ export class AddConfirmPage  {
     buttonAction;
     httpOptions;
     reservationUrl;
+    haymodal = false;
+    actualModal: any;
+    varIsPressed = true;
 
     constructor( public plt: Platform,
                  private modalController: ModalController,
@@ -148,5 +151,33 @@ export class AddConfirmPage  {
         }).then(modal => {
             modal.present();
         });
+    }
+
+    beingLongPressed(img: any, firstName: any, lastName: any) {
+        console.log('beingLongPressed');
+        if (!this.haymodal) {
+            this.modalController.create({
+                component: ImageModalPage,
+                componentProps: { img, firstName, lastName },
+                cssClass: 'background-color-modal'
+            }).then(modal => {
+                this.actualModal = modal;
+                this.haymodal = true;
+                modal.present().then();
+            });
+        }
+    }
+
+    finishLongPress() {
+        console.log('finishLongPress');
+        this.actualModal.dismiss().then(() => {
+            this.actualModal = null;
+            this.haymodal = false;
+            this.varIsPressed = false;
+        });
+    }
+
+    isPressed() {
+        this.varIsPressed = true;
     }
 }

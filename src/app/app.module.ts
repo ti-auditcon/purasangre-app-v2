@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -12,11 +12,13 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { IonicGestureConfig } from './shared/IonicGestureConfig';
+import { ImageModalPage } from './shared/image-modal/image-modal.page';
 import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
 
 @NgModule({
-    declarations: [AppComponent, ConfirmPage ],
-    entryComponents: [ ConfirmPage ],
+    declarations: [AppComponent, ConfirmPage, ImageModalPage ],
+    entryComponents: [ ConfirmPage, ImageModalPage],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -28,7 +30,8 @@ import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
     providers: [
         StatusBar,
         SplashScreen,
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }
     ],
     bootstrap: [AppComponent]
 })

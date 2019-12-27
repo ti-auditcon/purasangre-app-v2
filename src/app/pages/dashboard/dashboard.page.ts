@@ -2,7 +2,7 @@
 import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // import { Firebase } from '@ionic-native/firebase/ngx';
@@ -11,7 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Plugins } from '@capacitor/core';
 
 import { Label } from 'ng2-charts';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, Chart, TickOptions } from 'chart.js';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -21,8 +21,7 @@ import { AuthService } from '../auth/auth.service';
     styleUrls: ['./dashboard.page.scss']
 })
 export class DashboardPage {
-
-    // @ViewChild('barCanvas') barCanvas;
+    @ViewChild('barCanvas', { static: false }) barCanvas: any;
 
     barChart: any;
 
@@ -45,7 +44,7 @@ export class DashboardPage {
         private http: HttpClient,
         // private firebase: Firebase,
         private authService: AuthService,
-    ) {}
+    ) { }
 
     public lineChartData: ChartDataSets[] = [
         { data: [104, 103, 101, 98, 97], label: 'Peso corporal' },
@@ -56,8 +55,8 @@ export class DashboardPage {
     public lineChartOptions: (ChartOptions & { annotation: any }) = {
         responsive: true,
         scales: {
-            xAxes: [{ gridLines: { display: false }}],
-            yAxes: [{ gridLines: { display: false }}]
+            xAxes: [{ gridLines: { display: false } }],
+            yAxes: [{ gridLines: { display: false } }]
         },
         annotation: {
             annotations: [
@@ -89,26 +88,71 @@ export class DashboardPage {
                 .subscribe((result: any) => {
                     this.wods = result.data;
 
-                    console.log(this.wods[0].rels.stages[0]);
+                    console.log(this.wods);
 
                     this.wodsMeta = result.meta;
 
                     this.wodsCount = this.wodsMeta.pagination.total;
 
-                        // console.log(this.wodsMeta.pagination.total);
+                    // console.log(this.wodsMeta.pagination.total);
                 },
-                err => {
-                    console.log('error wod');
-                });
+                    err => {
+                        console.log('error wod');
+                    });
 
             this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
                 .subscribe((result: any) => {
                     this.alerts = result.data;
                     // console.log(this.alerts);
-            }, err => {
-                // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
-                console.log('error user-alerts');
-            });
+                }, err => {
+                    // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
+                    console.log('error user-alerts');
+                });
+
+            this.http.get(`${environment.SERVER_URL}/assistance`, httpOptions)
+                .subscribe((result) => {
+                    this.assistance = result;
+
+                    console.log(this.assistance);
+
+                    this.barChart = new Chart(this.barCanvas.nativeElement, {
+                        type: 'bar',
+                        data: {
+                            labels: this.assistance.label,
+
+                            datasets: [{
+                                data: this.assistance.data,
+                                label: '',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    id: 'y-axis-1',
+                                    gridLines: { display: false },
+                                    // labels: {
+                                    //     display: true
+                                    // },
+                                    ticks: {
+                                        suggestedMax: 24,
+                                        // precision: 1,
+                                        beginAtZero: true,
+                                    }
+                                }]
+                            },
+                        },
+                    });
+                },
+                    err => {
+                        console.log('error assistance');
+                    }
+                );
         });
     }
 
@@ -137,8 +181,10 @@ export class DashboardPage {
     }
 
     verWOD(id) {
-        // this.firebase.logEvent("go_to_wod", {content_type: "action", item_id: "dashboard_button"});
-        this.router.navigate( ['/home/wods/' + id] );
+        // this.firebase.logEvent("go_to_wod",
+        //  {content_type: "action", item_id: "dashboard_button"
+        // });
+        this.router.navigate(['/home/wods/' + id]);
     }
 }
 

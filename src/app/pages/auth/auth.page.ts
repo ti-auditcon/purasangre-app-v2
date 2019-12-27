@@ -62,7 +62,7 @@ export class AuthPage {
 
                         new Date().getTime();
 
-                        this.showAlert(errRes.error[0].error, errRes.error[0].message);
+                        this.showAlert(errRes.error.error, errRes.error.message);
                     }
                 );
             }

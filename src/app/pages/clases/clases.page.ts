@@ -92,6 +92,7 @@ export class ClasesPage {
             this.http.get(`${environment.SERVER_URL}/clases-coming?sort_by_asc=date`, this.httpOptions)
                 .subscribe((result: any) => {
                     this.clases = result.data;
+                    console.log(this.clases);
 
                     this.pendient =  this.clases.filter(
                         clase => clase.rels.auth_reservation.status === 'Pendiente'
@@ -113,14 +114,6 @@ export class ClasesPage {
                     clase => clase.rels.auth_reservation.status === 'Consumida'
                 ));
             });
-            // .subscribe((result: any) => {
-            //         this.loadingClases = true;
-
-            //     },
-            //     err => {
-            //         console.log('error clases');
-            //     }
-            // );
 
             this.http.get(`${environment.SERVER_URL}/users-alerts`, this.httpOptions)
             .subscribe((result: any) => {

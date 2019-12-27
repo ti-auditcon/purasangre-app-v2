@@ -32,6 +32,9 @@ export class EditConfirmPage {
     buttonIcon: string;
     httpOptions: any;
     reservationUrl: string;
+    haymodal = false;
+    actualModal: any;
+    varIsPressed = false;
 
     constructor( public plt: Platform,
                  private modalController: ModalController,
@@ -100,16 +103,17 @@ export class EditConfirmPage {
 
     // cargando usuarios por infinit loader
     loadMoreUsers(infiniteScrollEvent) {
-      this.http.get(`${this.reservationUrl}?page=${this.page}`, this.httpOptions)
-          .subscribe((result: any) => {
-            console.log('mas users agregados');
-            this.reservations = this.reservations.concat(result.data);
-            console.log(this.reservations);
-            this.page++;
-            infiniteScrollEvent.target.complete();
-           });
-        // this.days = this.days.concat(response.data.data);
-        //  event.target.complete();
+        this.http.get(`${this.reservationUrl}?page=${this.page}`, this.httpOptions)
+            .subscribe((result: any) => {
+                console.log('mas users agregados');
+                this.reservations = this.reservations.concat(result.data);
+                console.log(this.reservations);
+                this.page++;
+                infiniteScrollEvent.target.complete();
+            }
+        );
+            // this.days = this.days.concat(response.data.data);
+            //  event.target.complete();
     }
 
     async openModal() {
@@ -155,12 +159,41 @@ export class EditConfirmPage {
     }
 
     // image popup
-    openPreview(img) {
-        this.modalController.create({
-            component: ImageModalPage,
-            componentProps: { img }
-        }).then(modal => {
-            modal.present();
+    // openPreview(img, firstName, lastName) {
+    //     this.modalController.create({
+    //         component: ImageModalPage,
+    //         componentProps: { img, firstName, lastName },
+    //         cssClass: 'background-color-modal'
+    //     }).then(modal => {
+    //         modal.present();
+    //     });
+    // }
+
+    beingLongPressed(img, firstName, lastName) {
+        // console.log('beingLongPressed');
+        if (!this.haymodal) {
+            this.modalController.create({
+                component: ImageModalPage,
+                componentProps: { img, firstName, lastName },
+                cssClass: 'background-color-modal'
+            }).then(modal => {
+                this.actualModal = modal;
+                this.haymodal = true;
+                modal.present();
+            });
+        }
+    }
+
+    finishLongPress() {
+        // console.log('finishLongPress');
+        this.actualModal.dismiss().then(() => {
+            this.actualModal = null;
+            this.haymodal = false;
+            this.varIsPressed = false;
         });
+    }
+
+    isPressed() {
+        this.varIsPressed = true;
     }
 }

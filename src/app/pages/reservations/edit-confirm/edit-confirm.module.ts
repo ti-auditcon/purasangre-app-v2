@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { EditConfirmPage } from './edit-confirm.page';
 import { SharedModule } from '../../../shared/shared.module';
+import { LongPressModule } from 'ionic-long-press';
 
 const routes: Routes = [
     {
@@ -21,7 +22,8 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         RouterModule.forChild(routes),
-        SharedModule
+        SharedModule,
+        LongPressModule
     ],
     declarations: [ EditConfirmPage ]
 })

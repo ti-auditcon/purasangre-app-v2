@@ -6,8 +6,9 @@
                     <span class="title-header">Mis Clases</span>
                 </div>
             </div>
+
             <div class="toolbar-right">
-                <img class="shieldLogoBN" src="assets/brand/ma_purasangre.png">
+                <img class="shieldLogoBN" src="assets/brand/ma_purasangre.png"/>
             </div>
         </div>
     </ion-toolbar>
@@ -22,26 +23,6 @@
         >
         </ion-refresher-content>
     </ion-refresher>
-
-    <!-- alerta de clase pendiente -->
-    <!-- <div style="margin-bottom: 24px;"
-         class="card card-alert card-alert-reserva"
-         *ngIf="alerts.has_confirmation"
-         (click)="goToEditConfirm(alerts.confirmation.clase_id)"
-    >
-        <div class="ps-row">
-            <div class="col-2 icon">
-                <ion-icon src="/assets/icon/calendar.svg"></ion-icon>
-            </div>
-
-            <div class="col-10 text">
-                <p>
-                    Tienes una clase reservada a las {{ alerts.confirmation.start }} 
-                    ¡Confírma tu asistencia!
-                </p>
-            </div>
-        </div>
-    </div> -->
 
     <div class="section" *ngIf="pendient.length > 0">
         <h1 class="title-section">Sin Confirmar</h1>
@@ -143,11 +124,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-    <hr class="separator">
-
 
     <div class="section">
         <h1 class="title-section">Clases Anteriores</h1>

@@ -1,13 +1,17 @@
-<ion-content>
+<ion-content class="image-container">
     <ion-slides #slider [options]="sliderOpts">
         <ion-slide>
-            <div class="photo-avatar-wrapper">
-                <img [src]="img" class="photo-avatar"/>
-
-                <ion-button (click)="close()" fill="clear" color="light" class="button-close">
-                    <ion-icon src="/assets/icon/close.svg"></ion-icon>
-                </ion-button>
-            </div>
+            <ion-card style="background: rgb(255,255,255);">
+                <ion-card-header>
+                    <ion-card-title>{{ user }}</ion-card-title>
+                </ion-card-header>
+                
+                <ion-card-content>
+                      <img [src]="img"/>
+                </ion-card-content>
+            </ion-card>
         </ion-slide>
     </ion-slides>
+    <div class="layer-blur">
+    </div>
 </ion-content>

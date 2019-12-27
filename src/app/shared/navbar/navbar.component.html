@@ -1,8 +1,8 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start" *ngIf="this.titulo !== 'Dashboard'">
-            <!-- <ion-back-button mode="md"></ion-back-button>  -->
-            <ion-icon src="assets/icon/arrow-back.svg" (click)="goBackUrl()"></ion-icon>
+            <ion-back-button mode="md" [defaultHref]="urltoBack"></ion-back-button> 
+            <!-- <ion-icon src="assets/icon/arrow-back.svg" (click)="goBackUrl()"></ion-icon> -->
             <!-- <button (click)="goBackUrl()" src="assets/icon/arrow-back.svg"></button> -->
         </ion-buttons>
 
