@@ -1725,3 +1725,8 @@ ion-toast {
     bottom: 0;
     margin: auto;
 }
+
+.image-pressed {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}

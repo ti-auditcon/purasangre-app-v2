@@ -13,6 +13,8 @@ import { Plugins } from '@capacitor/core';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
+import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
+import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
 
 @Component({
     selector: 'app-add-confirm',
@@ -40,7 +42,7 @@ export class AddConfirmPage  {
     reservationUrl;
     haymodal = false;
     actualModal: any;
-    varIsPressed = true;
+    varIsPressed = false;
 
     constructor( public plt: Platform,
                  private modalController: ModalController,
@@ -153,13 +155,20 @@ export class AddConfirmPage  {
         });
     }
 
+    /**
+     * Open Modal for Image Avatar view
+     *
+     * img, firstName, lastName
+     */
     beingLongPressed(img: any, firstName: any, lastName: any) {
-        console.log('beingLongPressed');
+        // console.log('beingLongPressed');
         if (!this.haymodal) {
             this.modalController.create({
                 component: ImageModalPage,
                 componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal'
+                cssClass: 'background-color-modal',
+                enterAnimation: myEnterAnimation,
+                leaveAnimation: myLeaveAnimation
             }).then(modal => {
                 this.actualModal = modal;
                 this.haymodal = true;
@@ -168,16 +177,18 @@ export class AddConfirmPage  {
         }
     }
 
+    /**
+     * Close Modal for Image Avatar view, and return color to icon image avatar
+     *
+     * img, firstName, lastName
+     */
     finishLongPress() {
-        console.log('finishLongPress');
-        this.actualModal.dismiss().then(() => {
-            this.actualModal = null;
-            this.haymodal = false;
-            this.varIsPressed = false;
-        });
-    }
-
-    isPressed() {
-        this.varIsPressed = true;
+        if (this.haymodal) {
+            this.actualModal.dismiss().then(() => {
+                this.actualModal = null;
+                this.haymodal = false;
+                this.varIsPressed = false;
+            });
+        }
     }
 }

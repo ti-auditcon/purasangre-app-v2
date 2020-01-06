@@ -11,6 +11,8 @@ import { Plugins } from '@capacitor/core';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
+import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
+import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
 
 @Component({
     selector: 'app-edit-confirm',
@@ -154,28 +156,24 @@ export class EditConfirmPage {
         return await modal.present();
     }
 
-    goToEditHour(date: string = '2015-01-01') {
-        this.router.navigate( [ '/home/edit-hour/' + date ] );
+    goToEditHour(date = '2015-01-01') {
+        this.router.navigate( [`/home/edit-hour/${date}`] );
     }
 
-    // image popup
-    // openPreview(img, firstName, lastName) {
-    //     this.modalController.create({
-    //         component: ImageModalPage,
-    //         componentProps: { img, firstName, lastName },
-    //         cssClass: 'background-color-modal'
-    //     }).then(modal => {
-    //         modal.present();
-    //     });
-    // }
-
+    /**
+     * Open Modal for Image Avatar view
+     *
+     * img, firstName, lastName
+     */
     beingLongPressed(img, firstName, lastName) {
         // console.log('beingLongPressed');
         if (!this.haymodal) {
             this.modalController.create({
                 component: ImageModalPage,
                 componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal'
+                cssClass: 'background-color-modal',
+                enterAnimation: myEnterAnimation,
+                leaveAnimation: myLeaveAnimation
             }).then(modal => {
                 this.actualModal = modal;
                 this.haymodal = true;
@@ -184,16 +182,18 @@ export class EditConfirmPage {
         }
     }
 
+    /**
+     * Close Modal for Image Avatar view, and return color to icon image avatar
+     *
+     * img, firstName, lastName
+     */
     finishLongPress() {
-        // console.log('finishLongPress');
-        this.actualModal.dismiss().then(() => {
-            this.actualModal = null;
-            this.haymodal = false;
-            this.varIsPressed = false;
-        });
-    }
-
-    isPressed() {
-        this.varIsPressed = true;
+        if (this.haymodal) {
+            this.actualModal.dismiss().then(() => {
+                this.actualModal = null;
+                this.haymodal = false;
+                this.varIsPressed = false;
+            });
+        }
     }
 }
