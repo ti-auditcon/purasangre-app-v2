@@ -59,6 +59,7 @@
                              ion-button ion-long-press
                              [ngClass]="{ 'image-pressed': varIsPressed }"
                              [interval]="200"
+                             (click)="clicked()"
                              (pressed)="varIsPressed = true"
                              (pressEnded)="varIsPressed = false"
                              (longPressed)="beingLongPressed(
@@ -67,6 +68,7 @@
                                 reservation?.rels.user.last_name
                              )"
                              (pressEnded)="finishLongPress()"/>
+                             
                     </div>
 
                     <div class="col-10 item-data">

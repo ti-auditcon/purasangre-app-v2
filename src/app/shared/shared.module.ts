@@ -9,6 +9,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 @NgModule({
     declarations: [ ImagePickerComponent, NavbarComponent ],
     imports: [ CommonModule, IonicModule ],
-    exports: [ ImagePickerComponent, NavbarComponent ],
+    exports: [ ImagePickerComponent, NavbarComponent ]
 })
 export class SharedModule { }

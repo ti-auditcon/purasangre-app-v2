@@ -196,4 +196,12 @@ export class EditConfirmPage {
             });
         }
     }
+
+    clicked() {
+        this.varIsPressed = true;
+        setTimeout(() => {
+            this.varIsPressed = false;
+        }, 500);
+        // setInterval(() => { console.log('hola'); }, 4000);
+    }
 }

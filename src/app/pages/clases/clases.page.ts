@@ -6,10 +6,10 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Plugins } from '@capacitor/core';
+
 import { Platform, ToastController } from '@ionic/angular';
 
-import { AuthService } from '../auth/auth.service';
-import { map, tap } from 'rxjs/operators';
+// import { ClasesService } from './clases.service';
 
 @Component({
     selector: 'app-clases',
@@ -35,7 +35,7 @@ export class ClasesPage {
         private router: Router,
         private http: HttpClient,
         public toastController: ToastController,
-        private authService: AuthService,
+        // private clasesService: ClasesService,
     ) {
         if (this.plt.is('ios')) {
             // Si es iOS
@@ -91,14 +91,11 @@ export class ClasesPage {
 
             this.http.get(`${environment.SERVER_URL}/clases-coming?sort_by_asc=date`, this.httpOptions)
                 .subscribe((result: any) => {
-                    this.clases = result.data;
-                    console.log(this.clases);
-
-                    this.pendient =  this.clases.filter(
+                    this.pendient =  result.data.filter(
                         clase => clase.rels.auth_reservation.status === 'Pendiente'
                     );
 
-                    this.confirmed =  this.clases.filter(
+                    this.confirmed =  result.data.filter(
                         clase => clase.rels.auth_reservation.status === 'Confirmada'
                     );
                 },
@@ -110,9 +107,9 @@ export class ClasesPage {
 
             this.http.get(`${environment.SERVER_URL}/clases-historic?sort_by_desc=date&page=${this.page}`, this.httpOptions)
             .subscribe((result: any) => {
-                this.clases = this.clases.concat(result.data.filter(
+                this.clases = result.data.filter(
                     clase => clase.rels.auth_reservation.status === 'Consumida'
-                ));
+                );
             });
 
             this.http.get(`${environment.SERVER_URL}/users-alerts`, this.httpOptions)

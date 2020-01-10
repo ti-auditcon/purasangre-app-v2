@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
+
+import { ActionSheetController, Platform } from '@ionic/angular';
 
 import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
-import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-image-picker',
@@ -9,18 +10,30 @@ import { ActionSheetController } from '@ionic/angular';
   styleUrls: ['./image-picker.component.scss'],
 })
 export class ImagePickerComponent implements OnInit {
+    @ViewChild('filePicker', { static : false }) filePickeRef: ElementRef<HTMLInputElement>;
     @Input() AvatarImage: string;
-    @Output() ImagePick = new EventEmitter<string>();
+    @Output() imagePick = new EventEmitter<string | File>();
 
     selectedImage: string;
-    methodPhoto: string;
+    userPicker = false;
 
-    constructor(private actionSheetController: ActionSheetController) { }
+    constructor(private actionSheetController: ActionSheetController,
+                private platform: Platform
+    ) { }
 
-    ngOnInit() {}
+    ngOnInit() {
+        console.log(`la plataforma es mobile : ${this.platform.is('mobile')}`);
+        console.log(`la plataforma es hybrid: ${this.platform.is('hybrid')}`);
+        console.log(`la plataforma es desktop: ${this.platform.is('desktop')}`);
+        if ((this.platform.is('mobile') && !this.platform.is('hybrid')) ||
+            this.platform.is('desktop')) {
+            this.userPicker = true;
+        }
+    }
 
     async onPickImage() {
-        if (!Capacitor.isPluginAvailable('Camera')) {
+        if (!Capacitor.isPluginAvailable('Camera') || this.userPicker) {
+            this.filePickeRef.nativeElement.click();
             return;
         }
 
@@ -30,14 +43,14 @@ export class ImagePickerComponent implements OnInit {
                 text: 'Tomar Foto',
                 icon: 'camera',
                 handler: () => {
-                    this.method(CameraSource.Camera);
+                    this.openCamera(CameraSource.Camera);
                     console.log('Tomar una foto clicked');
                 }
             }, {
                 text: 'Elegir de Mis Fotos',
                 icon: 'image',
                 handler: () => {
-                    this.method(CameraSource.Photos);
+                    this.openCamera(CameraSource.Photos);
                     console.log('Elegir de Mis Fotos clicked');
                 }
             }, {
@@ -45,7 +58,7 @@ export class ImagePickerComponent implements OnInit {
                 icon: 'close',
                 role: 'cancel',
                 handler: () => {
-                    this.method(null);
+                    this.openCamera(null);
                     console.log('Cancel clicked');
                 }
             }]
@@ -54,7 +67,8 @@ export class ImagePickerComponent implements OnInit {
         action.present();
     }
 
-    method(value) {
+    openCamera(value) {
+        console.log('llegue al metodo escogido');
         if (value) {
             Plugins.Camera.getPhoto({
                 quality: 50,
@@ -68,12 +82,28 @@ export class ImagePickerComponent implements OnInit {
                 source: value
             }).then(image => {
                 this.selectedImage = image.base64String;
-                this.ImagePick.emit(image.base64String);
-            })
-            .catch(error => {
+
+                console.log('ahora emito la foto cochino');
+                this.imagePick.emit(image.base64String);
+            }).catch(error => {
                 console.log(error);
+
                 return false;
             });
         }
+    }
+
+    onFileChosen(event: Event) {
+        const pickedFile = (event.target as HTMLInputElement).files[0];
+        if (!pickedFile) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.onload = () => {
+          const dataUrl = fr.result.toString();
+          this.selectedImage = dataUrl;
+          this.imagePick.emit(pickedFile);
+        };
+        fr.readAsDataURL(pickedFile);
     }
 }

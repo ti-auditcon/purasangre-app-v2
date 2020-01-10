@@ -1,19 +1,19 @@
 // ENV
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ToastController, ActionSheetController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController } from '@ionic/angular';
 
-import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
+
+import { map } from 'rxjs/operators';
 
 import { ProfileService } from './profile.service';
 import { AuthService } from '../auth/auth.service';
 import { Profile } from '../../models/users/profile.model';
-import { BehaviorSubject } from 'rxjs';
-import { take, tap, map } from 'rxjs/operators';
 
 // const { Camera } = Plugins;
 
@@ -35,10 +35,11 @@ export class ProfilePage {
     constructor(
         private router: Router,
         private profileService: ProfileService,
-        // public toastController: ToastController,
+        private http: HttpClient,
         private authService: AuthService,
-        private actionSheetCtrl: ActionSheetController,
-        private alertCtrl: AlertController
+        private toastController: ToastController,
+        private alertCtrl: AlertController,
+        private viewCtrl: ModalController
     ) {}
 
     base64Image;
@@ -75,15 +76,13 @@ export class ProfilePage {
         }, 2000);
     }
 
-    // async presentToast(text = 'Error', duration = 2500) {
-    //     const toast = await this.toastController.create({
-    //         message: text,
-    //         duration,
-    //         position: 'top'
-    //     });
+    async presentToast(message: string) {
+        const toast = await this.toastController.create({
+             message, duration: 2500, position: 'top'
+        });
 
-    //     toast.present();
-    // }
+        toast.present();
+    }
 
     // async takePicture() {
 
@@ -181,35 +180,66 @@ export class ProfilePage {
     //     });
     // }
 
-    onPickImage(imageData) {
+    onPickImage(imageData: File) {
+        console.log('entre a onPickImage...');
+        console.log(imageData);
 
+        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            const parsedData = JSON.parse(authData.value) as {
+                token: string
+            };
+            const httpOptions = {
+                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+            };
+
+            const avatar = new FormData();
+
+            avatar.append('avatar', imageData);
+
+            console.log(avatar);
+
+            this.http.post(`${environment.SERVER_URL}/profile/image`, avatar, httpOptions)
+                .subscribe((result: any) => {
+                    this.presentToast('datos actualizados con éxito');
+
+                    this.ionViewWillEnter();
+                },
+                err => {
+                    console.log(err);
+                    console.log('aqui estoy');
+
+                    this.viewCtrl.dismiss();
+                    this.presentToast('No se ha podido actualizar la imagen de perfil');
+                }
+            );
+        });
     }
 
-    takePicture() {
-        // this.actionSheetCtrl.create({
-        //     header: 'Cambiar Foto de Perfil',
-        //     buttons: [
-        //         {
-        //             text: 'Tomar una Foto',
-        //             handler: () => {
-        //                 this.openBookingModal('select');
-        //             }
-        //         },
-        //         {
-        //             text: 'Importar de mi Galería',
-        //             handler: () => {
-        //                 this.openBookingModal('random');
-        //             }
-        //         },
-        //         {
-        //             text: 'Cancelar',
-        //             role: 'cancel'
-        //         }
-        //     ]
-        // }).then(actionSheetEl => {
-        //     actionSheetEl.present();
-        // });
-    }
+    // takePicture() {
+    //     // this.actionSheetCtrl.create({
+    //     //     header: 'Cambiar Foto de Perfil',
+    //     //     buttons: [
+    //     //         {
+    //     //             text: 'Tomar una Foto',
+    //     //             handler: () => {
+    //     //                 this.openBookingModal('select');
+    //     //             }
+    //     //         },
+    //     //         {
+    //     //             text: 'Importar de mi Galería',
+    //     //             handler: () => {
+    //     //                 this.openBookingModal('random');
+    //     //             }
+    //     //         },
+    //     //         {
+    //     //             text: 'Cancelar',
+    //     //             role: 'cancel'
+    //     //         }
+    //     //     ]
+    //     // }).then(actionSheetEl => {
+    //     //     actionSheetEl.present();
+    //     // });
+    // }
 
     async onLogout() {
         const alert = await this.alertCtrl.create({
