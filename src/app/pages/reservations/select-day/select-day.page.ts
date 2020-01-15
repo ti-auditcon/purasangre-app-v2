@@ -23,6 +23,15 @@ export class SelectDayPage  {
                  public loadingController: LoadingController
                 ) { }
 
+    ionViewDidEnter() {
+        this.weekLoader();
+    }
+
+    /**
+     * Show loading while retrieve the week's classes
+     *
+     * @return void
+     */
     async weekLoader() {
         const loading = await this.loadingController.create({
             message: 'Cargando semana...',
@@ -53,9 +62,7 @@ export class SelectDayPage  {
         });
     }
 
-  ionViewDidEnter() {
-    this.weekLoader();
-  }
+
 
     goToAddHour(date: string = '2015-01-01', has: boolean = false ) {
         console.log(has);

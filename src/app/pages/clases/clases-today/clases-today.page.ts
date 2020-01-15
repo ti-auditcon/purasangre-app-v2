@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component  } from '@angular/core';
 
 import { Plugins } from '@capacitor/core';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
     selector: 'app-clases-today',
@@ -14,7 +15,8 @@ import { Plugins } from '@capacitor/core';
 export class ClasesTodayPage {
     public today: any = '';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+                private loadingController: LoadingController) { }
 
     // Refresh
     doRefresh(event) {
@@ -30,17 +32,28 @@ export class ClasesTodayPage {
     }
 
     ionViewDidEnter() {
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
-            const httpOptions = {
-                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
-            };
+        this.retrieveTodayWods();
+    }
 
-            this.http.get(`${ environment.SERVER_URL }/today`, httpOptions)
-            .subscribe((result: any) => {
-                this.today = result.data;
+    async retrieveTodayWods() {
+        const loading = await this.loadingController.create({
+            spinner: 'crescent'
+        });
+
+        loading.present().then(() => {
+            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+                const parsedData = JSON.parse(authData.value) as {
+                    token: string
+                };
+                const httpOptions = {
+                    headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+                };
+
+                this.http.get(`${ environment.SERVER_URL }/today`, httpOptions)
+                .subscribe((result: any) => {
+                    this.today = result.data;
+                    loading.dismiss();
+                });
             });
         });
     }

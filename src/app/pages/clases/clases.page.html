@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <div *ngFor="let wod of todayWods">
+    <div *ngFor="let wod of todayWods" class="mb-2">
         <div class="clases-cards"
              [routerLink]="['/', 'home', 'tabs', 'clases', 'wods', wod.identificador, 'show']"
              *ngIf="!wod.rels.auth.reservationHas"

@@ -5,7 +5,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Platform, ModalController, IonInfiniteScroll } from '@ionic/angular';
+import { Platform, ModalController, IonInfiniteScroll, LoadingController } from '@ionic/angular';
 
 import { Plugins } from '@capacitor/core';
 
@@ -43,6 +43,7 @@ export class EditConfirmPage {
                  private router: Router,
                  private http: HttpClient,
                  public activatedRoute: ActivatedRoute,
+                 private loadingController: LoadingController
                ) {}
 
     ionViewDidEnter() {
@@ -61,30 +62,40 @@ export class EditConfirmPage {
 
         console.log('hola entre a la clase para editar');
 
-        const id = this.activatedRoute.snapshot.paramMap.get('wodId');
+        this.retrieveClase();
+    }
 
-        console.log(this.activatedRoute);
-        console.log(this.activatedRoute.snapshot.paramMap);
-        console.log('sii');
-        console.log('sii');
+    async retrieveClase() {
+        const loading = await this.loadingController.create({
+            spinner: 'crescent'
+        });
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
-            this.httpOptions = {
-                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
-            };
+        loading.present().then(() => {
+            const id = this.activatedRoute.snapshot.paramMap.get('wodId');
 
-            this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
-                .subscribe((result: any) => {
-                    console.log(' http entre a la clase para editar');
-                    this.clase = result.data;
-                    console.log(this.clase);
-                    this.reservationUrl = this.clase.rels.reservations.href;
-                    this.loadUsers();
-                }
-            );
+            console.log(this.activatedRoute);
+            console.log(this.activatedRoute.snapshot.paramMap);
+            console.log('sii');
+
+            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+                const parsedData = JSON.parse(authData.value) as {
+                    token: string
+                };
+                this.httpOptions = {
+                    headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+                };
+
+                this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
+                    .subscribe((result: any) => {
+                        console.log(' http entre a la clase para editar');
+                        this.clase = result.data;
+                        console.log(this.clase);
+                        this.reservationUrl = this.clase.rels.reservations.href;
+                        this.loadUsers();
+                        loading.dismiss();
+                    }
+                );
+            });
         });
     }
 

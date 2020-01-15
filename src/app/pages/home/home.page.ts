@@ -23,15 +23,20 @@ export class HomePage implements OnInit {
     statusConnection = true;
     public animationState = 'invisible'; // Or Enum with visible/invisible.
 
-    constructor(public modalController: ModalController) {
-        this.checkConnection();
-    }
+    constructor(public modalController: ModalController) { }
 
     ngOnInit() {
+        this.checkConnection();
         // console.log('i´m here at the home page');
     }
 
-        async checkConnection() {
+    /**
+     * Keep listen for status connection change,
+     * and show an animation alert if it happens
+     *
+     * @return void
+     */
+    async checkConnection() {
         const handler = Plugins.Network.addListener('networkStatusChange', (estado) => {
             if (estado.connected === true) {
                 this.statusConnection = true;

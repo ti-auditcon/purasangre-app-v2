@@ -11,13 +11,37 @@ import { Plugins } from '@capacitor/core';
 
 import { map } from 'rxjs/operators';
 
-import { ProfileService } from './profile.service';
 import { AuthService } from '../auth/auth.service';
+import { ProfileService } from './profile.service';
 import { Profile } from '../../models/users/profile.model';
 
-// const { Camera } = Plugins;
+/**
+ * Convert image string into image file
+ *
+ * @return  Blob
+ */
+function base64toBlob(base64Data: any, contentType: string) {
+    contentType = contentType || '';
+    const sliceSize = 1024;
+    const byteCharacters = window.atob(base64Data);
+    const bytesLength = byteCharacters.length;
+    const slicesCount = Math.ceil(bytesLength / sliceSize);
+    const byteArrays = new Array(slicesCount);
 
-const TOKEN_KEY = 'auth-token';
+    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        const begin = sliceIndex * sliceSize;
+        const end = Math.min(begin + sliceSize, bytesLength);
+
+        const bytes = new Array(end - begin);
+
+        for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+
+    return new Blob(byteArrays, { type: contentType });
+}
 
 @Component({
     selector: 'app-profile',
@@ -46,11 +70,13 @@ export class ProfilePage {
     preImage;
 
     ionViewWillEnter() {
+        console.log('ionViewWillEnter');
         this.profileService.profileId.pipe(
             map(isAuthenticated => {
                 if (isAuthenticated) {
                     // console.log('esta autenticado men, no necesita pedir el profile a la api');
                     this.loadedProfile = null;
+
                     this.profileService.profile.subscribe(profile => {
                         this.loadedProfile = profile;
                     });
@@ -68,8 +94,9 @@ export class ProfilePage {
     doRefresh(event) {
         console.log('Begin async operation');
 
-        this.ionViewWillEnter();
         setTimeout(() => {
+            Plugins.Storage.remove({ key: 'authProfile' });
+            this.profileService.fetchProfile().subscribe();
             console.log('Async operation has ended');
 
             event.target.complete();
@@ -180,9 +207,23 @@ export class ProfilePage {
     //     });
     // }
 
-    onPickImage(imageData: File) {
+    onPickImage(imageData: File | string) {
+        let imageFile;
+        if (typeof imageData === 'string') {
+          try {
+            imageFile = base64toBlob(
+              imageData.replace('data:image/jpeg;base64,', ''),
+              'image/jpeg'
+            );
+          } catch (error) {
+            console.log(error);
+            return;
+          }
+        } else {
+          imageFile = imageData;
+        }
         console.log('entre a onPickImage...');
-        console.log(imageData);
+        console.log(imageFile);
 
         Plugins.Storage.get({ key: 'authData' }).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
@@ -194,12 +235,15 @@ export class ProfilePage {
 
             const avatar = new FormData();
 
-            avatar.append('avatar', imageData);
+            avatar.append('avatar', imageFile);
 
             console.log(avatar);
 
-            this.http.post(`${environment.SERVER_URL}/profile/image`, avatar, httpOptions)
-                .subscribe((result: any) => {
+            this.http.post(
+                `${ environment.IMAGE_URL }/api/users/${ this.loadedProfile.id }/image`,
+                avatar,
+                httpOptions
+            ).subscribe((result: any) => {
                     this.presentToast('datos actualizados con éxito');
 
                     this.ionViewWillEnter();
