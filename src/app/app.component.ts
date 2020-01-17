@@ -1,46 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
-import { Plugins, Capacitor, PushNotification, PushNotificationActionPerformed } from '@capacitor/core';
+
+import { Plugins, Capacitor } from '@capacitor/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
-    constructor(
-        private platform: Platform,
-    ) {
+export class AppComponent {
+    constructor(private platform: Platform) {
         this.initializeApp();
-    }
-
-    ngOnInit() {
-        console.log('se inicializa la appcomponent');
-
-        Plugins.PushNotifications.register();
-
-        Plugins.PushNotifications.addListener(
-            'pushNotificationReceived',
-            (notification: PushNotification) => {
-                console.log(
-                    notification.title, notification.subtitle,
-                    notification.body, notification.id,
-                    notification.badge, notification.notification,
-                    notification.data, notification.click_action,
-                    notification.link
-                );
-            }
-        );
-
-        Plugins.PushNotifications.addListener(
-            'pushNotificationActionPerformed',
-            (notification: PushNotificationActionPerformed) => {
-                console.log(
-                    notification.actionId, notification.inputValue, notification.notification
-                );
-            }
-        );
     }
 
     initializeApp() {
