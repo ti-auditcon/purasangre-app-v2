@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition, query } from '@angular/animations';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 
 import {
     Plugins, PushNotificationToken,
@@ -30,7 +30,8 @@ export class HomePage implements OnInit {
     statusConnection = true;
     public animationState = 'invisible'; // Or Enum with visible/invisible.
 
-    constructor(public modalController: ModalController) { }
+    constructor(public modalController: ModalController,
+                private alertCtrl: AlertController) { }
 
     ngOnInit() {
         this.checkConnection();
@@ -42,32 +43,35 @@ export class HomePage implements OnInit {
         PushNotifications.register();
 
         // On success, we should be able to receive notifications
-        PushNotifications.addListener('registration',
-            (token: PushNotificationToken) => {
-                alert('Push registration success, token: ' + token.value);
+        PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+            alert('Push registration success, token: ' + token.value);
 
-                console.log('Push registration success, token: ' + token.value);
-            }
-        );
+            console.log('Push registration success, token: ' + token.value);
+        });
 
         // Some issue with our setup and push will not work
-        PushNotifications.addListener('registrationError',
-            (error: any) => {
-                alert('Error on registration: ' + JSON.stringify(error));
-            }
-        );
+        PushNotifications.addListener('registrationError', (error: any) => {
+            alert('Error on registration: ' + JSON.stringify(error));
+        });
 
         // Show us the notification payload if the app is open on our device
-        PushNotifications.addListener('pushNotificationReceived',
-            (notification: PushNotification) => {
-                alert('Push received: ' + JSON.stringify(notification));
-            }
-        );
+        PushNotifications.addListener('pushNotificationReceived', (notification: PushNotification) => {
+            console.log('pushNotificationReceived: ' + JSON.stringify(notification));
+        });
 
         // Method called when tapping on a notification
         PushNotifications.addListener('pushNotificationActionPerformed',
             (notification: PushNotificationActionPerformed) => {
-                alert('Push action performed: ' + JSON.stringify(notification));
+                const message = JSON.stringify(notification.notification.data.title);
+                this.alertCtrl.create({
+                    message, buttons: ['Entendido']
+                })
+                .then(alertEl => alertEl.present());
+                console.log('Notification');
+                console.log(notification.notification);
+                console.log('Notification stringified');
+                console.log(JSON.stringify(notification.notification));
+                console.log('input value');
             }
         );
     }

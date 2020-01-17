@@ -14,12 +14,15 @@ export class AppComponent {
         this.initializeApp();
     }
 
+    /**
+     * [initializeApp description]
+     *
+     * @return void
+     */
     initializeApp() {
         this.platform.ready().then(() => {
             if (Capacitor.isPluginAvailable('SplashScreen')) {
-                Plugins.SplashScreen.hide({
-                    fadeOutDuration: 500
-                });
+                Plugins.SplashScreen.hide({ fadeOutDuration: 500 });
             }
         });
     }
@@ -35,6 +38,6 @@ export class AppComponent {
     //         } else {
     //             this.presentToast(msg.body);
     //         }
-    //         });
+    //     });
     // }
 }
