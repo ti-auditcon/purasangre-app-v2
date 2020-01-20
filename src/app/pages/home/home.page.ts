@@ -1,5 +1,8 @@
+import { environment } from '../../../environments/environment';
+
 import { Component, OnInit } from '@angular/core';
-import { trigger, state, style, animate, transition, query } from '@angular/animations';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { ModalController, AlertController } from '@ionic/angular';
 
@@ -7,6 +10,7 @@ import {
     Plugins, PushNotificationToken,
     PushNotification, PushNotificationActionPerformed
 } from '@capacitor/core';
+
 
 const { PushNotifications } = Plugins;
 
@@ -31,7 +35,8 @@ export class HomePage implements OnInit {
     public animationState = 'invisible'; // Or Enum with visible/invisible.
 
     constructor(public modalController: ModalController,
-                private alertCtrl: AlertController) { }
+                private alertCtrl: AlertController,
+                private http: HttpClient) { }
 
     ngOnInit() {
         this.checkConnection();
@@ -44,7 +49,30 @@ export class HomePage implements OnInit {
 
         // On success, we should be able to receive notifications
         PushNotifications.addListener('registration', (token: PushNotificationToken) => {
-            alert('Push registration success, token: ' + token.value);
+            const pushToken = token.value;
+            Plugins.Storage.get({key: 'authData'}).then((authData) => {
+
+                const parsedData = JSON.parse(authData.value) as { token: string };
+
+                const httpOptions = {
+                    headers: new HttpHeaders({
+                        Authorization: `Bearer ${parsedData.token}` // updated
+                    })
+                };
+
+                this.http.post(`${environment.SERVER_URL}/fcm/token/`,
+                               { fcmtoken: pushToken },
+                               httpOptions
+                ).subscribe((result: any) => {
+                        console.log('success to post token');
+                    },
+                    (err) => {
+                        console.log('error to post token');
+
+                        console.log(err);
+                    }
+                );
+            });
 
             console.log('Push registration success, token: ' + token.value);
         });
@@ -55,23 +83,41 @@ export class HomePage implements OnInit {
         });
 
         // Show us the notification payload if the app is open on our device
-        PushNotifications.addListener('pushNotificationReceived', (notification: PushNotification) => {
+        PushNotifications.addListener(
+            'pushNotificationReceived', (notification: PushNotification
+        ) => {
             console.log('pushNotificationReceived: ' + JSON.stringify(notification));
         });
 
         // Method called when tapping on a notification
         PushNotifications.addListener('pushNotificationActionPerformed',
             (notification: PushNotificationActionPerformed) => {
-                const message = JSON.stringify(notification.notification.data.title);
-                this.alertCtrl.create({
-                    message, buttons: ['Entendido']
-                })
-                .then(alertEl => alertEl.present());
-                console.log('Notification');
-                console.log(notification.notification);
-                console.log('Notification stringified');
-                console.log(JSON.stringify(notification.notification));
-                console.log('input value');
+                const header: any = notification.notification.data.title || 'Notificación';
+                const message: any = notification.notification.data.body;
+
+                const data: any = notification.notification.data;
+
+                console.log('data');
+                console.log(data);
+
+                console.log('data title');
+                console.log(data.title);
+
+                console.log('data body');
+                console.log(data.body);
+
+                console.log('header: ' + header, 'message: ' + message);
+
+                if (message) {
+                    this.alertCtrl.create({ header, message, buttons: ['Entendido']})
+                        .then(alertEl => alertEl.present());
+                }
+
+                console.log('Notification data title');
+                console.log(notification.notification.data.title);
+
+                console.log('Notification data body');
+                console.log(notification.notification.data.body);
             }
         );
     }
