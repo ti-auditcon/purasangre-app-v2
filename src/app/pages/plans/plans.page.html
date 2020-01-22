@@ -13,7 +13,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content 
             pullingIcon=""
@@ -37,12 +37,12 @@
         <!-- Si tiene plan activo  -->
         <div class="card-plan actual">
             <div class="ps-row plan-up">
-                <div class="col-8">
+                <div class="col-7">
                     <h2>{{ userActualPlan?.rels?.plan.name }}</h2>
                     
                     <h5>{{ userActualPlan?.rels?.plan.period }}</h5>
                 </div>
-                <div class="col-4" class="ion-text-end">
+                <div class="ion-text-end col-5">
                     <div class="status" [ngClass]="{
                         'active': userActualPlan?.status?.id == 1,
                         'finished':userActualPlan?.status?.id == 4

@@ -13,7 +13,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content
             pullingIcon=""
@@ -62,9 +62,12 @@
   
     <div class="section wod-resumen">
         <div *ngIf="wods.length === 0" class="wod-slide">
-            <div class="card card-resumen">
+            <div class="card-header">
+                <h1 class="title-section">Workout de Hoy</h1>
+            </div>
+            <div class="card card-resumen no-shadow">
                 <div class="text-box-resumen">                    
-                    <p>No hay entrenamientos registrado para hoy día.</p>
+                    <p class="center">No hay entrenamientos registrados para hoy.</p>
                 </div>
             </div>
         </div>

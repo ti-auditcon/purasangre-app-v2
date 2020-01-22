@@ -88,10 +88,10 @@
   // --ion-background-color: red;
   --ion-background-color: #F9F9F9;
 
-  --ion-toolbar-background: linear-gradient(180deg, #0075C9 0%, #00BFC9 100%);
+  // --ion-toolbar-background: linear-gradient(180deg, #0075C9 0%, #00BFC9 100%);
   // --ion-toolbar-background: linear-gradient(93.67deg, #01BCC8 0.75%, #0396B6 81.3%);
-  --ion-toolbar-color: white;
-  --ion-toolbar-border-color: white;
+  // --ion-toolbar-color: white;
+  // --ion-toolbar-border-color: white;
   --ion-tab-bar-color: transparent;
   --ion-background-color-focus: #0396B6;
   --ion-tab-bar-color-activated: transparent;
@@ -101,7 +101,9 @@
   --ion-toast-background: linear-gradient(108.4deg, #FC0F85 6.69%, #9300AB 88.08%);
   --ion-font-family: 'Ubuntu', sans-serif;
 
-  --ion-padding: 18px;
+  // --ion-padding: 18px;
+  // --ion-padding: 24px;
+  // --ion-padding-top: 30px;
 
   // --background: red;
 
@@ -124,6 +126,13 @@ ion-tab-button {
 
 ion-tab-button.tab-selected {
   background: var(--ion-background-color-focus);
+}
+
+ion-toolbar {
+  --color: white;
+  --border-width: 1px;
+  --border-color: white;
+  --background: linear-gradient(180deg, #0075C9 0%, #00BFC9 100%);
 }
 
 ion-slides {
@@ -205,6 +214,10 @@ svg {
 
 ion-content {
   --background: #F9F9F9;
+  --padding-top: 28px;
+  --padding-end: 20px;
+  --padding-bottom: 18px;
+  --padding-start: 20px;
 }
 
 .master-content {
@@ -476,8 +489,8 @@ ion-content {
   }
   .card-info {
     background: #F9F9F9;
-    padding-top: 10px;
-    padding-bottom: 21px;
+    padding-top: 14px;
+    padding-bottom: 18px;
     // border: 0.5px solid #C4C4C4;
     border: 0.5px solid #E4E4E4;
     box-shadow: none;
@@ -503,7 +516,7 @@ ion-content {
 }
 
 .wod-resumen {
-  margin-bottom: 36px;
+  margin-bottom: 26px;
 }
 
 .wod-slide {
@@ -581,18 +594,26 @@ ion-content {
   .text-box-resumen {
     width: 100%;
     padding: 24px 21px;
-    padding-bottom: 51px;
-    height: 180px;
+    // padding-bottom: 51px;
+    // height: 180px;
     background: transparent;
     overflow: scroll;
+    margin: auto;
     // border: 0.5px solid #C4C4C4;
     p {
       z-index: 5;
       padding-top: 0;
-      margin-top: 0;
+      margin: auto;
       font-size: 14px;
       line-height: 18px;
       white-space: pre-line;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    p.center {
+      text-align: center;
+      width: 80%;
+      margin-bottom: 0;
     }
   }
   .button-success {
@@ -638,10 +659,14 @@ ion-content {
   background: linear-gradient(161.62deg, #FC0F85 6.69%, #9300AB 88.08%);
 }
 
+// .clases-cards-wrapper {
+//   margin-top: 15px;
+// }
+
 .clases-cards {
-  &:first-child {
-    margin-top: 15px;
-  }
+  // &:first-child {
+  //   margin-top: 15px;
+  // }
   .clase-card {
     cursor: pointer;
     padding: 17px 18px 18px 18px;
@@ -649,6 +674,7 @@ ion-content {
     background: #F9F9F9;
     margin-bottom: 7px;
     border-radius: 6px;
+    outline: none;
     border: 0.5px solid #E4E4E4;
     -webkit-box-shadow: 0px 1px 10px rgba(85, 85, 85, 0.14);
     -moz-box-shadow: 0px 1px 10px rgba(85, 85, 85, 0.14);
@@ -701,6 +727,7 @@ ion-content {
     color: white;
     background: linear-gradient(312deg, #fc0f85, #9300ab);
     background-size: 200% 200%;
+    // margin-bottom: 0px;
     -webkit-animation: buttonGradient 3s ease infinite;
     -moz-animation: buttonGradient 3s ease infinite;
     -o-animation: buttonGradient 3s ease infinite;
@@ -1384,7 +1411,9 @@ ion-content {
     }
     h5.persona-cambiar-foto-perfil {
       margin: 0;
-      font-size: 13px;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 600;
       text-align: center;
       background: rgb(31, 135, 239);
       -webkit-background-clip: text;
@@ -1701,17 +1730,31 @@ ion-toast {
 }
 
 .image-container {
-    // &::before {
-    //     position: absolute;
-    //     width: 100vw;
-    //     height: 100vh;
-    //     background: red;
-    //     top: 0;
-    //     left: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     margin: auto;
-    // }
+  p.the-user {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: -11px;
+  }
+  card-content {
+    --padding: 0;
+  }
+}
+
+.connection-status {
+  width: 100%;
+  p {
+    padding: 6px 0px;
+    color: white;
+    font-size: 12px;
+    margin: 0;
+    text-align: center;
+  }
+  p.no {
+    background: var(--ion-color-danger);
+  }
+  p.yes {
+    background: linear-gradient(108.43deg, #259F06 11.38%, #35AF17 63.4%);
+  }
 }
 
 .layer-blur {

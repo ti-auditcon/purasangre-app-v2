@@ -21,8 +21,8 @@
         <p>Sin Conexion</p>
     </div> -->
 
-    <div [@animation]="animationState">
-        <p *ngIf="animationState == 'visible'">Sin conexión</p>
-        <p *ngIf="animationState != 'visible'">Vuelves a tener conexión</p>
+    <div [@animation]="animationState" class="connection-status">
+        <p class="no" *ngIf="animationState == 'visible'">Sin conexión</p>
+        <p class="yes" *ngIf="animationState != 'visible'">De nuevo en linea</p>
     </div>
 </ion-tabs>
