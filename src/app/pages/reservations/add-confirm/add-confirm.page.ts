@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, ViewChild} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { Platform, ModalController } from '@ionic/angular';
 
@@ -44,13 +43,11 @@ export class AddConfirmPage  {
     actualModal: any;
     varIsPressed = false;
 
-    constructor( public plt: Platform,
-                 private modalController: ModalController,
-                 private storage: Storage,
-                 private http: HttpClient,
-                 public activatedRoute: ActivatedRoute,
-
-              ) {
+    constructor(public plt: Platform,
+                private modalController: ModalController,
+                private http: HttpClient,
+                public activatedRoute: ActivatedRoute,
+               ) {
         if (this.plt.is('ios')) {
             // Si es iOS
             this.buttonFixIOS = 'button-fix-ios';
@@ -82,7 +79,6 @@ export class AddConfirmPage  {
         // this.buttonIcon = modal.componentProps.buttonIcon;
         return await modal.present();
     }
-
 
     ionViewDidEnter() {
         this.page = 1;

@@ -2,6 +2,5 @@
 <resources>
     <string name="app_name">purasangreV2</string>
     <string name="title_activity_main">purasangreV2</string>
-    <string name="package_name">com.asomic.purasangreV2</string>
     <string name="custom_url_scheme">com.asomic.purasangreV2</string>
 </resources>

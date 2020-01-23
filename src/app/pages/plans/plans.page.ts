@@ -53,7 +53,6 @@ export class PlansPage {
 
     ionViewDidEnter() {
         Plugins.Storage.get({key: 'authData'}).then((authData) => {
-
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };

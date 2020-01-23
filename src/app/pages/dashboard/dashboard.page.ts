@@ -1,17 +1,13 @@
-// env
 import { environment } from '../../../environments/environment';
 
 import { Router } from '@angular/router';
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// import { Firebase } from '@ionic-native/firebase/ngx';
-// import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-
 import { Plugins } from '@capacitor/core';
 
 import { Label } from 'ng2-charts';
-import { ChartDataSets, ChartOptions, Chart, TickOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, Chart } from 'chart.js';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -75,9 +71,7 @@ export class DashboardPage {
 
     ionViewWillEnter() {
         Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
+            const parsedData = JSON.parse(authData.value) as { token: string };
 
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -103,9 +97,7 @@ export class DashboardPage {
             this.http.get(`${environment.SERVER_URL}/users-alerts`, httpOptions)
                 .subscribe((result: any) => {
                     this.alerts = result.data;
-                    // console.log(this.alerts);
                 }, err => {
-                    // this.firebase.logEvent("user_alerts_error", {content_type: "http_error", item_id: "dashboard"});
                     console.log('error user-alerts');
                 });
 
@@ -136,12 +128,8 @@ export class DashboardPage {
                                     position: 'left',
                                     id: 'y-axis-1',
                                     gridLines: { display: false },
-                                    // labels: {
-                                    //     display: true
-                                    // },
                                     ticks: {
                                         suggestedMax: 24,
-                                        // precision: 1,
                                         beginAtZero: true,
                                     }
                                 }]
@@ -149,10 +137,10 @@ export class DashboardPage {
                         },
                     });
                 },
-                    err => {
-                        console.log('error assistance');
-                    }
-                );
+                err => {
+                    console.log('error assistance');
+                }
+            );
         });
     }
 

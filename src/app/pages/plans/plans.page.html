@@ -6,6 +6,7 @@
                     <span class="title-header">Planes</span>
                 </div>
             </div>
+            
             <div class="toolbar-right">
                 <img class="shieldLogoBN" src="assets/brand/ma_purasangre.png">
             </div>
@@ -33,47 +34,58 @@
                 <!-- <img src="/assets/icon/pay-historial.svg"> -->
                 <p>Historial</p>
             </div>
-        </div> 
+        </div>
+
         <!-- Si tiene plan activo  -->
-        <div class="card-plan actual">
-            <div class="ps-row plan-up">
-                <div class="col-7">
-                    <h2>{{ userActualPlan?.rels?.plan.name }}</h2>
-                    
-                    <h5>{{ userActualPlan?.rels?.plan.period }}</h5>
+        <div *ngIf="userActualPlan; withoutPlan">
+            <div class="card-plan actual">
+                <div class="ps-row plan-up">
+                    <div class="col-7">
+                        <h2>{{ userActualPlan?.rels?.plan.name }}</h2>
+                        
+                        <h5>{{ userActualPlan?.rels?.plan.period }}</h5>
+                    </div>
+                    <div class="ion-text-end col-5">
+                        <div class="status" [ngClass]="{
+                            'active': userActualPlan?.status?.id == 1,
+                            'finished':userActualPlan?.status?.id == 4
+                        }">
+                            {{ userActualPlan?.status?.name }}
+                        </div>
+                    </div>
                 </div>
-                <div class="ion-text-end col-5">
-                    <div class="status" [ngClass]="{
-                        'active': userActualPlan?.status?.id == 1,
-                        'finished':userActualPlan?.status?.id == 4
-                    }">
-                        {{ userActualPlan?.status?.name }}
+                
+                <div class="ps-row plan-bottom ion-align-items-end">
+                    <div class="col-8">
+                        <p><b>Contratado el</b><br>
+                            {{ userActualPlan?.inicio }}
+                        </p>  
+                        <p><b>Vencimiento el</b><br>
+                            {{ userActualPlan?.vencimiento }}
+                        </p>
+                    </div>
+                    
+                    <div class="col-5 amount ion-text-end" *ngIf="userActualPlan?.rels?.bill.has">
+                        <h4>{{ userActualPlan?.rels?.bill.amount }}</h4>
                     </div>
                 </div>
             </div>
-            
-            <div class="ps-row plan-bottom ion-align-items-end">
-                <div class="col-8">
-                    <p><b>Contratado el</b><br>
-                        {{ userActualPlan?.inicio }}
-                    </p>  
-                    <p><b>Vencimiento el</b><br>
-                        {{ userActualPlan?.vencimiento }}
-                    </p>
-                </div>
-                
-                <div class="col-5 amount ion-text-end" *ngIf="userActualPlan?.rels?.bill.has">
-                    <h4>{{ userActualPlan?.rels?.bill.amount }}</h4>
-                </div>
+            <button 
+                class="button-confirm"
+                [routerLink]="['/', 'home', 'tabs', 'plans', userActualPlan?.rels?.plan.id, 'details']"
+                *ngIf="userActualPlan?.canContract"
+            >
+                Renovar este Plan
+            </button>
+        </div>
+
+        <div #withoutPlan >
+            <div class="card-plan no-plan">
+                No tienes un plan activo.<br>
+                Puedes comprar un plan a continuación
             </div>
         </div>
-        <button 
-            class="button-confirm"
-            [routerLink]="['/', 'home', 'tabs', 'plans', userActualPlan?.rels?.plan.id, 'details']"
-            *ngIf="userActualPlan?.canContract"
-        >
-            Renovar este Plan
-        </button>
+
     </div>
     
      <div class="separator separator-plan"></div>
@@ -101,19 +113,19 @@
             
             <div class="item" [ngClass]="{'active': selectedFilter3}" (click)="planFilter(3)">
                 <img class="normal" src="/assets/icon/filter-quarterly.svg">
-                
+
                 <img class="active" src="/assets/icon/filter-quarterly-selected.svg">
-            
+
                 <h6 class="normal">Trimestral</h6>
-                
+
                 <h6 class="active">Trimestral</h6>
             </div>
-            
+
             <div class="item" [ngClass]="{'active': selectedFilter5}" (click)="planFilter(5)">
                 <img class="normal" src="/assets/icon/filter-biannual.svg">
-                
+
                 <img class="active" src="/assets/icon/filter-biannual-selected.svg">
-            
+
                 <h6 class="normal">Semestral</h6>
 
                 <h6 class="active">Semestral</h6>

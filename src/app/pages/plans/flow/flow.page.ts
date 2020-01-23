@@ -1,15 +1,14 @@
-// env
 import { environment } from '../../../../environments/environment';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Storage } from '@ionic/storage';
-import { Platform, MenuController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 
-// import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 import { Plugins } from '@capacitor/core';
 
 @Component({
@@ -24,18 +23,14 @@ export class FlowPage implements OnInit {
     public url: string;
     public html: any;
 
-    //   @ViewChild('webview') webviewEl: ElementRef;
-
     constructor(
         public activatedRoute: ActivatedRoute,
         public platform: Platform,
-        public menuCtrl: MenuController,
         public zone: NgZone,
         public storage: Storage,
         public http: HttpClient,
         public route: Router,
-        // public iap: InAppBrowser,
-        public sanitizer: DomSanitizer
+        private iab: InAppBrowser,
     ) { }
 
     ngOnInit() { }
@@ -66,31 +61,50 @@ export class FlowPage implements OnInit {
                             console.log('url flow');
                             console.log(flowresult.url);
 
-                            this.navigateFlow(flowresult.url);
+                            // this.navigateFlow(flowresult.url);
 
-                            // const target = '_self';
-                            // const options = '{location:"no"}';
+                            if (this.platform.is('android')) {
+                                const browser = this.iab.create(
+                                    flowresult.url, '_blank',
+                                    `hideurlbar=yes,footer=no,toolbarcolor=#141A29,
+                                    navigationbuttoncolor=#D3D5E0,closebuttoncaption=cerrar,
+                                    closebuttoncolor=#D3D5E0`
+                                );
 
+                                browser.on('loadstop').subscribe((event) => {
+                                  console.log('cargo android');
+                                });
 
-                            //     , '_system', 'usewkwebview=yes'
-                            // );
+                                browser.on('exit').subscribe((event) => {
+                                    this.zone.run(async () => {
+                                        await this.route.navigate([`/plans/${id}`]);
+                                    });
 
-                            // browser.on('loadstop').subscribe((event) => {
-                            //     console.log('cargo');
-                            // });
+                                    browser.close();
+                                });
+                            }
 
-                            // browser.on('exit').subscribe((event) => {
-                            //     this.route.navigate(['/home/plans']);
-                            // });
+                            if (this.platform.is('ios')) {
+                                const browser = this.iab.create(
+                                    flowresult.url,
+                                    '_blank',
+                                    `toolbarposition=top,closebuttoncaption=Cerrar,
+                                    toolbarcolor=#141A29,closebuttoncolor=#D3D5E0,
+                                    navigationbuttoncolor=#D3D5E0`
+                                );
 
-                            // const browser = this.iap.create(flowresult.url, '_system', 'usewkwebview=yes');
-                            // browser.on('loadstop').subscribe((event) => {
-                            //     console.log('cargo');
-                            // });
+                                browser.on('loadstop').subscribe((event) => {
+                                  console.log('cargo ios');
+                                });
 
-                            // browser.on('exit').subscribe((event) => {
-                            //     this.route.navigate(['/home/plans']);
-                            // });
+                                browser.on('exit').subscribe((event) => {
+                                    this.zone.run(async () => {
+                                        await this.route.navigate([`/plans/${id}`]);
+                                    });
+
+                                    browser.close();
+                                });
+                            }
                         }
                     );
                 }

@@ -32,7 +32,6 @@ export class HistorialPage implements OnInit {
 
     ionViewDidEnter() {
         Plugins.Storage.get({key: 'authData'}).then((authData) => {
-
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };
@@ -45,6 +44,7 @@ export class HistorialPage implements OnInit {
 
             this.http.get(`${environment.SERVER_URL}/profile/plans`, httpOptions)
                 .subscribe((result: any) => {
+                    console.log(result.data);
                     this.plans = result.data;
                 }
             );

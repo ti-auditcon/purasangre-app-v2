@@ -1741,20 +1741,20 @@ ion-toast {
 }
 
 .connection-status {
-  width: 100%;
-  p {
-    padding: 6px 0px;
-    color: white;
-    font-size: 12px;
-    margin: 0;
-    text-align: center;
-  }
-  p.no {
-    background: var(--ion-color-danger);
-  }
-  p.yes {
-    background: linear-gradient(108.43deg, #259F06 11.38%, #35AF17 63.4%);
-  }
+    width: 100%;
+    p {
+        padding: 6px 0px;
+        color: white;
+        font-size: 12px;
+        margin: 0;
+        text-align: center;
+    }
+    p.no {
+        background: var(--ion-color-danger);
+    }
+    p.yes {
+        background: linear-gradient(108.43deg, #259F06 11.38%, #35AF17 63.4%);
+    }
 }
 
 .layer-blur {

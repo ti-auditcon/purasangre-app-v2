@@ -11,6 +11,12 @@
     </ion-refresher>
 
     <div class="section">
+        <div class="card card-resumen no-shadow" *ngIf="plans.length == 0">
+            <div class="text-box-resumen">                    
+                <p class="center">Aquí se mostrará el historial de tus planes contratados.</p>
+            </div>
+        </div>
+
         <div class="card-pago" *ngFor="let plan of plans">
             <div class="ps-row pago-up">
                 <div class="col-8">
