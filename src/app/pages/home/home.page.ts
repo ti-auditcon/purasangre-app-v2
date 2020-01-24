@@ -2,7 +2,7 @@ import { environment } from '../../../environments/environment';
 
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { trigger, state, style, animate, transition, AnimationStyleMetadata } from '@angular/animations';
 
 import { ModalController, AlertController } from '@ionic/angular';
 
@@ -26,7 +26,7 @@ const { PushNotifications } = Plugins;
 
             transition('invisible => visible', animate('0.2s')),
 
-            transition('visible => invisible', animate('0.3s 1s'))
+            transition('visible => invisible', animate('0.3s 1.5s'))
         ])
     ],
 })

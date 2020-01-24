@@ -308,6 +308,7 @@ ion-content {
 .sky-gradient {
   background: linear-gradient(95.73deg, #01BCC8 0.75%, #0396B6 81.3%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -477,6 +478,7 @@ ion-content {
     font-size: 28px;
     background: linear-gradient(153.33deg, #FC0F85 6.69%, #9300AB 88.08%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
     margin-top: 4px
@@ -509,6 +511,7 @@ ion-content {
         margin-bottom: 3px;
         background: linear-gradient(153.33deg, #FC0F85 6.69%, #9300AB 88.08%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
     }
@@ -756,6 +759,7 @@ ion-content {
     margin-bottom: 5px;
     background: linear-gradient(159.42deg, #FC0F85 6.69%, #9300AB 88.08%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   h4 {
@@ -864,6 +868,7 @@ ion-content {
     h2 {
       background: linear-gradient(159.42deg, #FC0F85 6.69%, #9300AB 88.08%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       margin: 0;
       font-weight: 700;
@@ -1075,6 +1080,7 @@ ion-content {
       margin: 0;
       background: linear-gradient(162.32deg, #FC0F85 6.69%, #9300AB 88.08%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     h5 {
@@ -1417,6 +1423,7 @@ ion-content {
       text-align: center;
       background: rgb(31, 135, 239);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   }
@@ -1433,6 +1440,7 @@ ion-content {
       margin-bottom: 2px;
       background: linear-gradient(153.33deg, #FC0F85 6.69%, #9300AB 88.08%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     p.persona-vencimiento {
@@ -1753,7 +1761,17 @@ ion-toast {
         background: var(--ion-color-danger);
     }
     p.yes {
-        background: linear-gradient(108.43deg, #259F06 11.38%, #35AF17 63.4%);
+        background-color: #35AF17;
+        -webkit-animation-name: fromRedtoGreen;
+        animation-name: fromRedToGreen;
+        -webkit-animation-duration: 0.7s;
+        animation-duration: 0.7s;
+    }
+
+    /* Standard syntax */
+    @keyframes fromRedtoGreen {
+        from {background-color: var(--ion-color-danger);}
+        to {background-color: #35AF17;}
     }
 }
 

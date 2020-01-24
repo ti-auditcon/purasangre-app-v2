@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, ViewChild} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, LoadingController } from '@ionic/angular';
 import { Platform, ModalController } from '@ionic/angular';
 
 import { Plugins } from '@capacitor/core';
@@ -24,11 +24,8 @@ export class AddConfirmPage  {
     @ViewChild(IonInfiniteScroll, { static: true }) infiniteScroll: IonInfiniteScroll;
 
     public clase: any = [];
-
     public users: any = [];
-
     public reservations: any = [];
-
     public page = 1;
 
     buttonFixIOS: string;
@@ -47,6 +44,7 @@ export class AddConfirmPage  {
                 private modalController: ModalController,
                 private http: HttpClient,
                 public activatedRoute: ActivatedRoute,
+                public loadingController: LoadingController
                ) {
         if (this.plt.is('ios')) {
             // Si es iOS
@@ -82,28 +80,69 @@ export class AddConfirmPage  {
 
     ionViewDidEnter() {
         this.page = 1;
-        const id = this.activatedRoute.snapshot.paramMap.get('claseId');
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
+        this.retrieveClase();
+    }
 
-            this.httpOptions = {
-                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
-            };
+    async retrieveClase() {
+        const loading = await this.loadingController.create({
+            spinner: 'crescent'
+        });
 
-            this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
-                .subscribe((result: any) => {
-                    this.clase = result.data;
+        loading.present().then(() => {
+            const id = this.activatedRoute.snapshot.paramMap.get('claseId');
 
-                    console.log(this.clase);
+            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+                const parsedData = JSON.parse(authData.value) as {
+                    token: string
+                };
 
-                    this.reservationUrl = this.clase.rels.reservations.href;
+                this.httpOptions = {
+                    headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+                };
 
-                    this.loadUsers();
-                }
-            );
+                this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
+                    .subscribe((result: any) => {
+                        this.clase = result.data;
+
+                        console.log(this.clase);
+
+                        this.reservationUrl = this.clase.rels.reservations.href;
+
+                        this.loadUsers();
+
+                        loading.dismiss();
+                    }
+                );
+            });
+
+
+
+            // const id = this.activatedRoute.snapshot.paramMap.get('wodId');
+
+            // console.log(this.activatedRoute);
+            // console.log(this.activatedRoute.snapshot.paramMap);
+            // console.log('sii');
+
+            // Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            //     const parsedData = JSON.parse(authData.value) as {
+            //         token: string
+            //     };
+            //     this.httpOptions = {
+            //         headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+            //     };
+
+            //     this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
+            //         .subscribe((result: any) => {
+            //             console.log(' http entre a la clase para editar');
+            //             this.clase = result.data;
+            //             console.log(this.clase);
+            //             this.reservationUrl = this.clase.rels.reservations.href;
+            //             this.loadUsers();
+            //             loading.dismiss();
+            //         }
+            //     );
+            // });
         });
     }
 
