@@ -59,7 +59,6 @@
                         <img src="{{ reservation?.rels.user.avatar }}" 
                              ion-button ion-long-press
                              [ngClass]="{ 'image-pressed': varIsPressed }"
-                             [interval]="200"
                              (click)="clicked()"
                              (pressed)="varIsPressed = true"
                              (pressEnded)="varIsPressed = false"

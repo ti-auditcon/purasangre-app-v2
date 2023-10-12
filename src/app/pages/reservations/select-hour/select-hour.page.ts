@@ -1,12 +1,11 @@
 // env
 import { environment } from '../../../../environments/environment';
 
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
-import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
@@ -17,7 +16,7 @@ import { LoadingController } from '@ionic/angular';
 export class SelectHourPage {
     public clases: any = [];
 
-    constructor( private storage: Storage,
+    constructor( 
                  private http: HttpClient,
                  private router: Router,
                  public activatedRoute: ActivatedRoute,
@@ -36,7 +35,7 @@ export class SelectHourPage {
 
             console.log(this.activatedRoute.snapshot.paramMap);
 
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const parsedData = JSON.parse(authData.value) as {
                     token: string
                 };

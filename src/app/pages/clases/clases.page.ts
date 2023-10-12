@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Plugins } from '@capacitor/core';
-
+import { Preferences } from '@capacitor/preferences';
 import { Platform, ToastController } from '@ionic/angular';
 
 // import { ClasesService } from './clases.service';
@@ -77,7 +76,7 @@ export class ClasesPage {
 
     ionViewDidEnter() {
         console.log('estoy cargandome........');
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        Preferences.get({key: 'authData'}).then((authData) => {
 
             const parsedData = JSON.parse(authData.value) as {
                 token: string
@@ -125,6 +124,7 @@ export class ClasesPage {
     }
 
     goToSelectClaseType() {
+        console.log('entre a la clase type');
         this.router.navigate( ['/home/tabs/clases/clase-type'] );
     }
 

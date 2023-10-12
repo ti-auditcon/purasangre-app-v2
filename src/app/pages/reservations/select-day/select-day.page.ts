@@ -1,12 +1,11 @@
 // ENV
 import { environment } from '../../../../environments/environment';
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-select-day',
@@ -16,7 +15,7 @@ import { Plugins } from '@capacitor/core';
 export class SelectDayPage  {
     public week: any = [];
 
-    constructor( private storage: Storage,
+    constructor( 
                  private router: Router,
                  private http: HttpClient,
                  public activatedRoute: ActivatedRoute,
@@ -37,7 +36,7 @@ export class SelectDayPage  {
             message: 'Cargando semana...',
         });
         loading.present().then(() => {
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const clasetype = this.activatedRoute.snapshot.paramMap.get('claseTypeId');
 
                 const parsedData = JSON.parse(authData.value) as {

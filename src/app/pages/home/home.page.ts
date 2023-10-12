@@ -6,13 +6,16 @@ import { trigger, state, style, animate, transition, AnimationStyleMetadata } fr
 
 import { ModalController, AlertController } from '@ionic/angular';
 
-import {
-    Plugins, PushNotificationToken,
-    PushNotification, PushNotificationActionPerformed
-} from '@capacitor/core';
+
+import { Preferences } from '@capacitor/preferences';
+
+import { Network } from '@capacitor/network';
+
+import { PushNotifications } from '@capacitor/push-notifications';
+
+import { Platform } from '@ionic/angular';
 
 
-const { PushNotifications } = Plugins;
 
 @Component({
     selector: 'app-home',
@@ -36,7 +39,8 @@ export class HomePage implements OnInit {
 
     constructor(public modalController: ModalController,
                 private alertCtrl: AlertController,
-                private http: HttpClient) { }
+                private http: HttpClient,
+                ) { }
 
     ngOnInit() {
         this.checkConnection();
@@ -45,12 +49,19 @@ export class HomePage implements OnInit {
         console.log('Initializing HomePage');
 
         // Register with Apple / Google to receive push via APNS/FCM
-        PushNotifications.register();
+        PushNotifications.requestPermissions().then(result => {
+            if (result.receive === 'granted') {
+              // Register with Apple / Google to receive push via APNS/FCM
+              PushNotifications.register();
+            } else {
+              // Show some error
+            }
+          });
 
         // On success, we should be able to receive notifications
-        PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+        PushNotifications.addListener('registration', (token) => {
             const pushToken = token.value;
-            Plugins.Storage.get({key: 'authData'}).then((authData) => {
+            Preferences.get({key: 'authData'}).then((authData) => {
 
                 const parsedData = JSON.parse(authData.value) as { token: string };
 
@@ -84,14 +95,13 @@ export class HomePage implements OnInit {
 
         // Show us the notification payload if the app is open on our device
         PushNotifications.addListener(
-            'pushNotificationReceived', (notification: PushNotification
-        ) => {
+            'pushNotificationReceived', (notification) => {
             console.log('pushNotificationReceived: ' + JSON.stringify(notification));
         });
 
         // Method called when tapping on a notification
         PushNotifications.addListener('pushNotificationActionPerformed',
-            (notification: PushNotificationActionPerformed) => {
+            (notification) => {
                 const header: any = notification.notification.data.title || 'Notificación';
                 const message: any = notification.notification.data.body;
 
@@ -129,7 +139,7 @@ export class HomePage implements OnInit {
      * @return void
      */
     async checkConnection() {
-        const handler = Plugins.Network.addListener('networkStatusChange', (estado) => {
+        const handler = Network.addListener('networkStatusChange', (estado) => {
             if (estado.connected === true) {
                 this.statusConnection = true;
                 this.animationState = 'invisible';
@@ -143,4 +153,9 @@ export class HomePage implements OnInit {
             }
         });
     }
+
+
+
+
+
 }

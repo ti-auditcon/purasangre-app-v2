@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// import { Storage } from '@ionic/storage';
-
-import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -61,7 +59,7 @@ export class AuthService {
     ) { }
 
     autoLogin() {
-        return from(Plugins.Storage.get({ key: 'authData' })).pipe(
+        return from(Preferences.get({ key: 'authData' })).pipe(
             map(storeData => {
                 // console.log(storeData);
                 if (!storeData || !storeData.value) {
@@ -146,7 +144,7 @@ export class AuthService {
      * @return  null
      */
     getOut() {
-        Plugins.Storage.clear();
+        Preferences.clear();
 
         this.profileService.nullProfile();
 
@@ -190,6 +188,6 @@ export class AuthService {
             refreshToken, tokenExpirationDate
         });
 
-        Plugins.Storage.set({ key: 'authData', value: data });
+        Preferences.set({ key: 'authData', value: data });
     }
 }

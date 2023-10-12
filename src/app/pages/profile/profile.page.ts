@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { ProfileService } from './profile.service';
 import { Profile } from '../../models/users/profile.model';
+import { Preferences } from '@capacitor/preferences';
 
 /**
  * Convert image string into image file
@@ -95,7 +96,7 @@ export class ProfilePage {
         console.log('Begin async operation');
 
         setTimeout(() => {
-            Plugins.Storage.remove({ key: 'authProfile' });
+            Preferences.remove({ key: 'authProfile' });
             this.profileService.fetchProfile().subscribe();
             console.log('Async operation has ended');
 
@@ -225,7 +226,7 @@ export class ProfilePage {
         console.log('entre a onPickImage...');
         console.log(imageFile);
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+        Preferences.get({ key: 'authData' }).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };

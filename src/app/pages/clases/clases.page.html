@@ -174,13 +174,11 @@
         </ion-infinite-scroll>
     </div>
 
-    <ion-fab [ngClass]="buttonFixIOS" vertical="bottom" slot="fixed">
+    <!-- <ion-fab [ngClass]="buttonFixIOS" vertical="bottom" slot="fixed">
         <div class="reservar" (click)="goToSelectClaseType()">Nueva Reserva</div>
-    </ion-fab>
+    </ion-fab> -->
 </ion-content>
 
 <ion-footer>
-    <div [ngClass]="buttonFixAndroid">
-        <button class="reservar" (click)="goToSelectClaseType()">Nueva Reserva</button>
-    </div>
+        <ion-button color="success" expand="block"  (click)="goToSelectClaseType()">Nueva Reserva</ion-button>
 </ion-footer>

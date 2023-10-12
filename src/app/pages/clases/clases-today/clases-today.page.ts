@@ -4,8 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component  } from '@angular/core';
 
-import { Plugins } from '@capacitor/core';
 import { LoadingController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
     selector: 'app-clases-today',
@@ -41,7 +41,7 @@ export class ClasesTodayPage {
         });
 
         loading.present().then(() => {
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const parsedData = JSON.parse(authData.value) as {
                     token: string
                 };

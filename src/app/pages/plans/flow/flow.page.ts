@@ -4,12 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
 import { Platform } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
-import { Plugins } from '@capacitor/core';
+// import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Browser } from '@capacitor/browser';
 
 @Component({
     selector: 'app-flow',
@@ -30,7 +29,6 @@ export class FlowPage implements OnInit {
         public storage: Storage,
         public http: HttpClient,
         public route: Router,
-        private iab: InAppBrowser,
     ) { }
 
     ngOnInit() { }
@@ -40,7 +38,7 @@ export class FlowPage implements OnInit {
         this.loading = true;
         const id = this.activatedRoute.snapshot.paramMap.get('planId');
         console.log(id);
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        Preferences.get({key: 'authData'}).then((authData) => {
 
             const parsedData = JSON.parse(authData.value) as {
                 token: string
@@ -61,50 +59,50 @@ export class FlowPage implements OnInit {
                             console.log('url flow');
                             console.log(flowresult.url);
 
-                            // this.navigateFlow(flowresult.url);
+                            this.navigateFlow(flowresult.url);
 
-                            if (this.platform.is('android')) {
-                                const browser = this.iab.create(
-                                    flowresult.url, '_blank',
-                                    `hideurlbar=yes,footer=no,toolbarcolor=#141A29,
-                                    navigationbuttoncolor=#D3D5E0,closebuttoncaption=cerrar,
-                                    closebuttoncolor=#D3D5E0`
-                                );
+                            // if (this.platform.is('android')) {
+                            //     const browser = this.iab.create(
+                            //         flowresult.url, '_blank',
+                            //         `hideurlbar=yes,footer=no,toolbarcolor=#141A29,
+                            //         navigationbuttoncolor=#D3D5E0,closebuttoncaption=cerrar,
+                            //         closebuttoncolor=#D3D5E0`
+                            //     );
 
-                                browser.on('loadstop').subscribe((event) => {
-                                  console.log('cargo android');
-                                });
+                            //     browser.on('loadstop').subscribe((event) => {
+                            //       console.log('cargo android');
+                            //     });
 
-                                browser.on('exit').subscribe((event) => {
-                                    this.zone.run(async () => {
-                                        await this.route.navigate([`/plans/${id}`]);
-                                    });
+                            //     browser.on('exit').subscribe((event) => {
+                            //         this.zone.run(async () => {
+                            //             await this.route.navigate([`/plans/${id}`]);
+                            //         });
 
-                                    browser.close();
-                                });
-                            }
+                            //         browser.close();
+                            //     });
+                            // }
 
-                            if (this.platform.is('ios')) {
-                                const browser = this.iab.create(
-                                    flowresult.url,
-                                    '_blank',
-                                    `toolbarposition=top,closebuttoncaption=Cerrar,
-                                    toolbarcolor=#141A29,closebuttoncolor=#D3D5E0,
-                                    navigationbuttoncolor=#D3D5E0`
-                                );
+                            // if (this.platform.is('ios')) {
+                            //     const browser = this.iab.create(
+                            //         flowresult.url,
+                            //         '_blank',
+                            //         `toolbarposition=top,closebuttoncaption=Cerrar,
+                            //         toolbarcolor=#141A29,closebuttoncolor=#D3D5E0,
+                            //         navigationbuttoncolor=#D3D5E0`
+                            //     );
 
-                                browser.on('loadstop').subscribe((event) => {
-                                  console.log('cargo ios');
-                                });
+                            //     browser.on('loadstop').subscribe((event) => {
+                            //       console.log('cargo ios');
+                            //     });
 
-                                browser.on('exit').subscribe((event) => {
-                                    this.zone.run(async () => {
-                                        await this.route.navigate([`/plans/${id}`]);
-                                    });
+                            //     browser.on('exit').subscribe((event) => {
+                            //         this.zone.run(async () => {
+                            //             await this.route.navigate([`/plans/${id}`]);
+                            //         });
 
-                                    browser.close();
-                                });
-                            }
+                            //         browser.close();
+                            //     });
+                            // }
                         }
                     );
                 }
@@ -112,9 +110,11 @@ export class FlowPage implements OnInit {
         });
     }
 
+
+
     async navigateFlow(url) {
         console.log('en navigateFlow');
-        await Plugins.Browser.open({ url }).then(page => {
+        await Browser.open({ url }).then(page => {
             console.log(page);
         });
     }

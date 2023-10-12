@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+import { Preferences } from '@capacitor/preferences'; 
 import { ModalController, ToastController  } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-confirm',
@@ -23,12 +22,17 @@ export class ConfirmPage {
     buttonActionRemove: any;
     buttonActionConfirm: any;
     disabled =  false;
+    claseId = '1';
 
      constructor( public viewCtrl: ModalController,
                   private http: HttpClient,
                   private router: Router,
                   public toastController: ToastController
                ) {}
+
+    ionViewWillEnter() {
+        this.claseId = '1';
+    }
 
     async presentToast(message: string) {
         const toast = await this.toastController.create({
@@ -40,7 +44,7 @@ export class ConfirmPage {
 
     reserve(id: string ) {
         this.disabled = true;
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+        Preferences.get({ key: 'authData' }).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };
@@ -72,7 +76,7 @@ export class ConfirmPage {
 
     remove(id: string ) {
         this.disabled = true;
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+        Preferences.get({ key: 'authData' }).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };
@@ -107,7 +111,7 @@ export class ConfirmPage {
 
         console.log('click confirm');
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+        Preferences.get({ key: 'authData' }).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };

@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LongPressModule } from 'ionic-long-press';
 
 import { AddConfirmPage } from './add-confirm.page';
 import { SharedModule } from '../../../shared/shared.module';
@@ -24,7 +23,6 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes),
         SharedModule,
-        LongPressModule
     ],
     declarations: [AddConfirmPage]
 })

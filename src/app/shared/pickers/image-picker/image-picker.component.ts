@@ -2,7 +2,9 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef }
 
 import { ActionSheetController, Platform } from '@ionic/angular';
 
-import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
+// import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
+
+
 
 @Component({
   selector: 'app-image-picker',
@@ -31,67 +33,67 @@ export class ImagePickerComponent implements OnInit {
         }
     }
 
-    async onPickImage() {
-        if (!Capacitor.isPluginAvailable('Camera') || this.userPicker) {
-            this.filePickeRef.nativeElement.click();
-            return;
-        }
+    // async onPickImage() {
+    //     if (!Capacitor.isPluginAvailable('Camera') || this.userPicker) {
+    //         this.filePickeRef.nativeElement.click();
+    //         return;
+    //     }
 
-        const action = await this.actionSheetController.create({
-            header: 'Cambiar Foto de Perfil',
-            buttons: [{
-                text: 'Tomar Foto',
-                icon: 'camera',
-                handler: () => {
-                    this.openCamera(CameraSource.Camera);
-                    console.log('Tomar una foto clicked');
-                }
-            }, {
-                text: 'Elegir de Mis Fotos',
-                icon: 'image',
-                handler: () => {
-                    this.openCamera(CameraSource.Photos);
-                    console.log('Elegir de Mis Fotos clicked');
-                }
-            }, {
-                text: 'Cancelar',
-                icon: 'close',
-                role: 'cancel',
-                handler: () => {
-                    this.openCamera(null);
-                    console.log('Cancel clicked');
-                }
-            }]
-        });
+    //     const action = await this.actionSheetController.create({
+    //         header: 'Cambiar Foto de Perfil',
+    //         buttons: [{
+    //             text: 'Tomar Foto',
+    //             icon: 'camera',
+    //             handler: () => {
+    //                 this.openCamera(CameraSource.Camera);
+    //                 console.log('Tomar una foto clicked');
+    //             }
+    //         }, {
+    //             text: 'Elegir de Mis Fotos',
+    //             icon: 'image',
+    //             handler: () => {
+    //                 this.openCamera(CameraSource.Photos);
+    //                 console.log('Elegir de Mis Fotos clicked');
+    //             }
+    //         }, {
+    //             text: 'Cancelar',
+    //             icon: 'close',
+    //             role: 'cancel',
+    //             handler: () => {
+    //                 this.openCamera(null);
+    //                 console.log('Cancel clicked');
+    //             }
+    //         }]
+    //     });
 
-        action.present();
-    }
+    //     action.present();
+    // }
 
-    openCamera(value) {
-        console.log('llegue al metodo escogido');
-        if (value) {
-            Plugins.Camera.getPhoto({
-                quality: 50,
-                // Whether to allow the user to crop or make small edits (platform specific)
-                resultType: CameraResultType.Base64,
-                saveToGallery: true,
-                allowEditing: true,
-                width: 320,
-                // height: 320,
-                correctOrientation: true,
-                source: value
-            }).then(image => {
-                this.selectedImage = image.base64String;
+    // openCamera(value) {
+    //     console.log('llegue al metodo escogido');
+    //     if (value) {
+    //         Plugins.Camera.getPhoto({
+    //             quality: 50,
+    //             // Whether to allow the user to crop or make small edits (platform specific)
+    //             resultType: CameraResultType.Base64,
+    //             saveToGallery: true,
+    //             allowEditing: true,
+    //             width: 320,
+    //             // height: 320,
+    //             correctOrientation: true,
+    //             source: value
+    //         }).then(image => {
+    //             this.selectedImage = image.base64String;
 
-                console.log('ahora emito la foto cochino');
-                this.imagePick.emit(image.base64String);
-            }).catch(error => {
-                console.log(error);
+    //             console.log('ahora emito la foto cochino');
+    //             this.imagePick.emit(image.base64String);
+    //         }).catch(error => {
+    //             console.log(error);
 
-                return false;
-            });
-        }
-    }
+    //             return false;
+    //         });
+    //     }
+    // }
 
     onFileChosen(event: Event) {
         const pickedFile = (event.target as HTMLInputElement).files[0];

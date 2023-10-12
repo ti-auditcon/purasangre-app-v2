@@ -3,8 +3,8 @@ import { environment } from '../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
 import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-historial',
@@ -31,7 +31,7 @@ export class HistorialPage implements OnInit {
     }
 
     ionViewDidEnter() {
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        Preferences.get({key: 'authData'}).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };

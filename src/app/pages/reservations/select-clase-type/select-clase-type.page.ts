@@ -5,29 +5,29 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
 import { LoadingController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-select-clase-type',
   templateUrl: './select-clase-type.page.html',
   styleUrls: ['./select-clase-type.page.scss'],
 })
-export class SelectClaseTypePage implements OnInit {
+export class SelectClaseTypePage  {
     public claseTypes: any;
 
-    constructor( private storage: Storage,
-                 private router: Router,
-                 private http: HttpClient,
-                 public loadingController: LoadingController
-                ) { }
+    constructor( 
+        private router: Router,
+        private http: HttpClient,
+        public loadingController: LoadingController
+    ) { }
 
-    ngOnInit() {
+
+
+    ionViewDidEnter() {
         this.claseTypeLoader();
-    }
 
-    ionViewDidEnter() {}
+    }
 
     async claseTypeLoader() {
         const loading = await this.loadingController.create({
@@ -35,7 +35,7 @@ export class SelectClaseTypePage implements OnInit {
         });
 
         loading.present().then(() => {
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const parsedData = JSON.parse(authData.value) as {
                     token: string
                 };

@@ -10,7 +10,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'dashboard',
-                loadChildren: '../dashboard/dashboard.module#DashboardPageModule'
+                loadChildren: () =>  import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
             },
             {
                 /**
@@ -20,41 +20,39 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../clases/clases.module#ClasesPageModule'
+                        loadChildren: () => import('../clases/clases.module').then( m => m.ClasesPageModule)
                     },
                     {
                         path: 'wods/:wodId/show',
-                        loadChildren:
-                        '../clases/clases-today/clases-today.module#ClasesTodayPageModule'
+                        loadChildren: () =>  import('../clases/clases-today/clases-today.module').then( m => m.ClasesTodayPageModule)
                     },
                     /**
                      * RESERVATIONS ROUTES
                      */
                     {
                         path: ':claseId/show',
-                        loadChildren:
-                            '../reservations/add-confirm/add-confirm.module#AddConfirmPageModule'
+                        loadChildren: () =>  import('../reservations/add-confirm/add-confirm.module'   ).then( m => m.AddConfirmPageModule)
                     },
                     {
                         path: ':wodId/edit-confirm',
-                        loadChildren:
-                            '../reservations/edit-confirm/edit-confirm.module#EditConfirmPageModule'
+                        loadChildren: () =>  import('../reservations/edit-confirm/edit-confirm.module').then( m => m.EditConfirmPageModule)
+
                     },
                     {
                         path: 'clase-type',
-                        loadChildren:
-                            '../reservations/select-clase-type/select-clase-type.module#SelectClaseTypePageModule'
+                        loadChildren: () => import('../reservations/select-clase-type/select-clase-type.module').then( m => m.SelectClaseTypePageModule)
+
                     },
                     {
                         path: 'clase-type/:claseTypeId/select-day',
-                        loadChildren:
-                            '../reservations/select-day/select-day.module#SelectDayPageModule'
+                        loadChildren: () => import('../reservations/select-day/select-day.module').then( m => m.SelectDayPageModule)
+
                     },
                     {
                         path: 'clase-type/:claseTypeId/select-day/:date',
-                        loadChildren:
-                            '../reservations/select-hour/select-hour.module#SelectHourPageModule'
+                        loadChildren: () => import('../reservations/select-hour/select-hour.module').then( m => m.SelectHourPageModule)
                     },
+                    
                 ]
             },
             {
@@ -65,24 +63,23 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../plans/plans.module#PlansPageModule'
+                        loadChildren: () => import('../plans/plans.module').then( m => m.PlansPageModule)
                     },
                     {
                         path: 'historial',
-                        loadChildren: '../plans/historial/historial.module#HistorialPageModule'
+                        loadChildren: () => import('../plans/historial/historial.module').then( m => m.HistorialPageModule)
                     },
                     {
                         path: ':planId/details',
-                        loadChildren: '../plans/plan-detail/plan-detail.module#PlanDetailPageModule'
+                        loadChildren: () => import('../plans/plan-detail/plan-detail.module').then( m => m.PlanDetailPageModule)
                     },
                     {
                         path: ':planId/payments',
-                        loadChildren: '../plans/plan-payment/plan-payment.module#PlanPaymentPageModule'
+                        loadChildren: () => import('../plans/plan-payment/plan-payment.module').then( m => m.PlanPaymentPageModule)
                     },
                     {
                         path: ':planId/flow',
-                        loadChildren:
-                            '../plans/flow/flow.module#FlowPageModule'
+                        loadChildren: () => import('../plans/flow/flow.module').then( m => m.FlowPageModule)
                     },
                 ]
             },
@@ -91,7 +88,7 @@ const routes: Routes = [
                  * PROFILE ROUTES
                  */
                 path: 'profile',
-                loadChildren: '../profile/profile.module#ProfilePageModule'
+                loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
             },
         ]
     },

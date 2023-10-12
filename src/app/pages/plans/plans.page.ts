@@ -4,9 +4,8 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
-import { Plugins } from '@capacitor/core';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Preferences } from '@capacitor/preferences';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -52,7 +51,7 @@ export class PlansPage {
     }
 
     ionViewDidEnter() {
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        Preferences.get({key: 'authData'}).then((authData) => {
             const parsedData = JSON.parse(authData.value) as {
                 token: string
             };
@@ -144,11 +143,5 @@ export class PlansPage {
         // this.selectedFilter1 = true;
     }
 
-    // goToDetail(planId: number) {
-    //     this.router.navigate([`/home/tabs/plans/${planId}/details`]);
-    // }
 
-    // goToHistorial() {
-    //     this.router.navigate(['/home/pay-historial']);
-    // }
 }

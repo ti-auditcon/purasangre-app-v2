@@ -10,6 +10,7 @@ import { BehaviorSubject, from } from 'rxjs';
 
 import { User } from '../../models/users/user.model';
 import { Profile } from '../../models/users/profile.model';
+import { Preferences } from '@capacitor/preferences';
 
 const TOKEN_KEY = 'auth-token';
 // const REFRESH_TOKEN = 'refresh-token';
@@ -81,7 +82,7 @@ export class ProfileService {
     }
 
     fetchProfile() {
-        return from(Plugins.Storage.get({ key: 'authData' })).pipe(
+        return from(Preferences.get({ key: 'authData' })).pipe(
             map(storeData => {
                 if ( storeData && storeData.value ) {
                     const parsedData = JSON.parse(storeData.value) as {
@@ -116,7 +117,7 @@ export class ProfileService {
     }
 
     getloadedProfile() {
-        return from(Plugins.Storage.get({ key: 'authProfile' })).pipe(
+        return from(Preferences.get({ key: 'authProfile' })).pipe(
             map(profile => {
                 const parsedData = JSON.parse(profile.value);
                 const loadedProfile = [];
@@ -203,6 +204,6 @@ export class ProfileService {
             actualPlanExpiration, clasesConsumidas, clasesPerdidas, clasesTotales
         });
 
-        Plugins.Storage.set({ key: 'authProfile', value: data });
+        Preferences.set({ key: 'authProfile', value: data });
     }
 }

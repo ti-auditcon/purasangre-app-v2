@@ -7,12 +7,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Platform, ModalController, IonInfiniteScroll, LoadingController } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 import { ConfirmPage } from '../confirm/confirm.page';
-import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
-import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
-import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
+
 
 @Component({
     selector: 'app-edit-confirm',
@@ -77,7 +75,7 @@ export class EditConfirmPage {
             console.log(this.activatedRoute.snapshot.paramMap);
             console.log('sii');
 
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const parsedData = JSON.parse(authData.value) as {
                     token: string
                 };
@@ -178,19 +176,18 @@ export class EditConfirmPage {
      */
     beingLongPressed(img, firstName, lastName) {
         // console.log('beingLongPressed');
-        if (!this.haymodal) {
-            this.modalController.create({
-                component: ImageModalPage,
-                componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
-            }).then(modal => {
-                this.actualModal = modal;
-                this.haymodal = true;
-                modal.present();
-            });
-        }
+        // if (!this.haymodal) {
+        //     this.modalController.create({
+        //         component: ImageModalPage,
+        //         componentProps: { img, firstName, lastName },
+        //         cssClass: 'background-color-modal',
+
+        //     }).then(modal => {
+        //         this.actualModal = modal;
+        //         this.haymodal = true;
+        //         modal.present();
+        //     });
+        // }
     }
 
     /**

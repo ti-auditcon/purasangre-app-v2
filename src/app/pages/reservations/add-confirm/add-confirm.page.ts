@@ -8,12 +8,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IonInfiniteScroll, LoadingController } from '@ionic/angular';
 import { Platform, ModalController } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
-
+import { Preferences } from '@capacitor/preferences';
 import { ConfirmPage } from '../confirm/confirm.page';
-import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
-import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
-import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
+
 
 @Component({
     selector: 'app-add-confirm',
@@ -70,7 +67,7 @@ export class AddConfirmPage  {
                 claseId: this.clase.clase_id,
                 buttonActionAdd: true,
             },
-            cssClass: 'modal-confirm'
+            cssClass: 'modal-confirm',
         });
         // this.title = modal.componentProps.title;
         // this.message = modal.componentProps.message;
@@ -92,7 +89,7 @@ export class AddConfirmPage  {
         loading.present().then(() => {
             const id = this.activatedRoute.snapshot.paramMap.get('claseId');
 
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            Preferences.get({ key: 'authData' }).then((authData) => {
                 const parsedData = JSON.parse(authData.value) as {
                     token: string
                 };
@@ -117,32 +114,6 @@ export class AddConfirmPage  {
             });
 
 
-
-            // const id = this.activatedRoute.snapshot.paramMap.get('wodId');
-
-            // console.log(this.activatedRoute);
-            // console.log(this.activatedRoute.snapshot.paramMap);
-            // console.log('sii');
-
-            // Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            //     const parsedData = JSON.parse(authData.value) as {
-            //         token: string
-            //     };
-            //     this.httpOptions = {
-            //         headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
-            //     };
-
-            //     this.http.get(`${environment.SERVER_URL}/clases/${id}`, this.httpOptions)
-            //         .subscribe((result: any) => {
-            //             console.log(' http entre a la clase para editar');
-            //             this.clase = result.data;
-            //             console.log(this.clase);
-            //             this.reservationUrl = this.clase.rels.reservations.href;
-            //             this.loadUsers();
-            //             loading.dismiss();
-            //         }
-            //     );
-            // });
         });
     }
 
@@ -182,12 +153,12 @@ export class AddConfirmPage  {
 
     // image popup
     openPreview(img) {
-        this.modalController.create({
-            component: ImageModalPage,
-            componentProps: { img }
-        }).then(modal => {
-            modal.present();
-        });
+        // this.modalController.create({
+        //     component: ImageModalPage,
+        //     componentProps: { img }
+        // }).then(modal => {
+        //     modal.present();
+        // });
     }
 
     /**
@@ -197,19 +168,17 @@ export class AddConfirmPage  {
      */
     beingLongPressed(img: any, firstName: any, lastName: any) {
         // console.log('beingLongPressed');
-        if (!this.haymodal) {
-            this.modalController.create({
-                component: ImageModalPage,
-                componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
-            }).then(modal => {
-                this.actualModal = modal;
-                this.haymodal = true;
-                modal.present().then();
-            });
-        }
+        // if (!this.haymodal) {
+        //     this.modalController.create({
+        //         component: ImageModalPage,
+        //         componentProps: { img, firstName, lastName },
+        //         cssClass: 'background-color-modal',
+        //     }).then(modal => {
+        //         this.actualModal = modal;
+        //         this.haymodal = true;
+        //         modal.present().then();
+        //     });
+        // }
     }
 
     /**
