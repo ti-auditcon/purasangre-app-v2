@@ -24,6 +24,7 @@ export class AddConfirmPage  {
     public users: any = [];
     public reservations: any = [];
     public page = 1;
+    isModalOpen = false;
 
     buttonFixIOS: string;
     buttonFixAndroid: string;
@@ -36,6 +37,7 @@ export class AddConfirmPage  {
     haymodal = false;
     actualModal: any;
     varIsPressed = false;
+    selectedImg: any;
 
     constructor(public plt: Platform,
                 private modalController: ModalController,
@@ -153,7 +155,10 @@ export class AddConfirmPage  {
     }
 
     // image popup
-    openPreview(img) {
+    imageModal(img) {
+        console.log('click image');
+        this.isModalOpen = true;
+        this.selectedImg = img;
         // this.modalController.create({
         //     component: ImageModalPage,
         //     componentProps: { img }
@@ -162,38 +167,10 @@ export class AddConfirmPage  {
         // });
     }
 
-    /**
-     * Open Modal for Image Avatar view
-     *
-     * img, firstName, lastName
-     */
-    beingLongPressed(img: any, firstName: any, lastName: any) {
-        // console.log('beingLongPressed');
-        // if (!this.haymodal) {
-        //     this.modalController.create({
-        //         component: ImageModalPage,
-        //         componentProps: { img, firstName, lastName },
-        //         cssClass: 'background-color-modal',
-        //     }).then(modal => {
-        //         this.actualModal = modal;
-        //         this.haymodal = true;
-        //         modal.present().then();
-        //     });
-        // }
+    imageModalDismiss() {
+        console.log('modal cerrado');
+        this.isModalOpen = false;
     }
 
-    /**
-     * Close Modal for Image Avatar view, and return color to icon image avatar
-     *
-     * img, firstName, lastName
-     */
-    finishLongPress() {
-        if (this.haymodal) {
-            this.actualModal.dismiss().then(() => {
-                this.actualModal = null;
-                this.haymodal = false;
-                this.varIsPressed = false;
-            });
-        }
-    }
+
 }

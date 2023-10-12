@@ -16,6 +16,8 @@ import { ProfileService } from './profile.service';
 import { Profile } from '../../models/users/profile.model';
 import { Preferences } from '@capacitor/preferences';
 
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+
 /**
  * Convert image string into image file
  *
@@ -112,49 +114,49 @@ export class ProfilePage {
         toast.present();
     }
 
-    // async takePicture() {
+    async takePicture() {
+        console.log('take picture');
 
-    //     const image = await Camera.getPhoto({
-    //         quality: 60,
-    //         width: 720,
-    //         allowEditing: false,
-    //         resultType: CameraResultType.Base64,
-    //         source: CameraSource.Prompt
-    //     });
+        const image = await Camera.getPhoto({
+            quality: 60,
+            width: 720,
+            allowEditing: false,
+            resultType: CameraResultType.Base64,
+            source: CameraSource.Prompt
+        });
 
-    //     // input.append('avatar',image.base64String,'avatar');
-    //     const input = new FormData();
+        // input.append('avatar',image.base64String,'avatar');
+        const input = new FormData();
 
-    //     input.append('avatar', image.base64String);
+        input.append('avatar', image.base64String);
 
-    //     this.storage.get('auth-token').then((value) => {
+        Preferences.get({ key: 'authData' }).then((authData) => {
 
-    //     const Bearer = value;
+            const parsedData = JSON.parse(authData.value) as {
+                token: string
+            };
+            const httpOptions = {
+                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+            };
 
-    //     this.httpOptions = {
-    //         headers: new HttpHeaders({
-    //             Authorization: `Bearer ${Bearer}` // updated
-    //         })
-    //     };
+            this.http.post(`${environment.SERVER_URL}/api/profile/avatar`, input, httpOptions)
+                .subscribe((result: any) => {
+                    console.log('avataaaar!');
 
-    //     this.http.post(`${environment.SERVER_URL}/api/profile/avatar`, input, this.httpOptions)
-    //         .subscribe((result: any) => {
-    //             console.log('avataaaar!');
+                    console.log(result);
 
-    //             console.log(result);
+                    this.presentToast('datos actualizados con éxito');
 
-    //             this.presentToast('datos actualizados con éxito');
+                    this.ionViewWillEnter();
+                });
+        });
 
-    //             this.ionViewDidEnter();
-    //         });
-    //     });
-
-    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
-    //     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl("data:Image/*;base64,"+image.dataUrl);
-    //     // console.log("Aqui va la var photo: "+this.photo);
-    // }
+        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
+        // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl("data:Image/*;base64,"+image.dataUrl);
+        // console.log("Aqui va la var photo: "+this.photo);
+    }
 
     // selectImageFromCamera() {
     //     // this.presentToast('images!!!');

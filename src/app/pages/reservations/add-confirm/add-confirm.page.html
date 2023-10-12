@@ -52,14 +52,8 @@
                         <img src="{{ reservation?.rels.user.avatar }}"
                              ion-button ion-long-press 
                              [ngClass]="{ 'image-pressed': varIsPressed }"
-                             (pressed)="varIsPressed = true"
-                             (pressEnded)="varIsPressed = false"
-                             (longPressed)="beingLongPressed(
-                                 reservation?.rels.user.avatar,
-                                 reservation?.rels.user.first_name,
-                                 reservation?.rels.user.last_name
-                             )"
-                             (pressEnded)="finishLongPress()"/>
+                             (click)="imageModal(reservation?.rels.user.avatar)"
+                             />
                     </div>
                     <div class="col-10 item-data">
                         <h6>
@@ -91,6 +85,15 @@
             Reservar esta hora
         </div>
     </ion-fab> -->
+    <ion-modal class="avatar" [isOpen]="isModalOpen" (didDismiss)="imageModalDismiss()">
+        <ng-template>
+            
+                <img src="{{this.selectedImg}}" />
+            
+
+        </ng-template>
+      </ion-modal>
+
 </ion-content>
 
 <ion-footer>

@@ -26,10 +26,8 @@
     <div class="persona-card">
         <div class="ps-row">
             <!-- <p>Notificación<br>{{ this.mensajeToast }}</p> -->
-            <div class="ml-1 col-3 persona-item-img">
-                <app-image-picker (imagePick)="onPickImage($event)"
-                                  [AvatarImage]="[loadedProfile?.avatar]">
-                </app-image-picker>
+            <div class="ml-1 col-3 persona-item-img" (click)="takePicture()">
+                <img style="border-radius: 100%;" src="{{ loadedProfile?.avatar }}" />
             </div>
 
             <div class="col-8 ml-1 persona-item-data">

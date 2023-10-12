@@ -3,7 +3,6 @@ import { environment } from '../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Plugins } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 
 @Component({
@@ -15,7 +14,6 @@ export class HistorialPage implements OnInit {
     public plans: any = '';
 
     constructor(
-        private storage: Storage,
         private http: HttpClient
     ) { }
 

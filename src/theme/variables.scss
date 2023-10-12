@@ -1371,7 +1371,9 @@ ion-content {
         }
         .item-img {
           img {
-            border-radius: 30px;
+            border-radius: 100%;
+            width: 40px;
+            height: 40px;
           }
         }
         .item-data {
@@ -1798,6 +1800,10 @@ ion-modal {
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
   --height: 50%;
   --margin: 10px;
+}
+
+ion-modal.avatar {
+  --height: none;
 }
 
 ion-modal h1 {
