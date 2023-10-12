@@ -57,6 +57,7 @@ export class AddConfirmPage  {
     }
 
     async openModal() {
+        const id = this.activatedRoute.snapshot.paramMap.get('claseId');
         const modal = await this.modalController.create({
             component: ConfirmPage,
             componentProps: {
@@ -64,7 +65,7 @@ export class AddConfirmPage  {
                 message: this.clase.dateHuman + ' de ' + this.clase.start +
                          ' a ' + this.clase.end + 'hrs',
                 buttonIcon: '/assets/icon/info.svg',
-                claseId: this.clase.clase_id,
+                claseId: id,
                 buttonActionAdd: true,
             },
             cssClass: 'modal-confirm',
@@ -76,7 +77,7 @@ export class AddConfirmPage  {
     }
 
     ionViewDidEnter() {
-        this.page = 1;
+
 
         this.retrieveClase();
     }

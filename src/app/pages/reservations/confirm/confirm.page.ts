@@ -22,16 +22,18 @@ export class ConfirmPage {
     buttonActionRemove: any;
     buttonActionConfirm: any;
     disabled =  false;
-    claseId = '1';
+    claseId: any;
 
      constructor( public viewCtrl: ModalController,
                   private http: HttpClient,
                   private router: Router,
                   public toastController: ToastController
-               ) {}
+               ) {
+
+               }
 
     ionViewWillEnter() {
-        this.claseId = '1';
+        
     }
 
     async presentToast(message: string) {

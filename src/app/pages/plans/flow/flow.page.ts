@@ -26,7 +26,6 @@ export class FlowPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public platform: Platform,
         public zone: NgZone,
-        public storage: Storage,
         public http: HttpClient,
         public route: Router,
     ) { }
@@ -38,6 +37,9 @@ export class FlowPage implements OnInit {
         this.loading = true;
         const id = this.activatedRoute.snapshot.paramMap.get('planId');
         console.log(id);
+        Browser.addListener('browserFinished', () => {
+            this.route.navigate([`/plans/${id}`]);
+        });
         Preferences.get({key: 'authData'}).then((authData) => {
 
             const parsedData = JSON.parse(authData.value) as {
@@ -60,6 +62,18 @@ export class FlowPage implements OnInit {
                             console.log(flowresult.url);
 
                             this.navigateFlow(flowresult.url);
+                            
+                            // rowser.on('loadstop').subscribe((event) => {
+                            //       console.log('cargo android');
+                            //     });
+
+                            //     browser.on('exit').subscribe((event) => {
+                            //         this.zone.run(async () => {
+                            //             await this.route.navigate([`/plans/${id}`]);
+                            //         });
+
+                            //         browser.close();
+                            //     });
 
                             // if (this.platform.is('android')) {
                             //     const browser = this.iab.create(
@@ -114,8 +128,7 @@ export class FlowPage implements OnInit {
 
     async navigateFlow(url) {
         console.log('en navigateFlow');
-        await Browser.open({ url }).then(page => {
-            console.log(page);
-        });
+       await Browser.open({ url });
+
     }
 }

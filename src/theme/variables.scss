@@ -1791,3 +1791,31 @@ ion-toast {
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
 }
+
+ion-modal {
+  --min-width: 250px;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+  --height: 50%;
+  --margin: 10px;
+}
+
+ion-modal h1 {
+  margin: 20px 20px 10px 20px;
+}
+
+ion-modal ion-icon {
+  
+  width: 48px;
+  height: 48px;
+  padding: 4px 0;
+
+}
+
+ion-modal {
+  margin-bottom: 10px;
+}
+
+.modal-confirm {
+  padding: 20px;
+}

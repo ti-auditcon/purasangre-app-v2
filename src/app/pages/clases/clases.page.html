@@ -180,5 +180,7 @@
 </ion-content>
 
 <ion-footer>
-        <ion-button color="success" expand="block"  (click)="goToSelectClaseType()">Nueva Reserva</ion-button>
+    <div [ngClass]="buttonFixAndroid">
+        <button class="reservar"  (click)="goToSelectClaseType()">Nueva Reserva</button>
+    </div>
 </ion-footer>
