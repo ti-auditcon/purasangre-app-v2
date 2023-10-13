@@ -1,6 +1,6 @@
 {
-    "appId": "com.asomic.purasangreV2",
-    "appName": "purasangreV2",
+    "appId": "purasangrecrossfit.app.com",
+    "appName": "purasangre-app-v2",
     "bundledWebRuntime": false,
     "npmClient": "npm",
     "webDir": "www"

@@ -96,25 +96,8 @@ export class HomePage implements OnInit {
         // Show us the notification payload if the app is open on our device
         PushNotifications.addListener(
             'pushNotificationReceived', (notification) => {
-            console.log('pushNotificationReceived: ' + JSON.stringify(notification));
-        });
-
-        // Method called when tapping on a notification
-        PushNotifications.addListener('pushNotificationActionPerformed',
-            (notification) => {
-                const header: any = notification.notification.data.title || 'Notificación';
-                const message: any = notification.notification.data.body;
-
-                const data: any = notification.notification.data;
-
-                console.log('data');
-                console.log(data);
-
-                console.log('data title');
-                console.log(data.title);
-
-                console.log('data body');
-                console.log(data.body);
+                const header: any = notification.title || 'Notificación';
+                const message: any = notification.body;
 
                 console.log('header: ' + header, 'message: ' + message);
 
@@ -123,11 +106,37 @@ export class HomePage implements OnInit {
                         .then(alertEl => alertEl.present());
                 }
 
-                console.log('Notification data title');
-                console.log(notification.notification.data.title);
+        });
 
-                console.log('Notification data body');
-                console.log(notification.notification.data.body);
+        // Method called when tapping on a notification
+        PushNotifications.addListener('pushNotificationActionPerformed',
+            (notification) => {
+                const header: any = notification.notification.data.title;
+                const message: any = notification.notification.data.body;
+
+                // const data: any = notification.notification.data;
+
+                // console.log('data');
+                // console.log(data);
+
+                // console.log('data title');
+                // console.log(data.title);
+
+                // console.log('data body');
+                // console.log(data.body);
+
+                console.log('header: ' + header, 'message: ' + message);
+
+                if (message) {
+                    this.alertCtrl.create({ header, message, buttons: ['Entendido']})
+                        .then(alertEl => alertEl.present());
+                }
+
+                // console.log('Notification data title');
+                // console.log(notification.notification.data.title);
+
+                // console.log('Notification data body');
+                // console.log(notification.notification.data.body);
             }
         );
     }
