@@ -58,6 +58,7 @@ export class ProfilePage {
     imageFileName;
     variable = 'variable';
     httpOptions;
+    avatar: any;
 
     constructor(
         private router: Router,
@@ -82,6 +83,7 @@ export class ProfilePage {
 
                     this.profileService.profile.subscribe(profile => {
                         this.loadedProfile = profile;
+                        this.avatar = profile.avatar;
                     });
                 } else {
                     this.profileService.fetchProfile().subscribe();
@@ -115,41 +117,53 @@ export class ProfilePage {
     }
 
     async takePicture() {
-        console.log('take picture');
+        console.log('take picture wdsed');
 
         const image = await Camera.getPhoto({
             quality: 60,
             width: 720,
-            allowEditing: false,
+            promptLabelPicture : 'Tomar Foto',
+            promptLabelPhoto : 'Seleccionar de Galería',
             resultType: CameraResultType.Base64,
             source: CameraSource.Prompt
+        }).then((imageData) => {
+
+            console.log('imageData');
+            console.log(imageData);
+
+            this.preImage = imageData;
+
+            this.base64Image = 'data:image/jpeg;base64,' + imageData.base64String;
+
+            this.onPickImage(imageData.base64String);
+
         });
 
         // input.append('avatar',image.base64String,'avatar');
-        const input = new FormData();
+        // const input = new FormData();
 
-        input.append('avatar', image.base64String);
+        // input.append('avatar', image.base64String);
 
-        Preferences.get({ key: 'authData' }).then((authData) => {
+        // Preferences.get({ key: 'authData' }).then((authData) => {
 
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
-            const httpOptions = {
-                headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
-            };
+        //     const parsedData = JSON.parse(authData.value) as {
+        //         token: string
+        //     };
+        //     const httpOptions = {
+        //         headers: new HttpHeaders({ Authorization: `Bearer ${parsedData.token}` })
+        //     };
 
-            this.http.post(`${environment.SERVER_URL}/api/profile/avatar`, input, httpOptions)
-                .subscribe((result: any) => {
-                    console.log('avataaaar!');
+        //     this.http.post(`${environment.SERVER_URL}/api/profile/avatar`, input, httpOptions)
+        //         .subscribe((result: any) => {
+        //             console.log('avataaaar!');
 
-                    console.log(result);
+        //             console.log(result);
 
-                    this.presentToast('datos actualizados con éxito');
+        //             this.presentToast('datos actualizados con éxito');
 
-                    this.ionViewWillEnter();
-                });
-        });
+        //             this.ionViewWillEnter();
+        //         });
+        // });
 
         // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
         // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
@@ -246,10 +260,17 @@ export class ProfilePage {
                 `${ environment.IMAGE_URL }/api/users/${ this.loadedProfile.id }/image`,
                 avatar,
                 httpOptions
-            ).subscribe((result: any) => {
+            ).subscribe ((result: any) => {
+                //result object to string
+                console.log('result');
+                console.log(result);
+                console.log(JSON.stringify(result));
+                console.log('avataaaar!');
                     this.presentToast('datos actualizados con éxito');
+                    this.avatar = result.avatar;
 
-                    this.ionViewWillEnter();
+                    this.profileService.fetchProfile().subscribe();
+                    
                 },
                 err => {
                     console.log(err);

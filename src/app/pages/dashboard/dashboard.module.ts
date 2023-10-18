@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -18,6 +18,7 @@ import { SharedModule } from '../../shared/shared.module';
         DashboardPageRoutingModule,
         SharedModule
     ],
-    declarations: [DashboardPage]
+    declarations: [DashboardPage],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardPageModule {}

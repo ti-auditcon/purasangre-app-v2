@@ -26,11 +26,13 @@
     <div class="persona-card">
         <div class="ps-row">
             <!-- <p>Notificación<br>{{ this.mensajeToast }}</p> -->
-            <div class="ml-1 col-3 persona-item-img" (click)="takePicture()">
-                <img style="border-radius: 100%;" src="{{ loadedProfile?.avatar }}" />
+            <div class="col-3 " (click)="takePicture()">
+                <ion-avatar>
+                    <img  src="{{ avatar }}" />
+                </ion-avatar>
             </div>
 
-            <div class="col-8 ml-1 persona-item-data">
+            <div class="col-8  persona-item-data">
                 <h1 class="persona-nombre">{{ loadedProfile?.firstName | titlecase }} {{ loadedProfile?.lastName | titlecase }}</h1>
                 
                 <h5 class="persona-plan">{{ loadedProfile?.actualPlan }}</h5>

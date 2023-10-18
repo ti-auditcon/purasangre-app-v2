@@ -1,5 +1,5 @@
 import { RouteReuseStrategy } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
@@ -26,6 +26,7 @@ import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 {
-  "name": "purasangre-app-v2",
+  "name": "purasangrecrossfit",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -24,7 +24,7 @@
     "@capacitor/android": "^5.0.0",
     "@capacitor/app": "^5.0.0",
     "@capacitor/browser": "^5.0.0",
-    "@capacitor/camera": "^5.0.0",
+    "@capacitor/camera": "^5.0.7",
     "@capacitor/core": "^5.0.0",
     "@capacitor/haptics": "^5.0.0",
     "@capacitor/ios": "^5.0.0",
@@ -39,7 +39,7 @@
     "@ionic/core": "^7.3.3",
     "ionicons": "^7.0.0",
     "rxjs": "^7.5.0",
-    "swiper": "^10.2.0",
+    "swiper": "^10.3.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
