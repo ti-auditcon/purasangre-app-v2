@@ -35,6 +35,8 @@ export class EditConfirmPage {
     haymodal = false;
     actualModal: any;
     varIsPressed = false;
+    isModalOpen = false;
+    selectedImg: string;
 
     constructor( public plt: Platform,
                  private modalController: ModalController,
@@ -211,5 +213,21 @@ export class EditConfirmPage {
             this.varIsPressed = false;
         }, 500);
         // setInterval(() => { console.log('hola'); }, 4000);
+    }
+
+    imageModal(img) {
+        console.log('click image');
+        this.isModalOpen = true;
+        this.selectedImg = img;
+        // this.modalController.create({
+        //     component: ImageModalPage,
+        //     componentProps: { img }
+        // }).then(modal => {
+        //     modal.present();
+        // });
+    }
+    imageModalDismiss() {
+        console.log('modal cerrado');
+        this.isModalOpen = false;
     }
 }

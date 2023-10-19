@@ -48,13 +48,13 @@
             
             <div class="content">
                 <div class="ps-row item-crossfiters" *ngFor="let reservation of reservations" >
-                    <div class="col-2 item-img">
+                    <ion-avatar>
                         <img src="{{ reservation?.rels.user.avatar }}"
                              ion-button ion-long-press 
                              [ngClass]="{ 'image-pressed': varIsPressed }"
                              (click)="imageModal(reservation?.rels.user.avatar)"
                              />
-                    </div>
+                    </ion-avatar>
                     <div class="col-10 item-data">
                         <h6>
                             {{ reservation?.rels.user.first_name }} {{ reservation?.rels.user.last_name }}

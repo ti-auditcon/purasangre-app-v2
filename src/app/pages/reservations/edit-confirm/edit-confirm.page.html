@@ -54,12 +54,12 @@
             </div>
             
             <div class="content">
-                <div class="item-crossfiters ps-row" *ngFor="let reservation of reservations">
-                    <div class="col-2 item-img">
+                <div class="item-crossfiters ps-row" *ngFor="let reservation of reservations" >
+                    <ion-avatar>
                         <img src="{{ reservation?.rels.user.avatar }}" 
                              ion-button ion-long-press
                              [ngClass]="{ 'image-pressed': varIsPressed }"
-                             (click)="clicked()"
+                             (click)="imageModal(reservation?.rels.user.avatar)"
                              (pressed)="varIsPressed = true"
                              (pressEnded)="varIsPressed = false"
                              (longPressed)="beingLongPressed(
@@ -69,7 +69,7 @@
                              )"
                              (pressEnded)="finishLongPress()"/>
                              
-                    </div>
+                    </ion-avatar>>
 
                     <div class="col-10 item-data">
                         <h6>{{ reservation?.rels.user.first_name }}
@@ -98,6 +98,14 @@
             Confirmar asistencia
         </div>
     </ion-fab>
+    <ion-modal class="avatar" [isOpen]="isModalOpen" (didDismiss)="imageModalDismiss()">
+        <ng-template>
+            
+                <img src="{{this.selectedImg}}" />
+            
+
+        </ng-template>
+      </ion-modal>
 </ion-content>
 
 <ion-footer>
