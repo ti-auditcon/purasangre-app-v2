@@ -53,7 +53,9 @@
                              ion-button ion-long-press 
                              [ngClass]="{ 'image-pressed': varIsPressed }"
                              (click)="imageModal(reservation?.rels.user.avatar)"
+                             *ngIf="reservation?.rels.user.avatar"
                              />
+                        <img *ngIf="!reservation?.rels.user.avatar" src="assets/img/default_user.png" />
                     </ion-avatar>
                     <div class="col-10 item-data">
                         <h6>
@@ -92,7 +94,7 @@
             
 
         </ng-template>
-      </ion-modal>
+    </ion-modal>
 
 </ion-content>
 

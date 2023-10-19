@@ -67,9 +67,12 @@
                                 reservation?.rels.user.first_name,
                                 reservation?.rels.user.last_name
                              )"
-                             (pressEnded)="finishLongPress()"/>
+                             (pressEnded)="finishLongPress()"
+                             *ngIf="reservation?.rels.user.avatar"
+                             />
+                        <img *ngIf="!reservation?.rels.user.avatar" src="assets/img/default_user.png" />
                              
-                    </ion-avatar>>
+                    </ion-avatar>
 
                     <div class="col-10 item-data">
                         <h6>{{ reservation?.rels.user.first_name }}
