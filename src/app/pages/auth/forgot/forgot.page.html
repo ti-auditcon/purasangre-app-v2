@@ -27,7 +27,7 @@
                 </div>
             </div>
             <ion-col class="signup-col">
-                <button
+                <button *ngIf="!loading"
                     class="submit-login-auth"
                     full
                     type="submit"
@@ -35,6 +35,15 @@
                 >
                     Enviar
                 </button>
+                <button *ngIf="loading"
+                    class="submit-login-auth"
+                    full
+                    type="submit"
+                    expand="block"
+                    disabled>
+                    <ion-spinner name="crescent"></ion-spinner>
+                </button>
+                
 
                 <br /><br />
 

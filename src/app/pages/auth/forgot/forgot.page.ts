@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController , AlertController } from '@ionic/angular';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../../environments/environment';
@@ -19,11 +19,13 @@ export class ForgotPage {
     message;
     buttonIcon;
     disabled = false;
+    loading = false;
 
     constructor(private authService: AuthService,
                 private modalController: ModalController,
                 private router: Router,
-                private http: HttpClient
+                private http: HttpClient,
+                private alertController: AlertController
             ) { }
 
     // async openModalForgot(title, message) {
@@ -48,7 +50,7 @@ export class ForgotPage {
     // }
 
     sendForgot() {
-        this.disabled = true;
+        this.loading = true;
 
         const data = JSON.stringify({
             email: this.registerCredentials.email,
@@ -64,14 +66,17 @@ export class ForgotPage {
                 console.log('success reset');
 
                 console.log(result);
+                this.alertController.create({
+                    header: 'Revisa tu Correo',
+                    message: 'Te hemos enviado las instrucciones para reestablecer tu contraseña',
+                    buttons: ['OK']
+                }).then(alertEl => {
+                    alertEl.present();
+                    this.loading = false;
+                    this.router.navigateByUrl('/auth');
+                });
 
-                // this.openModalForgot(
-                //     'Revisa tu Correo',
-                //     'Te hemos enviado las instrucciones para reestablecer tu contraseña',
-                //     '/assets/icon/check.svg'
-                // );
-
-                this.router.navigateByUrl('/auth');
+                
             },
             (err) => {
                 console.log('error reset');
@@ -79,10 +84,18 @@ export class ForgotPage {
                 console.log(err);
 
                 // this.showAlert(err.error[0].error, err.error[0].message);
-                Plugins.Modals.alert({
-                    title: err.error.error,
-                    message: err.error.messag,
-                    buttonTitle: 'Entendido'
+                // Plugins.Modals.alert({
+                //     title: err.error.error,
+                //     message: err.error.messag,
+                //     buttonTitle: 'Entendido'
+                // });
+                this.alertController.create({
+                    header: err.error.error,
+                    message: 'error inesperado',
+                    buttons: ['OK']
+                }).then(alertEl => {
+                    alertEl.present();
+                    this.loading = false;
                 });
                 // this.openModalForgot(err.error.error, err.error.message);
             }

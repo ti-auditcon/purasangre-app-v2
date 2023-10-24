@@ -9,8 +9,8 @@ android {
         applicationId 'purasangrecrossfit.app.com'
         minSdkVersion 22
         targetSdkVersion 33
-        versionCode 200023
-        versionName "1.0"
+        versionCode 200026
+        versionName "2.5"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
