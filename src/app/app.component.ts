@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 
-import { Plugins, Capacitor } from '@capacitor/core';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
     selector: 'app-root',
@@ -19,12 +20,14 @@ export class AppComponent {
      *
      * @return void
      */
-    initializeApp() {
-        this.platform.ready().then(() => {
-            if (Capacitor.isPluginAvailable('SplashScreen')) {
-                Plugins.SplashScreen.hide({ fadeOutDuration: 500 });
-            }
-        });
+    async initializeApp() {
+        await this.platform.ready();
+        
+        // Ocultar splash screen con animación
+        await SplashScreen.hide({ fadeOutDuration: 500 });
+        
+        // Configurar status bar (opcional)
+        await StatusBar.setStyle({ style: Style.Light });
     }
 
     // private notificationSetup() {

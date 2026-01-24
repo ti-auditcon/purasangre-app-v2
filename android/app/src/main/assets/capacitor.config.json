@@ -1,7 +1,21 @@
 {
-    "appId": "com.asomic.purasangreV2",
-    "appName": "purasangreV2",
-    "bundledWebRuntime": false,
-    "npmClient": "npm",
-    "webDir": "www"
+	"appId": "com.asomic.purasangreV2",
+	"appName": "purasangreV2",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 3000,
+			"launchAutoHide": true,
+			"backgroundColor": "#000000",
+			"androidSplashResourceName": "splash",
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false,
+			"iosSpinnerStyle": "small",
+			"spinnerColor": "#999999"
+		},
+		"StatusBar": {
+			"style": "LIGHT"
+		}
+	}
 }

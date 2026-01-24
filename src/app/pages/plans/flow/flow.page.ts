@@ -7,9 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { Platform } from '@ionic/angular';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
-import { Plugins } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 
 @Component({
     selector: 'app-flow',
@@ -30,7 +28,6 @@ export class FlowPage implements OnInit {
         public storage: Storage,
         public http: HttpClient,
         public route: Router,
-        private iab: InAppBrowser,
     ) { }
 
     ngOnInit() { }
@@ -57,65 +54,27 @@ export class FlowPage implements OnInit {
                     console.log(result.data);
 
                     this.http.get(`${environment.SERVER_URL}/flow/${result.data.id}`, httpOptions)
-                        .subscribe((flowresult: any) => {
+                        .subscribe(async (flowresult: any) => {
                             console.log('url flow');
                             console.log(flowresult.url);
 
-                            // this.navigateFlow(flowresult.url);
-
-                            if (this.platform.is('android')) {
-                                const browser = this.iab.create(
-                                    flowresult.url, '_blank',
-                                    `hideurlbar=yes,footer=no,toolbarcolor=#141A29,
-                                    navigationbuttoncolor=#D3D5E0,closebuttoncaption=cerrar,
-                                    closebuttoncolor=#D3D5E0`
-                                );
-
-                                browser.on('loadstop').subscribe((event) => {
-                                  console.log('cargo android');
-                                });
-
-                                browser.on('exit').subscribe((event) => {
-                                    this.zone.run(async () => {
-                                        await this.route.navigate([`/plans/${id}`]);
-                                    });
-
-                                    browser.close();
-                                });
-                            }
-
-                            if (this.platform.is('ios')) {
-                                const browser = this.iab.create(
-                                    flowresult.url,
-                                    '_blank',
-                                    `toolbarposition=top,closebuttoncaption=Cerrar,
-                                    toolbarcolor=#141A29,closebuttoncolor=#D3D5E0,
-                                    navigationbuttoncolor=#D3D5E0`
-                                );
-
-                                browser.on('loadstop').subscribe((event) => {
-                                  console.log('cargo ios');
-                                });
-
-                                browser.on('exit').subscribe((event) => {
-                                    this.zone.run(async () => {
-                                        await this.route.navigate([`/plans/${id}`]);
-                                    });
-
-                                    browser.close();
-                                });
-                            }
+                            // Usar Browser API de Capacitor (más simple que InAppBrowser)
+                            // El plugin Browser no soporta callbacks pero es más moderno
+                            await Browser.open({ 
+                                url: flowresult.url,
+                                presentationStyle: 'fullscreen',
+                                toolbarColor: '#141A29'
+                            });
+                            
+                            // Cuando el usuario cierra el browser, navegar de vuelta
+                            // Nota: Browser.addListener se puede usar para detectar el cierre
+                            Browser.addListener('browserFinished', async () => {
+                                await this.route.navigate([`/plans/${id}`]);
+                            });
                         }
                     );
                 }
             );
-        });
-    }
-
-    async navigateFlow(url) {
-        console.log('en navigateFlow');
-        await Plugins.Browser.open({ url }).then(page => {
-            console.log(page);
         });
     }
 }

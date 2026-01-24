@@ -1,13 +1,14 @@
 import { Animation } from '@ionic/core';
+import { createAnimation } from '@ionic/core';
 
-export function myEnterAnimation(AnimationC: Animation, baseEl: HTMLElement): Promise<Animation> {
+export function myEnterAnimation(baseEl: HTMLElement): Animation {
 
-    const baseAnimation = new AnimationC();
+    const baseAnimation = createAnimation();
 
-    const backdropAnimation = new AnimationC();
+    const backdropAnimation = createAnimation();
     backdropAnimation.addElement(baseEl.querySelector('ion-backdrop'));
 
-    const wrapperAnimation = new AnimationC();
+    const wrapperAnimation = createAnimation();
     wrapperAnimation.addElement(baseEl.querySelector('.modal-wrapper'));
 
     wrapperAnimation
@@ -16,12 +17,11 @@ export function myEnterAnimation(AnimationC: Animation, baseEl: HTMLElement): Pr
 
     backdropAnimation.fromTo('opacity', 0.01, 0.4);
 
-    return Promise.resolve(baseAnimation
+    return baseAnimation
         .addElement(baseEl)
         .easing('cubic-bezier(0.36,0.66,0.04,1)')
         .duration(200)
         .beforeAddClass('show-modal')
-        .add(backdropAnimation)
-        .add(wrapperAnimation));
+        .addAnimation([backdropAnimation, wrapperAnimation]);
 
 }

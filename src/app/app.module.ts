@@ -4,12 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,9 +25,6 @@ import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
         IonicStorageModule.forRoot()
     ],
     providers: [
-        StatusBar,
-        SplashScreen,
-        InAppBrowser,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }
     ],

@@ -1,13 +1,14 @@
 import { Animation } from '@ionic/core';
+import { createAnimation } from '@ionic/core';
 
-export function myLeaveAnimation(AnimationC: Animation, baseEl: HTMLElement): Promise<Animation> {
+export function myLeaveAnimation(baseEl: HTMLElement): Animation {
 
-    const baseAnimation = new AnimationC();
+    const baseAnimation = createAnimation();
 
-    const backdropAnimation = new AnimationC();
+    const backdropAnimation = createAnimation();
     backdropAnimation.addElement(baseEl.querySelector('ion-backdrop'));
 
-    const wrapperAnimation = new AnimationC();
+    const wrapperAnimation = createAnimation();
     const wrapperEl = baseEl.querySelector('.modal-wrapper');
     wrapperAnimation.addElement(wrapperEl);
     // tslint:disable-next-line: no-non-null-assertion
@@ -19,11 +20,10 @@ export function myLeaveAnimation(AnimationC: Animation, baseEl: HTMLElement): Pr
 
     backdropAnimation.fromTo('opacity', 0.4, 0.0);
 
-    return Promise.resolve(baseAnimation
+    return baseAnimation
       .addElement(baseEl)
       .easing('ease-out')
       .duration(200)
-      .add(backdropAnimation)
-      .add(wrapperAnimation));
+      .addAnimation([backdropAnimation, wrapperAnimation]);
 
 }

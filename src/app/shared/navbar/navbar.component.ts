@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { NavController } from '@ionic/angular';
-import { AnimationOptions } from '@ionic/angular/dist/providers/nav-controller';
+import { NavController, AnimationBuilder } from '@ionic/angular';
 
 @Component({
     selector: 'app-navbar',
@@ -27,10 +26,6 @@ export class NavbarComponent implements OnDestroy {
     // }
 
     goBackUrl() {
-        const animations: AnimationOptions = {
-            animated: true,
-            animationDirection: 'back'
-        };
-        this.navCtrl.back(animations);
+        this.navCtrl.back({ animated: true, animationDirection: 'back' });
     }
 }
