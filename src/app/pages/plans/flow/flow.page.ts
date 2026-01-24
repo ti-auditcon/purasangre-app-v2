@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { Platform } from '@ionic/angular';
 
 import { Browser } from '@capacitor/browser';
@@ -32,49 +32,52 @@ export class FlowPage implements OnInit {
 
     ngOnInit() { }
 
-    ionViewDidEnter() {
+    async ionViewDidEnter() {
         this.loaded = false;
         this.loading = true;
         const id = this.activatedRoute.snapshot.paramMap.get('planId');
         console.log(id);
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        
+        const authData = await this.storage.get('authData');
+        if (!authData) {
+            return;
+        }
 
-            const parsedData = JSON.parse(authData.value) as {
-                token: string
-            };
+        const parsedData = JSON.parse(authData) as {
+            token: string
+        };
 
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    Authorization: `Bearer ${parsedData.token}` // updated
-                })
-            };
+        const httpOptions = {
+            headers: new HttpHeaders({
+                Authorization: `Bearer ${parsedData.token}` // updated
+            })
+        };
 
-            this.http.get(`${environment.SERVER_URL}/plans/${id}/contract`, httpOptions)
-                .subscribe((result: any) => {
-                    console.log(result.data);
+        this.http.get(`${environment.SERVER_URL}/plans/${id}/contract`, httpOptions)
+            .subscribe((result: any) => {
+                console.log(result.data);
 
-                    this.http.get(`${environment.SERVER_URL}/flow/${result.data.id}`, httpOptions)
-                        .subscribe(async (flowresult: any) => {
-                            console.log('url flow');
-                            console.log(flowresult.url);
+                this.http.get(`${environment.SERVER_URL}/flow/${result.data.id}`, httpOptions)
+                    .subscribe(async (flowresult: any) => {
+                        console.log('url flow');
+                        console.log(flowresult.url);
 
-                            // Usar Browser API de Capacitor (más simple que InAppBrowser)
-                            // El plugin Browser no soporta callbacks pero es más moderno
-                            await Browser.open({ 
-                                url: flowresult.url,
-                                presentationStyle: 'fullscreen',
-                                toolbarColor: '#141A29'
-                            });
-                            
-                            // Cuando el usuario cierra el browser, navegar de vuelta
-                            // Nota: Browser.addListener se puede usar para detectar el cierre
-                            Browser.addListener('browserFinished', async () => {
-                                await this.route.navigate([`/plans/${id}`]);
-                            });
-                        }
-                    );
-                }
-            );
-        });
+                        // Usar Browser API de Capacitor (más simple que InAppBrowser)
+                        // El plugin Browser no soporta callbacks pero es más moderno
+                        await Browser.open({ 
+                            url: flowresult.url,
+                            presentationStyle: 'fullscreen',
+                            toolbarColor: '#141A29'
+                        });
+                        
+                        // Cuando el usuario cierra el browser, navegar de vuelta
+                        // Nota: Browser.addListener se puede usar para detectar el cierre
+                        Browser.addListener('browserFinished', async () => {
+                            await this.route.navigate([`/plans/${id}`]);
+                        });
+                    }
+                );
+            }
+        );
     }
 }

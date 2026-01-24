@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { map, tap } from 'rxjs/operators';
 import { BehaviorSubject, from } from 'rxjs';
@@ -74,17 +74,20 @@ export class ProfileService {
         );
     }
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private storage: Storage
+    ) {}
 
     nullProfile() {
         this._profile.next(null);
     }
 
     fetchProfile() {
-        return from(Plugins.Storage.get({ key: 'authData' })).pipe(
+        return from(this.storage.get('authData')).pipe(
             map(storeData => {
-                if ( storeData && storeData.value ) {
-                    const parsedData = JSON.parse(storeData.value) as {
+                if ( storeData ) {
+                    const parsedData = JSON.parse(storeData) as {
                         email: string,
                         tokenType: string,
                         token: string,
@@ -116,9 +119,9 @@ export class ProfileService {
     }
 
     getloadedProfile() {
-        return from(Plugins.Storage.get({ key: 'authProfile' })).pipe(
+        return from(this.storage.get('authProfile')).pipe(
             map(profile => {
-                const parsedData = JSON.parse(profile.value);
+                const parsedData = JSON.parse(profile);
                 const loadedProfile = [];
 
                 loadedProfile.push(
@@ -203,6 +206,6 @@ export class ProfileService {
             actualPlanExpiration, clasesConsumidas, clasesPerdidas, clasesTotales
         });
 
-        Plugins.Storage.set({ key: 'authProfile', value: data });
+        this.storage.set('authProfile', data);
     }
 }

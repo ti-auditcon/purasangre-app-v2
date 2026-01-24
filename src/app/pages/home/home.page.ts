@@ -6,13 +6,15 @@ import { trigger, state, style, animate, transition, AnimationStyleMetadata } fr
 
 import { ModalController, AlertController } from '@ionic/angular';
 
-import {
-    Plugins, PushNotificationToken,
-    PushNotification, PushNotificationActionPerformed
-} from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
-
-const { PushNotifications } = Plugins;
+import { 
+    PushNotifications,
+    Token,
+    PushNotificationSchema,
+    ActionPerformed
+} from '@capacitor/push-notifications';
+import { Network } from '@capacitor/network';
 
 @Component({
     selector: 'app-home',
@@ -34,9 +36,12 @@ export class HomePage implements OnInit {
     statusConnection = true;
     public animationState = 'invisible'; // Or Enum with visible/invisible.
 
-    constructor(public modalController: ModalController,
-                private alertCtrl: AlertController,
-                private http: HttpClient) { }
+    constructor(
+        public modalController: ModalController,
+        private alertCtrl: AlertController,
+        private http: HttpClient,
+        private storage: Storage
+    ) { }
 
     ngOnInit() {
         this.checkConnection();
@@ -48,31 +53,33 @@ export class HomePage implements OnInit {
         PushNotifications.register();
 
         // On success, we should be able to receive notifications
-        PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+        PushNotifications.addListener('registration', async (token: Token) => {
             const pushToken = token.value;
-            Plugins.Storage.get({key: 'authData'}).then((authData) => {
+            const authData = await this.storage.get('authData');
+            
+            if (!authData) {
+                return;
+            }
 
-                const parsedData = JSON.parse(authData.value) as { token: string };
+            const parsedData = JSON.parse(authData) as { token: string };
 
-                const httpOptions = {
-                    headers: new HttpHeaders({
-                        Authorization: `Bearer ${parsedData.token}` // updated
-                    })
-                };
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    Authorization: `Bearer ${parsedData.token}` // updated
+                })
+            };
 
-                this.http.post(`${environment.SERVER_URL}/fcm/token/`,
-                               { fcmtoken: pushToken },
-                               httpOptions
-                ).subscribe((result: any) => {
-                        console.log('success to post token');
-                    },
-                    (err) => {
-                        console.log('error to post token');
-
-                        console.log(err);
-                    }
-                );
-            });
+            this.http.post(`${environment.SERVER_URL}/fcm/token/`,
+                           { fcmtoken: pushToken },
+                           httpOptions
+            ).subscribe((result: any) => {
+                    console.log('success to post token');
+                },
+                (err) => {
+                    console.log('error to post token');
+                    console.log(err);
+                }
+            );
 
             console.log('Push registration success, token: ' + token.value);
         });
@@ -84,14 +91,13 @@ export class HomePage implements OnInit {
 
         // Show us the notification payload if the app is open on our device
         PushNotifications.addListener(
-            'pushNotificationReceived', (notification: PushNotification
-        ) => {
+            'pushNotificationReceived', (notification: PushNotificationSchema) => {
             console.log('pushNotificationReceived: ' + JSON.stringify(notification));
         });
 
         // Method called when tapping on a notification
         PushNotifications.addListener('pushNotificationActionPerformed',
-            (notification: PushNotificationActionPerformed) => {
+            (notification: ActionPerformed) => {
                 const header: any = notification.notification.data.title || 'Notificación';
                 const message: any = notification.notification.data.body;
 
@@ -129,7 +135,7 @@ export class HomePage implements OnInit {
      * @return void
      */
     async checkConnection() {
-        const handler = Plugins.Network.addListener('networkStatusChange', (estado) => {
+        const handler = Network.addListener('networkStatusChange', (estado) => {
             if (estado.connected === true) {
                 this.statusConnection = true;
                 this.animationState = 'invisible';

@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// import { Storage } from '@ionic/storage';
-
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -57,19 +55,20 @@ export class AuthService {
         private http: HttpClient,
         private profileService: ProfileService,
         private router: Router,
-        private loadingCtrl: LoadingController
+        private loadingCtrl: LoadingController,
+        private storage: Storage
     ) { }
 
     autoLogin() {
-        return from(Plugins.Storage.get({ key: 'authData' })).pipe(
+        return from(this.storage.get('authData')).pipe(
             map(storeData => {
                 // console.log(storeData);
-                if (!storeData || !storeData.value) {
+                if (!storeData) {
                     console.log('!storeData');
                     return null;
                 }
 
-                const parsedData = JSON.parse(storeData.value) as {
+                const parsedData = JSON.parse(storeData) as {
                     email: string,
                     tokenType: string,
                     token: string,
@@ -145,8 +144,8 @@ export class AuthService {
      *
      * @return  null
      */
-    getOut() {
-        Plugins.Storage.clear();
+    async getOut() {
+        await this.storage.clear();
 
         this.profileService.nullProfile();
 
@@ -190,6 +189,6 @@ export class AuthService {
             refreshToken, tokenExpirationDate
         });
 
-        Plugins.Storage.set({ key: 'authData', value: data });
+        this.storage.set('authData', data);
     }
 }
