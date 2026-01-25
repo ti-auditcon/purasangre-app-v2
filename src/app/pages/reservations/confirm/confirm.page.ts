@@ -22,6 +22,7 @@ export class ConfirmPage {
     buttonActionAdd: any;
     buttonActionRemove: any;
     buttonActionConfirm: any;
+    claseId?: string; // ID de la clase para las acciones
     disabled =  false;
 
      constructor( public viewCtrl: ModalController,

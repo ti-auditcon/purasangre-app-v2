@@ -10,12 +10,11 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicGestureConfig } from './shared/IonicGestureConfig';
-import { ImageModalPage } from './shared/image-modal/image-modal.page';
 import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
 
 @NgModule({
-    declarations: [AppComponent, ConfirmPage, ImageModalPage ],
-    entryComponents: [ ConfirmPage, ImageModalPage],
+    declarations: [AppComponent, ConfirmPage ],
+    entryComponents: [ ConfirmPage],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
