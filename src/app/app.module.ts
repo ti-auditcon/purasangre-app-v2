@@ -14,7 +14,6 @@ import { ConfirmPage } from './pages/reservations/confirm/confirm.page';
 
 @NgModule({
     declarations: [AppComponent, ConfirmPage ],
-    entryComponents: [ ConfirmPage],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
