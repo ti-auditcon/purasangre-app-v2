@@ -11,20 +11,20 @@ const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: './pages/auth/auth.module#AuthPageModule'
+        loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthPageModule)
     },
     {
         path: 'home',
-        loadChildren: './pages/home/home.module#HomePageModule',
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
         canLoad: [ AuthGuard ]
     },
     {
         path: 'confirm',
-        loadChildren: './pages/reservations/confirm/confirm.module#ConfirmPageModule'
+        loadChildren: () => import('./pages/reservations/confirm/confirm.module').then(m => m.ConfirmPageModule)
     },
     {
         path: 'forgot',
-        loadChildren: './pages/auth/forgot/forgot.module#ForgotPageModule'
+        loadChildren: () => import('./pages/auth/forgot/forgot.module').then(m => m.ForgotPageModule)
     },
 
 
