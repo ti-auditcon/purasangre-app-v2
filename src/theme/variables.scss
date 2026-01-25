@@ -135,12 +135,12 @@ ion-toolbar {
   --background: linear-gradient(180deg, #0075C9 0%, #00BFC9 100%);
 }
 
-ion-slides {
+swiper-container {
   width: 100vw;
   background: linear-gradient(153.33deg, #FC0F85 6.69%, #9300AB 88.08%);
 }
 
-ion-slide {
+swiper-slide {
     height: 100vh !important;
     padding: 0 40px;
     flex-direction: column;

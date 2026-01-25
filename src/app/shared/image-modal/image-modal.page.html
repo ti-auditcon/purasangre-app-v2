@@ -1,6 +1,6 @@
 <ion-content class="image-container">
-    <ion-slides #slider [options]="sliderOpts">
-        <ion-slide>
+    <swiper-container #slider [zoom]="true">
+        <swiper-slide>
             <ion-card style="background: rgb(255,255,255);">
                 <ion-card-header>
                     <ion-card-title>
@@ -12,8 +12,8 @@
                       <img [src]="img"/>
                 </ion-card-content>
             </ion-card>
-        </ion-slide>
-    </ion-slides>
+        </swiper-slide>
+    </swiper-container>
     <div class="layer-blur">
     </div>
 </ion-content>

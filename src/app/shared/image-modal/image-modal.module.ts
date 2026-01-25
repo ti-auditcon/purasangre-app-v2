@@ -8,6 +8,9 @@ import { IonicModule } from '@ionic/angular';
 import { ImageModalPage } from './image-modal.page';
 import { SharedModule } from '../../shared/shared.module';
 
+import { register } from 'swiper/element/bundle';
+register();
+
 const routes: Routes = [
   {
     path: '',

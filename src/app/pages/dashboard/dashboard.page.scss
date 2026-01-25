@@ -1,12 +1,12 @@
-ion-slides {
+swiper-container {
     width: 100%;
     border-radius: 4px;
-    --bullet-background: rgb(27, 62, 214);
-    --bullet-background-active: #FC0F85;
-    --background: #fff;
+    --swiper-pagination-color: #FC0F85;
+    --swiper-pagination-bullet-inactive-color: rgb(27, 62, 214);
+    background: #fff;
     background-image: none;
     text-align: left;
-    ion-slide {
+    swiper-slide {
         text-align: left;
         padding: 0;
         padding: 0 4px 0 2px;

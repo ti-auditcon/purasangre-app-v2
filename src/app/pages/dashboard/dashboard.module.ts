@@ -10,6 +10,9 @@ import { DashboardPage } from './dashboard.page';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 
+import { register } from 'swiper/element/bundle';
+register();
+
 @NgModule({
     imports: [
         CommonModule,

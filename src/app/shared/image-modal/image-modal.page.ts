@@ -10,8 +10,6 @@ export class ImageModalPage implements OnInit {
     img: any;
     user: any;
 
-    sliderOpts = { zoom: { maxRatio: 2 } };
-
     constructor(private navParams: NavParams) { }
 
     ngOnInit() {
