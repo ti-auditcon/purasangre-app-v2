@@ -6,8 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Storage } from '@ionic/storage-angular';
 
-import { Label } from 'ng2-charts';
-import { ChartDataSets, ChartOptions, Chart } from 'chart.js';
+// TODO: chart.js v2.9.3 incompatible with Angular 18 - needs upgrade to v4 or alternative
+// import { Label } from 'ng2-charts';
+// import { ChartDataSets, ChartOptions, Chart } from 'chart.js';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -17,9 +18,9 @@ import { AuthService } from '../auth/auth.service';
     styleUrls: ['./dashboard.page.scss']
 })
 export class DashboardPage {
-    @ViewChild('barCanvas', { static: false }) barCanvas: any;
-
-    barChart: any;
+    // TODO: chart.js - uncomment when upgrading to v4
+    // @ViewChild('barCanvas', { static: false }) barCanvas: any;
+    // barChart: any;
 
     public user: any = '';
     public userPlan: any = '';
@@ -43,32 +44,33 @@ export class DashboardPage {
         private storage: Storage
     ) { }
 
-    public lineChartData: ChartDataSets[] = [
-        { data: [104, 103, 101, 98, 97], label: 'Peso corporal' },
-    ];
+    // TODO: chart.js - uncomment when upgrading to v4
+    // public lineChartData: ChartDataSets[] = [
+    //     { data: [104, 103, 101, 98, 97], label: 'Peso corporal' },
+    // ];
 
-    public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May'];
+    // public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May'];
 
-    public lineChartOptions: (ChartOptions & { annotation: any }) = {
-        responsive: true,
-        scales: {
-            xAxes: [{ gridLines: { display: false } }],
-            yAxes: [{ gridLines: { display: false } }]
-        },
-        annotation: {
-            annotations: [
-                {
-                    type: 'line', mode: 'vertical', scaleID: 'x-axis-0',
-                    value: 'March', borderColor: 'orange', borderWidth: 2,
-                    label: {
-                        enabled: true,
-                        fontColor: 'orange',
-                        content: 'LineAnno'
-                    }
-                },
-            ],
-        },
-    };
+    // public lineChartOptions: (ChartOptions & { annotation: any }) = {
+    //     responsive: true,
+    //     scales: {
+    //         xAxes: [{ gridLines: { display: false } }],
+    //         yAxes: [{ gridLines: { display: false } }]
+    //     },
+    //     annotation: {
+    //         annotations: [
+    //             {
+    //                 type: 'line', mode: 'vertical', scaleID: 'x-axis-0',
+    //                 value: 'March', borderColor: 'orange', borderWidth: 2,
+    //                 label: {
+    //                     enabled: true,
+    //                     fontColor: 'orange',
+    //                     content: 'LineAnno'
+    //                 }
+    //             },
+    //         ],
+    //     },
+    // };
 
     ionViewWillEnter() {
         this.storage.get('authData').then((authData) => {
@@ -102,46 +104,47 @@ export class DashboardPage {
                     console.log('error user-alerts');
                 });
 
-            this.http.get(`${environment.SERVER_URL}/assistance`, httpOptions)
-                .subscribe((result) => {
-                    this.assistance = result;
+            // TODO: chart.js - uncomment when upgrading to v4
+            // this.http.get(`${environment.SERVER_URL}/assistance`, httpOptions)
+            //     .subscribe((result) => {
+            //         this.assistance = result;
 
-                    console.log(this.assistance);
+            //         console.log(this.assistance);
 
-                    this.barChart = new Chart(this.barCanvas.nativeElement, {
-                        type: 'bar',
-                        data: {
-                            labels: this.assistance.label,
+            //         this.barChart = new Chart(this.barCanvas.nativeElement, {
+            //             type: 'bar',
+            //             data: {
+            //                 labels: this.assistance.label,
 
-                            datasets: [{
-                                data: this.assistance.data,
-                                label: '',
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{
-                                    type: 'linear',
-                                    display: true,
-                                    position: 'left',
-                                    id: 'y-axis-1',
-                                    gridLines: { display: false },
-                                    ticks: {
-                                        suggestedMax: 24,
-                                        beginAtZero: true,
-                                    }
-                                }]
-                            },
-                        },
-                    });
-                },
-                err => {
-                    console.log('error assistance');
-                }
-            );
+            //                 datasets: [{
+            //                     data: this.assistance.data,
+            //                     label: '',
+            //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            //                     borderWidth: 1
+            //                 }]
+            //             },
+            //             options: {
+            //                 legend: { display: false },
+            //                 scales: {
+            //                     yAxes: [{
+            //                         type: 'linear',
+            //                         display: true,
+            //                         position: 'left',
+            //                         id: 'y-axis-1',
+            //                         gridLines: { display: false },
+            //                         ticks: {
+            //                             suggestedMax: 24,
+            //                             beginAtZero: true,
+            //                         }
+            //                     }]
+            //                 },
+            //             },
+            //         });
+            //     },
+            //     err => {
+            //         console.log('error assistance');
+            //     }
+            // );
         });
     }
 
