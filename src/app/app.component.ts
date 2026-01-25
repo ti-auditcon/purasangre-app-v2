@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
@@ -11,7 +12,10 @@ import { StatusBar, Style } from '@capacitor/status-bar';
     styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-    constructor(private platform: Platform) {
+    constructor(
+        private platform: Platform,
+        private storage: Storage
+    ) {
         this.initializeApp();
     }
 
@@ -22,6 +26,9 @@ export class AppComponent {
      */
     async initializeApp() {
         await this.platform.ready();
+        
+        // Inicializar Storage ANTES de cualquier otra cosa
+        await this.storage.create();
         
         // Ocultar splash screen con animación
         await SplashScreen.hide({ fadeOutDuration: 500 });
