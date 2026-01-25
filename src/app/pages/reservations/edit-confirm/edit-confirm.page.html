@@ -56,11 +56,11 @@
             <div class="content">
                 <div class="item-crossfiters ps-row" *ngFor="let reservation of reservations">
                     <div class="col-2 item-img">
-                        <img src="{{ reservation?.rels.user.avatar }}" 
-                             ion-button ion-long-press
+                        <img src="{{ reservation?.rels.user.avatar }}" (click)="clicked()"/>
+                        <!-- TODO: Restore long-press when migrating to Angular 18 compatible solution -->
+                        <!-- ion-button ion-long-press
                              [ngClass]="{ 'image-pressed': varIsPressed }"
                              [interval]="200"
-                             (click)="clicked()"
                              (pressed)="varIsPressed = true"
                              (pressEnded)="varIsPressed = false"
                              (longPressed)="beingLongPressed(
@@ -68,7 +68,7 @@
                                 reservation?.rels.user.first_name,
                                 reservation?.rels.user.last_name
                              )"
-                             (pressEnded)="finishLongPress()"/>
+                             (pressEnded)="finishLongPress()" -->
                              
                     </div>
 
