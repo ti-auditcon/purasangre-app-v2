@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Platform, ModalController, IonInfiniteScroll, LoadingController } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
@@ -43,7 +43,8 @@ export class EditConfirmPage {
                  private router: Router,
                  private http: HttpClient,
                  public activatedRoute: ActivatedRoute,
-                 private loadingController: LoadingController
+                 private loadingController: LoadingController,
+                 private storage: Storage
                ) {}
 
     ionViewDidEnter() {
@@ -77,8 +78,8 @@ export class EditConfirmPage {
             console.log(this.activatedRoute.snapshot.paramMap);
             console.log('sii');
 
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-                const parsedData = JSON.parse(authData.value) as {
+            this.storage.get('authData').then((authData) => {
+                const parsedData = JSON.parse(authData) as {
                     token: string
                 };
                 this.httpOptions = {

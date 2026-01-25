@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component  } from '@angular/core';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
@@ -16,7 +16,8 @@ export class ClasesTodayPage {
     public today: any = '';
 
     constructor(private http: HttpClient,
-                private loadingController: LoadingController) { }
+                private loadingController: LoadingController,
+                private storage: Storage) { }
 
     // Refresh
     doRefresh(event) {
@@ -41,8 +42,8 @@ export class ClasesTodayPage {
         });
 
         loading.present().then(() => {
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-                const parsedData = JSON.parse(authData.value) as {
+            this.storage.get('authData').then((authData) => {
+                const parsedData = JSON.parse(authData) as {
                     token: string
                 };
                 const httpOptions = {

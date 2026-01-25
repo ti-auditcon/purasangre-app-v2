@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { Platform, ToastController } from '@ionic/angular';
 
@@ -36,6 +36,7 @@ export class ClasesPage {
         private http: HttpClient,
         public toastController: ToastController,
         // private clasesService: ClasesService,
+        private storage: Storage
     ) {
         if (this.plt.is('ios')) {
             // Si es iOS
@@ -77,9 +78,9 @@ export class ClasesPage {
 
     ionViewDidEnter() {
         console.log('estoy cargandome........');
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
+        this.storage.get('authData').then((authData) => {
 
-            const parsedData = JSON.parse(authData.value) as {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
 

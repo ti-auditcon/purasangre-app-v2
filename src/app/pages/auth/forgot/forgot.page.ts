@@ -2,11 +2,10 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../../environments/environment';
-import { Plugins } from '@capacitor/core';
 
 @Component({
     selector: 'app-forgot',
@@ -23,7 +22,8 @@ export class ForgotPage {
     constructor(private authService: AuthService,
                 private modalController: ModalController,
                 private router: Router,
-                private http: HttpClient
+                private http: HttpClient,
+                private alertController: AlertController
             ) { }
 
     // async openModalForgot(title, message) {
@@ -79,11 +79,11 @@ export class ForgotPage {
                 console.log(err);
 
                 // this.showAlert(err.error[0].error, err.error[0].message);
-                Plugins.Modals.alert({
-                    title: err.error.error,
-                    message: err.error.messag,
-                    buttonTitle: 'Entendido'
-                });
+                this.alertController.create({
+                    header: err.error.error,
+                    message: err.error.message,
+                    buttons: ['Entendido']
+                }).then(alert => alert.present());
                 // this.openModalForgot(err.error.error, err.error.message);
             }
         );

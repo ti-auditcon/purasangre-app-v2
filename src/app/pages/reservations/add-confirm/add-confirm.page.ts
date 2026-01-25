@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IonInfiniteScroll, LoadingController } from '@ionic/angular';
 import { Platform, ModalController } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
@@ -44,7 +44,8 @@ export class AddConfirmPage  {
                 private modalController: ModalController,
                 private http: HttpClient,
                 public activatedRoute: ActivatedRoute,
-                public loadingController: LoadingController
+                public loadingController: LoadingController,
+                private storage: Storage
                ) {
         if (this.plt.is('ios')) {
             // Si es iOS
@@ -92,8 +93,8 @@ export class AddConfirmPage  {
         loading.present().then(() => {
             const id = this.activatedRoute.snapshot.paramMap.get('claseId');
 
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-                const parsedData = JSON.parse(authData.value) as {
+            this.storage.get('authData').then((authData) => {
+                const parsedData = JSON.parse(authData) as {
                     token: string
                 };
 

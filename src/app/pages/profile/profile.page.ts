@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { ToastController, AlertController, ModalController } from '@ionic/angular';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { map } from 'rxjs/operators';
 
@@ -63,7 +63,8 @@ export class ProfilePage {
         private authService: AuthService,
         private toastController: ToastController,
         private alertCtrl: AlertController,
-        private viewCtrl: ModalController
+        private viewCtrl: ModalController,
+        private storage: Storage
     ) {}
 
     base64Image;
@@ -95,7 +96,7 @@ export class ProfilePage {
         console.log('Begin async operation');
 
         setTimeout(() => {
-            Plugins.Storage.remove({ key: 'authProfile' });
+            this.storage.remove('authProfile');
             this.profileService.fetchProfile().subscribe();
             console.log('Async operation has ended');
 
@@ -225,8 +226,8 @@ export class ProfilePage {
         console.log('entre a onPickImage...');
         console.log(imageFile);
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
             const httpOptions = {

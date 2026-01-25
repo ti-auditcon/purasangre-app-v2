@@ -3,10 +3,9 @@ import { environment } from '../../../../environments/environment';
 
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-select-day',
@@ -37,10 +36,10 @@ export class SelectDayPage  {
             message: 'Cargando semana...',
         });
         loading.present().then(() => {
-            Plugins.Storage.get({ key: 'authData' }).then((authData) => {
+            this.storage.get('authData').then((authData) => {
                 const clasetype = this.activatedRoute.snapshot.paramMap.get('claseTypeId');
 
-                const parsedData = JSON.parse(authData.value) as {
+                const parsedData = JSON.parse(authData) as {
                     token: string
                 };
                 const httpOptions = {

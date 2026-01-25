@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { Label } from 'ng2-charts';
 import { ChartDataSets, ChartOptions, Chart } from 'chart.js';
@@ -40,6 +40,7 @@ export class DashboardPage {
         private http: HttpClient,
         // private firebase: Firebase,
         private authService: AuthService,
+        private storage: Storage
     ) { }
 
     public lineChartData: ChartDataSets[] = [
@@ -70,8 +71,8 @@ export class DashboardPage {
     };
 
     ionViewWillEnter() {
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as { token: string };
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as { token: string };
 
             const httpOptions = {
                 headers: new HttpHeaders({

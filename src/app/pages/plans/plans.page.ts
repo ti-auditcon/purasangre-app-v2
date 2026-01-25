@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
-import { Plugins } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -29,7 +29,8 @@ export class PlansPage {
     constructor(
         // private storage: Storage,
         private router: Router,
-        private http: HttpClient
+        private http: HttpClient,
+        private storage: Storage
     ) {}
 
     customAlertOptions: any = { header: 'Clases' };
@@ -52,8 +53,8 @@ export class PlansPage {
     }
 
     ionViewDidEnter() {
-        Plugins.Storage.get({key: 'authData'}).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
 

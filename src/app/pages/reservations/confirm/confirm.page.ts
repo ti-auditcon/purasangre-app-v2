@@ -5,10 +5,8 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { ModalController, ToastController  } from '@ionic/angular';
-
-import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-confirm',
@@ -28,7 +26,8 @@ export class ConfirmPage {
      constructor( public viewCtrl: ModalController,
                   private http: HttpClient,
                   private router: Router,
-                  public toastController: ToastController
+                  public toastController: ToastController,
+                  private storage: Storage
                ) {}
 
     async presentToast(message: string) {
@@ -41,8 +40,8 @@ export class ConfirmPage {
 
     reserve(id: string ) {
         this.disabled = true;
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
             const httpOptions = {
@@ -73,8 +72,8 @@ export class ConfirmPage {
 
     remove(id: string ) {
         this.disabled = true;
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
 
@@ -108,8 +107,8 @@ export class ConfirmPage {
 
         console.log('click confirm');
 
-        Plugins.Storage.get({ key: 'authData' }).then((authData) => {
-            const parsedData = JSON.parse(authData.value) as {
+        this.storage.get('authData').then((authData) => {
+            const parsedData = JSON.parse(authData) as {
                 token: string
             };
             const httpOptions = {
