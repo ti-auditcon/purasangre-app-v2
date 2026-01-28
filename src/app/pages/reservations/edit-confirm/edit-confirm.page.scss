@@ -1,0 +1,26 @@
+.card-crossfiters {
+  .item-crossfiters {
+    display: flex;
+    align-items: center;
+    
+    .item-img {
+      flex-shrink: 0;
+      width: 60px;
+      height: 60px;
+      margin-right: 12px;
+      
+      img {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        object-fit: cover;
+        display: block;
+      }
+    }
+    
+    .item-data {
+      flex: 1;
+      padding-left: 0;
+    }
+  }
+}

@@ -1,6 +1,6 @@
-<app-navbar titulo="Nueva Reserva" ></app-navbar>
+<app-navbar titulo="Nueva Reserva" [urltoBack]="'home/tabs/clases'"></app-navbar>
 
-<ion-content >
+<ion-content class="clase-page">
     <div class="reserva">
         <h1 class="titleReserva-section margin-bottom"
             *ngIf="(clase.active) && (clase.rels.auth_reservation.can) &&

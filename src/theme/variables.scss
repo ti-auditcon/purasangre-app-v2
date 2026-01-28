@@ -130,8 +130,8 @@ ion-tab-button.tab-selected {
 
 ion-toolbar {
   --color: white;
-  --border-width: 1px;
-  --border-color: white;
+  --border-width: 0;
+  --border-style: none;
   --background: linear-gradient(180deg, #0075C9 0%, #00BFC9 100%);
 }
 
@@ -1044,7 +1044,10 @@ ion-content {
         }
         .item-img {
           img {
-            border-radius: 30px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
           }
         }
         .item-data {
@@ -1371,7 +1374,10 @@ ion-content {
         }
         .item-img {
           img {
-            border-radius: 30px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
           }
         }
         .item-data {

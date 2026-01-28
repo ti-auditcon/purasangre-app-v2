@@ -1,23 +1,51 @@
+// Estilos para el botón de volver atrás
+ion-back-button {
+  --color: white;
+  --icon-font-size: 24px;
+  --min-width: auto;
+  --padding-start: 0;
+  --padding-end: 0;
+  --margin-start: 0;
+  --margin-end: 0;
+}
+
 .sc-ion-back-button-md-h {
-    --min-width: 10px;
-    --margin-end: 0;
-    --padding-end: 0;
-    display: inline-block;
-  }
-  
-  .shield {
-    position: absolute;
-    top: -20px;
-    right: -10px;
-    width: 160px;
-    z-index: -20
-  }
-  
-  .font-bold {
-    font-weight: 700;
-  }
-  
-  .title-header {
+  --min-width: 10px;
+  --margin-end: 0;
+  --padding-end: 0;
+  --color: white;
+  display: inline-block;
+}
+
+// Asegurar que el botón sea visible
+ion-buttons[slot="start"] {
+  ion-back-button {
+    --color: white;
     color: white;
+    
+    &::part(icon) {
+      color: white;
+      font-size: 24px;
+    }
+    
+    &::part(text) {
+      display: none; // Ocultar texto, solo mostrar icono
+    }
   }
-  
+}
+
+.shield {
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  width: 160px;
+  z-index: -20
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.title-header {
+  color: white;
+}

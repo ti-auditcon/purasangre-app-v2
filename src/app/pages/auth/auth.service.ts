@@ -122,17 +122,20 @@ export class AuthService {
 
     logout() {
         this.loadingCtrl.create({ keyboardClose: true, message: 'Cerrando Sesión...', spinner: 'crescent'})
-            .then(loadingEl => {
+            .then(async loadingEl => {
                 // Load modal
                 loadingEl.present();
-                // Make the login
-                const res = this.getOut();
-
-                console.log('el res es ' + res);
-
-                if (res == null) {
+                
+                try {
+                    // Make the logout
+                    await this.getOut();
+                    
+                    // Navigate to auth page
                     this.router.navigateByUrl('/auth');
-
+                } catch (error) {
+                    console.error('Error during logout:', error);
+                } finally {
+                    // Always dismiss the loading
                     loadingEl.dismiss();
                 }
             }
