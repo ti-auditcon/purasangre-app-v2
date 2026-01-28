@@ -1,19 +1,15 @@
-<ion-content class="image-container">
-    <swiper-container #slider [zoom]="true">
-        <swiper-slide>
-            <ion-card style="background: rgb(255,255,255);">
-                <ion-card-header>
-                    <ion-card-title>
-                        <p class="the-user">{{ user }}</p>
-                    </ion-card-title>
-                </ion-card-header>
-                
-                <ion-card-content>
-                      <img [src]="img"/>
-                </ion-card-content>
-            </ion-card>
-        </swiper-slide>
-    </swiper-container>
-    <div class="layer-blur">
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ user }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="image-modal-content">
+    <div class="image-fullscreen" [style.background-image]="'url(' + img + ')'" (click)="dismiss()">
     </div>
 </ion-content>

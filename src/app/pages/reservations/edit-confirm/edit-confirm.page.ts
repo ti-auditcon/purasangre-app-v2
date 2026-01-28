@@ -11,8 +11,6 @@ import { Storage } from '@ionic/storage-angular';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
-import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
-import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
 
 @Component({
     selector: 'app-edit-confirm',
@@ -173,28 +171,6 @@ export class EditConfirmPage {
     }
 
     /**
-     * Open Modal for Image Avatar view
-     *
-     * img, firstName, lastName
-     */
-    beingLongPressed(img, firstName, lastName) {
-        // console.log('beingLongPressed');
-        if (!this.haymodal) {
-            this.modalController.create({
-                component: ImageModalPage,
-                componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
-            }).then(modal => {
-                this.actualModal = modal;
-                this.haymodal = true;
-                modal.present();
-            });
-        }
-    }
-
-    /**
      * Close Modal for Image Avatar view, and return color to icon image avatar
      *
      * img, firstName, lastName
@@ -225,9 +201,7 @@ export class EditConfirmPage {
             const modal = await this.modalController.create({
                 component: ImageModalPage,
                 componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
+                cssClass: 'image-modal'
             });
             this.actualModal = modal;
             this.haymodal = true;

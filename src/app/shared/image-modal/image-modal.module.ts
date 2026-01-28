@@ -1,32 +1,17 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
 
 import { ImageModalPage } from './image-modal.page';
-import { SharedModule } from '../../shared/shared.module';
-
-import { register } from 'swiper/element/bundle';
-register();
-
-const routes: Routes = [
-  {
-    path: '',
-    component: ImageModalPage
-  }
-];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes),
-    SharedModule
+    IonicModule
   ],
   declarations: [ImageModalPage],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  exports: [ImageModalPage]
 })
 export class ImageModalPageModule {}

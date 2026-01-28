@@ -12,8 +12,6 @@ import { Storage } from '@ionic/storage-angular';
 
 import { ConfirmPage } from '../confirm/confirm.page';
 import { ImageModalPage } from '../../../shared/image-modal/image-modal.page';
-import { myEnterAnimation } from '../../../shared/image-modal/animations/enter';
-import { myLeaveAnimation } from '../../../shared/image-modal/animations/leave';
 
 @Component({
     selector: 'app-add-confirm',
@@ -181,36 +179,15 @@ export class AddConfirmPage  {
         // event.target.complete();
     }
 
-    // image popup
-    openPreview(img) {
-        this.modalController.create({
-            component: ImageModalPage,
-            componentProps: { img }
-        }).then(modal => {
-            modal.present();
-        });
-    }
-
     /**
+     * DEPRECATED: Método antiguo que ha sido reemplazado por openImageModal
      * Open Modal for Image Avatar view
      *
      * img, firstName, lastName
      */
     beingLongPressed(img: any, firstName: any, lastName: any) {
-        // console.log('beingLongPressed');
-        if (!this.haymodal) {
-            this.modalController.create({
-                component: ImageModalPage,
-                componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
-            }).then(modal => {
-                this.actualModal = modal;
-                this.haymodal = true;
-                modal.present().then();
-            });
-        }
+        // Redirigir al nuevo método
+        this.openImageModal(img, firstName, lastName);
     }
 
     /**
@@ -236,9 +213,7 @@ export class AddConfirmPage  {
             const modal = await this.modalController.create({
                 component: ImageModalPage,
                 componentProps: { img, firstName, lastName },
-                cssClass: 'background-color-modal',
-                enterAnimation: myEnterAnimation,
-                leaveAnimation: myLeaveAnimation
+                cssClass: 'image-modal'
             });
             this.actualModal = modal;
             this.haymodal = true;

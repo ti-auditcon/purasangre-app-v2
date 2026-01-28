@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { NavParams } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-image-modal',
   templateUrl: './image-modal.page.html',
   styleUrls: ['./image-modal.page.scss'],
 })
-export class ImageModalPage implements OnInit {
-    img: any;
-    user: any;
+export class ImageModalPage {
+    img: string;
+    firstName: string;
+    lastName: string;
 
-    constructor(private navParams: NavParams) { }
+    constructor(public modalController: ModalController) { }
 
-    ngOnInit() {
-        this.img = this.navParams.get('img');
+    get user(): string {
+        return `${this.firstName || ''} ${this.lastName || ''}`;
+    }
 
-        this.user = `${this.navParams.get('firstName')} ${this.navParams.get('lastName')}`;
+    dismiss() {
+        this.modalController.dismiss();
     }
 }
