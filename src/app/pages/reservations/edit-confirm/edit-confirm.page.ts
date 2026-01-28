@@ -216,4 +216,28 @@ export class EditConfirmPage {
         }, 500);
         // setInterval(() => { console.log('hola'); }, 4000);
     }
+
+    /**
+     * Open Modal for Image Avatar view on click
+     */
+    async openImageModal(img: string, firstName: string, lastName: string) {
+        if (!this.haymodal) {
+            const modal = await this.modalController.create({
+                component: ImageModalPage,
+                componentProps: { img, firstName, lastName },
+                cssClass: 'background-color-modal',
+                enterAnimation: myEnterAnimation,
+                leaveAnimation: myLeaveAnimation
+            });
+            this.actualModal = modal;
+            this.haymodal = true;
+            await modal.present();
+            
+            // Auto-close modal when dismissed
+            modal.onDidDismiss().then(() => {
+                this.actualModal = null;
+                this.haymodal = false;
+            });
+        }
+    }
 }

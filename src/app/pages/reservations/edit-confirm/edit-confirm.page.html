@@ -56,7 +56,8 @@
             <div class="content">
                 <div class="item-crossfiters ps-row" *ngFor="let reservation of reservations">
                     <div class="col-2 item-img">
-                        <img src="{{ reservation?.rels.user.avatar }}" (click)="clicked()"/>
+                        <img src="{{ reservation?.rels.user.avatar }}" 
+                             (click)="openImageModal(reservation?.rels.user.avatar, reservation?.rels.user.first_name, reservation?.rels.user.last_name)"/>
                         <!-- TODO: Restore long-press when migrating to Angular 18 compatible solution -->
                         <!-- ion-button ion-long-press
                              [ngClass]="{ 'image-pressed': varIsPressed }"
