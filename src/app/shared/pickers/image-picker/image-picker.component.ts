@@ -68,29 +68,28 @@ export class ImagePickerComponent implements OnInit {
         action.present();
     }
 
-    openCamera(value) {
+    async openCamera(value: CameraSource | null) {
         console.log('llegue al metodo escogido');
         if (value) {
-            Camera.getPhoto({
-                quality: 50,
-                // Whether to allow the user to crop or make small edits (platform specific)
-                resultType: CameraResultType.Base64,
-                saveToGallery: true,
-                allowEditing: true,
-                width: 320,
-                // height: 320,
-                correctOrientation: true,
-                source: value
-            }).then(image => {
+            try {
+                const image = await Camera.getPhoto({
+                    quality: 50,
+                    resultType: CameraResultType.Base64,
+                    allowEditing: true,
+                    width: 320,
+                    correctOrientation: true,
+                    source: value,
+                    // En Capacitor 8.x, saveToGallery solo se aplica para CameraSource.Camera
+                    ...(value === CameraSource.Camera && { saveToGallery: true })
+                });
+
                 this.selectedImage = image.base64String;
-
-                console.log('ahora emito la foto cochino');
+                console.log('ahora emito la foto');
                 this.imagePick.emit(image.base64String);
-            }).catch(error => {
-                console.log(error);
-
+            } catch (error) {
+                console.log('Error al obtener la imagen:', error);
                 return false;
-            });
+            }
         }
     }
 
