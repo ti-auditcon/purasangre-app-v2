@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../../environments/environment';
@@ -23,7 +23,9 @@ export class ForgotPage {
                 private modalController: ModalController,
                 private router: Router,
                 private http: HttpClient,
-                private alertController: AlertController
+                private alertController: AlertController,
+                private loadingController: LoadingController,
+                private toastController: ToastController
             ) { }
 
     // async openModalForgot(title, message) {
@@ -47,8 +49,16 @@ export class ForgotPage {
     //     return await modal.present();
     // }
 
-    sendForgot() {
+    async sendForgot() {
         this.disabled = true;
+
+        // Mostrar loading
+        const loading = await this.loadingController.create({
+            message: 'Enviando correo de recuperación...',
+            spinner: 'crescent'
+        });
+        
+        await loading.present();
 
         const data = JSON.stringify({
             email: this.registerCredentials.email,
@@ -60,23 +70,38 @@ export class ForgotPage {
         };
         // return new Promise((resolve, reject) => {
         this.http.post(`${environment.SERVER_URL}/password/reset`, data, httpOptions)
-            .subscribe((result: any) => {
+            .subscribe(async (result: any) => {
                 console.log('success reset');
 
                 console.log(result);
 
-                // this.openModalForgot(
-                //     'Revisa tu Correo',
-                //     'Te hemos enviado las instrucciones para reestablecer tu contraseña',
-                //     '/assets/icon/check.svg'
-                // );
+                // Cerrar loading
+                await loading.dismiss();
 
-                this.router.navigateByUrl('/auth');
+                // Mostrar mensaje de éxito
+                const toast = await this.toastController.create({
+                    message: 'Te hemos enviado las instrucciones para reestablecer tu contraseña. Revisa tu correo.',
+                    duration: 4000,
+                    position: 'top',
+                    color: 'success'
+                });
+                await toast.present();
+
+                // Esperar un momento antes de redirigir
+                setTimeout(() => {
+                    this.router.navigateByUrl('/auth');
+                }, 1000);
             },
-            (err) => {
+            async (err) => {
                 console.log('error reset');
 
                 console.log(err);
+
+                // Cerrar loading
+                await loading.dismiss();
+                
+                // Habilitar botón nuevamente
+                this.disabled = false;
 
                 // this.showAlert(err.error[0].error, err.error[0].message);
                 this.alertController.create({
