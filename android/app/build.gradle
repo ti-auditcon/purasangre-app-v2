@@ -3,14 +3,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    namespace "com.asomic.purasangreV2"
+    namespace "purasangrecrossfit.app.com"
     compileSdkVersion 36
     defaultConfig {
-        applicationId "com.asomic.purasangreV2"
+        applicationId "purasangrecrossfit.app.com"
         minSdkVersion 24
-        targetSdkVersion 34
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 35
+        versionCode 200028
+        versionName "2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
