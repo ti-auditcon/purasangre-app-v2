@@ -241,7 +241,7 @@ export class ProfilePage {
             console.log(avatar);
 
             this.http.post(
-                `${ environment.SERVER_URL }/users/${ this.loadedProfile.id }/image`,
+                `${ environment.SERVER_URL }/profile/image`,
                 avatar,
                 httpOptions
             ).subscribe((result: any) => {
