@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace "com.asomic.purasangreV2"
-    compileSdkVersion 34
+    compileSdkVersion 36
     defaultConfig {
         applicationId "com.asomic.purasangreV2"
         minSdkVersion 24
