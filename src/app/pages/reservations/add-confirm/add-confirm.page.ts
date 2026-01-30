@@ -25,6 +25,8 @@ export class AddConfirmPage  {
     public users: any = [];
     public reservations: any = [];
     public page = 1;
+    public totalPages = 1;
+    public hasMorePages = true;
 
     buttonFixIOS: string;
     buttonFixAndroid: string;
@@ -155,28 +157,48 @@ export class AddConfirmPage  {
 
                 console.log(this.reservations);
 
-                this.page++;
+                // Guardar información de paginación si está disponible
+                if (result.meta && result.meta.pagination) {
+                    this.totalPages = result.meta.pagination.total_pages || 1;
+                    console.log(`Total de páginas: ${this.totalPages}`);
+                    
+                    // Si hay más páginas, cargarlas todas automáticamente
+                    if (this.totalPages > 1) {
+                        this.loadAllPages();
+                    }
+                }
             }
         );
     }
 
+    // Cargar todas las páginas restantes
+    loadAllPages() {
+        const requests = [];
+        
+        // Crear requests para todas las páginas restantes
+        for (let i = 2; i <= this.totalPages; i++) {
+            requests.push(
+                this.http.get(`${this.reservationUrl}?page=${i}`, this.httpOptions)
+            );
+        }
+
+        // Cargar todas las páginas en paralelo
+        requests.forEach((request, index) => {
+            request.subscribe((result: any) => {
+                if (result.data && result.data.length > 0) {
+                    this.reservations = this.reservations.concat(result.data);
+                    console.log(`Página ${index + 2} cargada`);
+                }
+            });
+        });
+    }
+
     // Cargando usuarios por infinit loader
     loadMoreUsers(infiniteScrollEvent) {
-        this.http.get(`${this.reservationUrl}?page=${this.page}`, this.httpOptions)
-            .subscribe((result: any) => {
-                console.log('mas users agregados');
-
-                this.reservations = this.reservations.concat(result.data);
-
-                console.log(this.reservations);
-
-                this.page++;
-
-                infiniteScrollEvent.target.complete();
-            }
-        );
-        // this.days = this.days.concat(response.data.data);
-        // event.target.complete();
+        // Ya no es necesario cargar más porque todas las páginas se cargan al inicio
+        console.log('Todas las páginas ya fueron cargadas');
+        infiniteScrollEvent.target.complete();
+        infiniteScrollEvent.target.disabled = true;
     }
 
     /**

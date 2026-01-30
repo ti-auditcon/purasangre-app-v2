@@ -1,10 +1,6 @@
 <div (click)="onPickImage()">
     <div class="avatar-container">
-        <!-- <img class="persona-avatar" *ngIf="imageClean != null; else igualANull" [src]="image"> -->
-        <img class="persona-avatar" [src]="[AvatarImage]">
-        <!-- <ng-template>
-            <img class="persona-avatar" [src]="'assets/img/default_user.png'">
-        </ng-template> -->
+        <img class="persona-avatar" [src]="AvatarImage" />
         <input
             type="file"
             accept="image/jpeg"

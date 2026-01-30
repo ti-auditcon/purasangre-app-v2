@@ -241,13 +241,21 @@ export class ProfilePage {
             console.log(avatar);
 
             this.http.post(
-                `${ environment.SERVER_URL }/profile/image`,
+                `${ environment.IMAGE_URL }/api/users/${ this.loadedProfile.id }/image`,
                 avatar,
                 httpOptions
             ).subscribe((result: any) => {
                     this.presentToast('datos actualizados con éxito');
-
-                    this.ionViewWillEnter();
+                    
+                    // Limpiar el storage y forzar fetch desde la API para obtener la nueva imagen
+                    this.storage.remove('authProfile').then(() => {
+                        this.profileService.fetchProfile().subscribe(() => {
+                            // Actualizar la vista con el nuevo perfil
+                            this.profileService.profile.subscribe(profile => {
+                                this.loadedProfile = profile;
+                            });
+                        });
+                    });
                 },
                 err => {
                     console.log(err);

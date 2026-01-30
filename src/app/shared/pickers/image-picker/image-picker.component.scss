@@ -1,3 +1,19 @@
 input[type='file'] {
     display: none;
 }
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.persona-avatar {
+    border-radius: 50% !important;
+    width: 110px !important;
+    height: 110px !important;
+    object-fit: cover !important;
+    display: block !important;
+    border: 3px solid #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
